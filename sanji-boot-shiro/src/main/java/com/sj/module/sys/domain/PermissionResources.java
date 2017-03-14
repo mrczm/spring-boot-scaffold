@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Entity(name = "sys_per")
 public class PermissionResources extends AbstractPersistable<Long> {
 
+    @Transient
     private String name;//给用户看
 
     private String operation; // permession许可的操作，例如views，del等等

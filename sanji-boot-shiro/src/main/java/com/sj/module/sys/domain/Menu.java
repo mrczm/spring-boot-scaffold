@@ -13,18 +13,33 @@ import javax.persistence.ManyToOne;
 @Entity(name = "sys_menu")
 public class Menu extends AbstractPersistable<Long> {
 
-    private String name;
+    private String name;//名称
 
-    private String description;
+    private String description;//描述
 
-    private String url;
+    private String url;//地址
 
-    private String icon;
+    private String icon;//图标
 
     private Long sort;//排序
 
+    private Long level;//层级=父级+1
+
     @ManyToOne
     private Menu parent;
+
+    public Menu() {
+    }
+
+    public Menu(String name, String description, String url, String icon, Long sort, Long level, Menu parent) {
+        this.name = name;
+        this.description = description;
+        this.url = url;
+        this.icon = icon;
+        this.sort = sort;
+        this.level = level;
+        this.parent = parent;
+    }
 
     public String getName() {
         return name;
@@ -64,6 +79,14 @@ public class Menu extends AbstractPersistable<Long> {
 
     public void setSort(Long sort) {
         this.sort = sort;
+    }
+
+    public Long getLevel() {
+        return level;
+    }
+
+    public void setLevel(Long level) {
+        this.level = level;
     }
 
     public Menu getParent() {

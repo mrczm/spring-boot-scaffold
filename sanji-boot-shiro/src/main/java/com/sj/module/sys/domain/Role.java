@@ -2,10 +2,7 @@ package com.sj.module.sys.domain;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.Set;
 
 /**
@@ -17,6 +14,9 @@ public class Role extends AbstractPersistable<Long> {
     private String name;//给用户看
 
     private String roleName;//角色名称，shiro将通过角色名来进行鉴权
+
+    @ManyToMany(mappedBy = "roleSet")
+    private Set<User> userSet;
 
     @ManyToMany
     @JoinTable(name = "sys_role_per", joinColumns = {@JoinColumn(name = "role_id")}, inverseJoinColumns = {@JoinColumn(name = "per_id")})
@@ -36,6 +36,14 @@ public class Role extends AbstractPersistable<Long> {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public Set<User> getUserSet() {
+        return userSet;
+    }
+
+    public void setUserSet(Set<User> userSet) {
+        this.userSet = userSet;
     }
 
     public Set<PermissionResources> getPermissionResourcesSet() {
