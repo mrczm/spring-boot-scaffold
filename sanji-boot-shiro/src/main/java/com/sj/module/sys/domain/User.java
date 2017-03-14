@@ -15,7 +15,7 @@ import java.util.Set;
 @DynamicUpdate
 @Entity(name = "sys_user")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User extends AbstractPersistable<Long> {
+public class User extends BaseEntity<Long> {
 
     @NotEmpty(message = "用户名不能为空")
     @Column(unique = true, updatable = false)

@@ -1,8 +1,5 @@
 package com.sj.module.sys.domain;
 
-import org.springframework.data.jpa.domain.AbstractPersistable;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -11,7 +8,7 @@ import javax.persistence.ManyToOne;
  * Created by sunxyz on 2017/3/14.
  */
 @Entity(name = "sys_menu")
-public class Menu extends AbstractPersistable<Long> {
+public class Menu extends BaseEntity<Long> {
 
     private String name;//名称
 
