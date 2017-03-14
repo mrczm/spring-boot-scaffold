@@ -34,10 +34,7 @@ public class UserRealm extends AbstractUserRealm {
             Set<Role> roles = group.getRoleSet();
             loadRolesAndPermissions(userRoles, userPermissions, roles);
             Set<PermissionResources> permissionResourcesSet = group.getPermissionResourcesSet();
-            if (permissionResourcesSet != null) {
-                Set<String> permissionResourcesNameSet = permissionResourcesSet.stream().map(PermissionResources::getName).collect(Collectors.toSet());
-                userPermissions.addAll(permissionResourcesNameSet);
-            }
+            loadPermissions(userPermissions, permissionResourcesSet);
         }
         return new UserRolesAndPermissions(userRoles, userPermissions);
     }
@@ -45,13 +42,17 @@ public class UserRealm extends AbstractUserRealm {
     private void loadRolesAndPermissions(Set<String> userRoles, Set<String> userPermissions, Set<Role> roles) {
         if (null != roles) {
             roles.forEach(role -> {
-                userRoles.add(role.getName());
+                userRoles.add(role.getRoleName());
                 Set<PermissionResources> permissionResourcesSet = role.getPermissionResourcesSet();
-                if (null != permissionResourcesSet) {
-                    Set<String> permissionResourcesNameSet = permissionResourcesSet.stream().map(PermissionResources::getName).collect(Collectors.toSet());
-                    userPermissions.addAll(permissionResourcesNameSet);
-                }
+                loadPermissions(userPermissions, permissionResourcesSet);
             });
+        }
+    }
+
+    private void loadPermissions(Set<String> userPermissions, Set<PermissionResources> permissionResourcesSet) {
+        if (null != permissionResourcesSet) {
+            Set<String> permissionResourcesNameSet = permissionResourcesSet.stream().map(PermissionResources::getOperation).collect(Collectors.toSet());
+            userPermissions.addAll(permissionResourcesNameSet);
         }
     }
 }

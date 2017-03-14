@@ -11,13 +11,15 @@ import java.util.Set;
 /**
  * Created by sunxyz on 2017/3/13.
  */
-@Entity
+@Entity(name = "sys_role")
 public class Role extends AbstractPersistable<Long> {
 
-    private String name;
+    private String name;//给用户看
+
+    private String roleName;//角色名称，shiro将通过角色名来进行鉴权
 
     @ManyToMany
-    @JoinTable(name = "role_per", joinColumns = {@JoinColumn(name = "role_id")}, inverseJoinColumns = {@JoinColumn(name = "per_id")})
+    @JoinTable(name = "sys_role_per", joinColumns = {@JoinColumn(name = "role_id")}, inverseJoinColumns = {@JoinColumn(name = "per_id")})
     private Set<PermissionResources> permissionResourcesSet;
 
     public String getName() {
@@ -26,6 +28,14 @@ public class Role extends AbstractPersistable<Long> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     public Set<PermissionResources> getPermissionResourcesSet() {

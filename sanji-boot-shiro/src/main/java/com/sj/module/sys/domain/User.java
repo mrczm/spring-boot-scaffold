@@ -13,7 +13,7 @@ import java.util.Set;
  */
 @JsonIgnoreProperties({"hibernateLazyInitializer", "password", "news"})
 @DynamicUpdate
-@Entity
+@Entity(name = "sys_user")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends AbstractPersistable<Long> {
 
@@ -28,7 +28,7 @@ public class User extends AbstractPersistable<Long> {
     private String password;
 
     @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
-    @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    @JoinTable(name = "sys_user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roleSet;
 
     @ManyToOne

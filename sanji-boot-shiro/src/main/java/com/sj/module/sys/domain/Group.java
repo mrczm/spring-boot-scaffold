@@ -11,16 +11,26 @@ import java.util.Set;
 /**
  * Created by sunxyz on 2017/3/13.
  */
-@Entity
+@Entity(name = "sys_group")
 public class Group extends AbstractPersistable<Long> {
 
+    private String name;//给用户看
+
     @ManyToMany
-    @JoinTable(name = "group_role", joinColumns = {@JoinColumn(name = "group_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    @JoinTable(name = "sys_group_role", joinColumns = {@JoinColumn(name = "group_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roleSet;
 
     @ManyToMany
-    @JoinTable(name = "group_per", joinColumns = {@JoinColumn(name = "group_id")}, inverseJoinColumns = {@JoinColumn(name = "per_id")})
+    @JoinTable(name = "sys_group_per", joinColumns = {@JoinColumn(name = "group_id")}, inverseJoinColumns = {@JoinColumn(name = "per_id")})
     private Set<PermissionResources> permissionResourcesSet;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Set<Role> getRoleSet() {
         return roleSet;
