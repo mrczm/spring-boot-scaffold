@@ -26,6 +26,10 @@ public class Role extends BaseEntity<Long> {
     @JoinTable(name = "sys_role_menu", joinColumns = {@JoinColumn(name = "role_id")}, inverseJoinColumns = {@JoinColumn(name = "menu_id")})
     private Set<Menu> menuSet;
 
+    {
+        roleType = "";
+    }
+
     public String getName() {
         return name;
     }

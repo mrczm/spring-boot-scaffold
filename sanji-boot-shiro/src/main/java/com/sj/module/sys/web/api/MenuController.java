@@ -9,6 +9,7 @@ import com.sj.module.sys.domain.vo.MenuTreeVO;
 import com.sj.module.sys.repository.MenuRepository;
 import com.sj.module.sys.repository.UserRepository;
 import com.sj.module.sys.service.MenuService;
+import com.sj.module.sys.service.TreeService;
 import com.sj.module.sys.web.BaseController;
 import javafx.collections.transformation.SortedList;
 import org.apache.commons.collections.list.TreeList;
@@ -29,6 +30,9 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private TreeService treeService;
 
     @PostMapping
     public HttpResponse<String> add(@RequestParam(name = "pid", defaultValue = "1") Menu parent, Menu menu) {
@@ -55,8 +59,8 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
     }
 
     @GetMapping
-    public Page<Menu> getAll(Pageable pageable) {
-        return repository.findAll(pageable);
+    public List<Menu> getAll() {
+        return treeService.listFlatMenuTree();
     }
 
     //TODO 树形菜单构建

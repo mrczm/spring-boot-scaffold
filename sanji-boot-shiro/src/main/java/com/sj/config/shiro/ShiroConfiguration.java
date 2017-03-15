@@ -57,6 +57,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/login", "anon");//anon 可以理解为不拦截
         filterChainDefinitionMap.put("/plugins/**", "anon");
         filterChainDefinitionMap.put("/api/**", "anon");
+        filterChainDefinitionMap.put("/pages/**", "anon");
         filterChainDefinitionMap.put("/**", "authc");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

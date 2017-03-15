@@ -1,14 +1,14 @@
 package com.sj.module.sys.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.*;
 
 /**
  * //前台菜单 最好做缓存处理
  * Created by sunxyz on 2017/3/14.
  */
+@JsonIgnoreProperties({"new", "level", "parent"})
 @Entity(name = "sys_menu")
 public class Menu extends BaseEntity<Long> {
 
@@ -28,6 +28,9 @@ public class Menu extends BaseEntity<Long> {
     private Long level;//层级=父级+1
 
     private String permission; // 权限标识，例如views，del等等
+
+    @Transient
+    private Long parentId;
 
     {
         sort = 0L;
@@ -95,5 +98,12 @@ public class Menu extends BaseEntity<Long> {
 
     public void setPermission(String permission) {
         this.permission = permission;
+    }
+
+    public Long getParentId() {
+        if(null!=parent){
+            this.parentId = parent.getId();
+        }
+        return parentId;
     }
 }
