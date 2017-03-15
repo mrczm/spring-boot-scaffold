@@ -23,8 +23,8 @@ public class Group extends BaseEntity<Long> {
     private Set<Role> roleSet;
 
     @ManyToMany
-    @JoinTable(name = "sys_group_per", joinColumns = {@JoinColumn(name = "group_id")}, inverseJoinColumns = {@JoinColumn(name = "per_id")})
-    private Set<PermissionResources> permissionResourcesSet;
+    @JoinTable(name = "sys_group_menu", joinColumns = {@JoinColumn(name = "group_id")}, inverseJoinColumns = {@JoinColumn(name = "menu_id")})
+    private Set<Menu> menuSet;
 
     public String getName() {
         return name;
@@ -50,11 +50,11 @@ public class Group extends BaseEntity<Long> {
         this.roleSet = roleSet;
     }
 
-    public Set<PermissionResources> getPermissionResourcesSet() {
-        return permissionResourcesSet;
+    public Set<Menu> getMenuSet() {
+        return menuSet;
     }
 
-    public void setPermissionResourcesSet(Set<PermissionResources> permissionResourcesSet) {
-        this.permissionResourcesSet = permissionResourcesSet;
+    public void setMenuSet(Set<Menu> menuSet) {
+        this.menuSet = menuSet;
     }
 }

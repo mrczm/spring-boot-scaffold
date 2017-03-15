@@ -13,7 +13,7 @@ import java.util.Date;
  * Created by sunxyz on 2017/3/14.
  */
 @MappedSuperclass
-public class BaseEntity<PK extends Serializable> extends AbstractPersistable<PK> {
+public abstract class BaseEntity<PK extends Serializable> extends AbstractPersistable<PK> {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date crateTime;

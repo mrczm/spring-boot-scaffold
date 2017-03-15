@@ -1,9 +1,10 @@
 package com.sj.config.shiro;
 
 import com.sj.module.sys.domain.Group;
-import com.sj.module.sys.domain.PermissionResources;
+import com.sj.module.sys.domain.Menu;
 import com.sj.module.sys.domain.Role;
 import com.sj.module.sys.domain.User;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Created by sunxyz on 2017/3/13.
  */
+@Component
 public class UserRealm extends AbstractUserRealm {
 
     @Override
@@ -33,8 +35,8 @@ public class UserRealm extends AbstractUserRealm {
         if (null != group) {
             Set<Role> roles = group.getRoleSet();
             loadRolesAndPermissions(userRoles, userPermissions, roles);
-            Set<PermissionResources> permissionResourcesSet = group.getPermissionResourcesSet();
-            loadPermissions(userPermissions, permissionResourcesSet);
+            Set<Menu> menuSet = group.getMenuSet();
+            loadPermissions(userPermissions, menuSet);
         }
         return new UserRolesAndPermissions(userRoles, userPermissions);
     }
@@ -42,16 +44,16 @@ public class UserRealm extends AbstractUserRealm {
     private void loadRolesAndPermissions(Set<String> userRoles, Set<String> userPermissions, Set<Role> roles) {
         if (null != roles) {
             roles.forEach(role -> {
-                userRoles.add(role.getRoleName());
-                Set<PermissionResources> permissionResourcesSet = role.getPermissionResourcesSet();
-                loadPermissions(userPermissions, permissionResourcesSet);
+                userRoles.add(role.getRoleType());
+                Set<Menu> menuSet = role.getMenuSet();
+                loadPermissions(userPermissions, menuSet);
             });
         }
     }
 
-    private void loadPermissions(Set<String> userPermissions, Set<PermissionResources> permissionResourcesSet) {
-        if (null != permissionResourcesSet) {
-            Set<String> permissionResourcesNameSet = permissionResourcesSet.stream().map(PermissionResources::getOperation).collect(Collectors.toSet());
+    private void loadPermissions(Set<String> userPermissions, Set<Menu> menuSet) {
+        if (null != menuSet) {
+            Set<String> permissionResourcesNameSet = menuSet.stream().filter(menu -> null != menu.getPermission()).map(Menu::getPermission).collect(Collectors.toSet());
             userPermissions.addAll(permissionResourcesNameSet);
         }
     }

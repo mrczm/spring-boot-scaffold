@@ -2,6 +2,8 @@ package com.sj.module.sys.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 
 /**
  * //前台菜单 最好做缓存处理
@@ -9,6 +11,9 @@ import javax.persistence.ManyToOne;
  */
 @Entity(name = "sys_menu")
 public class Menu extends BaseEntity<Long> {
+
+    @ManyToOne
+    private Menu parent;
 
     private String name;//名称
 
@@ -22,19 +27,17 @@ public class Menu extends BaseEntity<Long> {
 
     private Long level;//层级=父级+1
 
-    @ManyToOne
-    private Menu parent;
+    private String permission; // 权限标识，例如views，del等等
 
-    public Menu() {
+    {
+        sort = 0L;
     }
 
-    public Menu(String name, String description, String url, String icon, Long sort, Long level, Menu parent) {
-        this.name = name;
-        this.description = description;
-        this.url = url;
-        this.icon = icon;
-        this.sort = sort;
-        this.level = level;
+    public Menu getParent() {
+        return parent;
+    }
+
+    public void setParent(Menu parent) {
         this.parent = parent;
     }
 
@@ -86,11 +89,11 @@ public class Menu extends BaseEntity<Long> {
         this.level = level;
     }
 
-    public Menu getParent() {
-        return parent;
+    public String getPermission() {
+        return permission;
     }
 
-    public void setParent(Menu parent) {
-        this.parent = parent;
+    public void setPermission(String permission) {
+        this.permission = permission;
     }
 }

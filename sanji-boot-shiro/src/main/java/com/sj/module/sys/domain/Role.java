@@ -15,14 +15,14 @@ public class Role extends BaseEntity<Long> {
 
     private String description;//描述
 
-    private String roleName;//角色名称，shiro将通过角色名来进行鉴权
+    private String roleType;//权限类型，shiro将通过角色名来进行鉴权
 
     @ManyToMany(mappedBy = "roleSet")
     private Set<User> userSet;
 
     @ManyToMany
-    @JoinTable(name = "sys_role_per", joinColumns = {@JoinColumn(name = "role_id")}, inverseJoinColumns = {@JoinColumn(name = "per_id")})
-    private Set<PermissionResources> permissionResourcesSet;
+    @JoinTable(name = "sys_role_menu", joinColumns = {@JoinColumn(name = "role_id")}, inverseJoinColumns = {@JoinColumn(name = "menu_id")})
+    private Set<Menu> menuSet;
 
     public String getName() {
         return name;
@@ -40,12 +40,12 @@ public class Role extends BaseEntity<Long> {
         this.description = description;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getRoleType() {
+        return roleType;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setRoleType(String roleType) {
+        this.roleType = roleType;
     }
 
     public Set<User> getUserSet() {
@@ -56,11 +56,11 @@ public class Role extends BaseEntity<Long> {
         this.userSet = userSet;
     }
 
-    public Set<PermissionResources> getPermissionResourcesSet() {
-        return permissionResourcesSet;
+    public Set<Menu> getMenuSet() {
+        return menuSet;
     }
 
-    public void setPermissionResourcesSet(Set<PermissionResources> permissionResourcesSet) {
-        this.permissionResourcesSet = permissionResourcesSet;
+    public void setMenuSet(Set<Menu> menuSet) {
+        this.menuSet = menuSet;
     }
 }

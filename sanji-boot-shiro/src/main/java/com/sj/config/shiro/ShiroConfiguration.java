@@ -1,6 +1,7 @@
 package com.sj.config.shiro;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -23,6 +24,7 @@ import java.util.Map;
  * Created by sunxyz on 2017/3/13.
  */
 @Configuration
+
 public class ShiroConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(ShiroConfiguration.class);
@@ -54,6 +56,7 @@ public class ShiroConfiguration {
         // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
         filterChainDefinitionMap.put("/login", "anon");//anon 可以理解为不拦截
         filterChainDefinitionMap.put("/plugins/**", "anon");
+        filterChainDefinitionMap.put("/api/**", "anon");
         filterChainDefinitionMap.put("/**", "authc");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -61,13 +64,12 @@ public class ShiroConfiguration {
         return shiroFilterFactoryBean;
     }
 
-    /**
-     * Shiro Realm 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的 * * @param cacheManager * @return
-     */
     @Bean
-    public UserRealm userRealm() {
-        UserRealm userRealm = new UserRealm();
-        return userRealm;
+    public EhCacheManager ehCacheManager() {
+        logger.info("注入Shiro的缓存-->EhCacheManager");
+        EhCacheManager cacheManager = new EhCacheManager();
+        cacheManager.setCacheManagerConfigFile("classpath:ehcache.xml");
+        return cacheManager;
     }
 
     /**
@@ -78,6 +80,8 @@ public class ShiroConfiguration {
         logger.info("注入Shiro的Web过滤器-->securityManager", ShiroFilterFactoryBean.class);
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(userRealm);
+        //注入缓存管理器;
+        securityManager.setCacheManager(ehCacheManager());//这个如果执行多次，也是同样的一个对象;
         return securityManager;
     }
 

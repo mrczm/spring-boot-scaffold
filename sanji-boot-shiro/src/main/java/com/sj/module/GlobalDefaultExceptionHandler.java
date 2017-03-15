@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by sunxyz on 2017/3/13.
  */
-@ControllerAdvice
+//@ControllerAdvice
 public class GlobalDefaultExceptionHandler {
 
     public static final String DEFAULT_ERROR_VIEW = "/pages/error";
@@ -22,7 +22,7 @@ public class GlobalDefaultExceptionHandler {
             throw e;
         ModelAndView mav = new ModelAndView();
         mav.addObject("title", "沒有找到家");
-        mav.addObject("exception", e);
+        mav.addObject("exception", e.getClass());
         mav.addObject("url", req.getRequestURL());
         mav.setViewName(DEFAULT_ERROR_VIEW);
         return mav;
