@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Created by sunxyz on 2017/3/14.
@@ -25,6 +27,7 @@ public class HttpResponse<T> {
 
     static {
         ERROR.setMsg(ERROR_MSG);
+        ERROR.setStatus(Status.ERROR);
     }
 
     {
@@ -63,6 +66,22 @@ public class HttpResponse<T> {
         HttpResponse<T> httpResponse = new HttpResponse<T>(content);
         httpResponse.setMsg(msg);
         return httpResponse;
+    }
+
+    public HttpResponse<T> orGetErrorMsg(Supplier<String> message) {
+        return this.orGetErrorMsg(message.get());
+    }
+
+    public HttpResponse<T> orGetErrorMsg(String message) {
+        return this.status.equals(Status.ERROR) ? error(message) : this;
+    }
+
+    public HttpResponse<T> orGetSuccessMsg(Supplier<String> message) {
+        return this.orGetSuccessMsg(message.get());
+    }
+
+    public HttpResponse<T> orGetSuccessMsg(String message) {
+        return this.status.equals(Status.SUCCESS) ? ok(message, this.getContent()) : this;
     }
 
     public Status getStatus() {

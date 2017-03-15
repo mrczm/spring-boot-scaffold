@@ -1,5 +1,6 @@
 package com.sj.module.sys.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.Set;
 /**
  * Created by sunxyz on 2017/3/13.
  */
+@JsonIgnoreProperties({"menuSet", "userSet","news"})
 @Entity(name = "sys_role")
 public class Role extends BaseEntity<Long> {
 
