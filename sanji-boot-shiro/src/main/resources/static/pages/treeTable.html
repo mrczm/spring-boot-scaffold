@@ -7,15 +7,16 @@
     <link href="/plugins/treeTable/jquery.treetable.min.css" rel="stylesheet">
     <link href="/plugins/treeTable/jquery.treetable.theme.default.min.css"
           rel="stylesheet">
-    <script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
-    <script src="/plugins/treeTable/jquery.treetable.min.js"></script>
-    <script src="https://cdn.bootcss.com/vue/2.2.0/vue.min.js"></script>
+    <link href="/plugins/bootstrap/css/bootstrap.css " rel="stylesheet"/>
+    <link href="/plugins/bootstrap/css/bootstrap-theme.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/plugins/layui/css/layui.css" media="all">
 
     <style>
-        table, tbody ,table.treetable thead tr th {
+        table, tbody, table.treetable thead tr th {
             border: 1px solid #e3e8ee;
         }
-        th, td {
+
+        th, td, .btn-groups {
             min-width: 0;
             box-sizing: border-box;
             text-align: left;
@@ -27,17 +28,35 @@
             overflow: hidden;
             background-color: #f5f7f9;
         }
-        th{
+
+        th {
             font-size: 15px;
         }
+
         td {
             background-color: #FbFBFB;
+        }
+
+        .btn-groups {
+            border: 1px solid #e3e8ee;
+            height: 50px;
+            padding: 8px;
+        }
+
+        tbody tr.select td {
+            background-color: #f5f7f9;
         }
     </style>
 
 </head>
 <body>
-<div id="app">
+<div id="app" class="container-fluid">
+    <div class="btn-groups">
+        <button class="layui-btn  layui-btn-small  layui-btn-radius glyphicon glyphicon-plus" @click="add">&nbsp;添加
+        </button>
+        <button class="layui-btn  layui-btn-small layui-btn-radius glyphicon glyphicon-edit" @click="edit">&nbsp;编辑
+        </button>
+    </div>
     <table id="example-advanced">
         <thead>
         <th>菜单名称</th>
@@ -48,7 +67,8 @@
         <th>权限标识</th>
         </thead>
         <tbody>
-        <tr v-for="menu in menus" :data-tt-id="menu.id" :data-tt-parent-id="menu.parentId">
+        <tr v-for="menu in menus" :id="menu.id" :data-tt-id="menu.id" :data-tt-parent-id="menu.parentId"
+            @click="select(menu)">
             <td>{{menu.name}}</td>
             <td>{{menu.url}}</td>
             <td>{{menu.description}}</td>
@@ -61,31 +81,97 @@
 
     </table>
 </div>
+
+
+<script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="/plugins/treeTable/jquery.treetable.min.js"></script>
+
+<script src="https://cdn.bootcss.com/vue/2.2.0/vue.min.js"></script>
+<script src="/plugins/layer/layer.js"></script>
 <script>
-    var app5 = new Vue({
+    var app = new Vue({
         el: '#app',
         data: {
-            menus: []
+            menus: [],
+            selectObj: undefined
         },
         created: function () {
             var _this = this;
             $.get("menu.json", function (data) {
+                for (var i in data) {
+                    var d = data[i];
+                    d.select = false;
+                }
                 _this.menus = data;
             })
-            _this.reverseMessage();
+            _this.buildTreeTable();
         },
         methods: {
-            reverseMessage: function () {
+            buildTreeTable: function () {
                 var f = function () {
                     $("#example-advanced").treetable({
                         expandable: true
                     });
+                    console.log("-----")
                 }
                 setTimeout(f, 60);
-                console.log("-----")
+            },
+            select: function (menu) {
+                menu.select = menu.select ? false : true;
+                if (menu.select) {
+                    $("tbody tr").removeClass("select");
+                    var f = function () {
+                        $("#" + menu.id).addClass("select")
+                    }
+                    setTimeout(f, 100);
+                }
+                this.selectObj = menu;
+            },
+            edit: function () {
+                edit(this.selectObj);
+            },
+            add: function () {
+                add(this.selectObj);
             }
         }
     })
+
+    function edit(obj) {
+        if (!obj) {
+            layer.msg('请选中要修改的列');
+            return;
+        }
+        obj.isParent=false;
+        open_page(obj);
+    }
+
+    function add(obj) {
+        if (!obj) {
+            layer.msg('请选中要添加子菜单的列');
+            return;
+        }
+        var parent = {p_id: obj.id, p_name: obj.name, isParent: true};
+        open_page(parent)
+    }
+    
+    function open_page(obj) {
+        var json = JSON.stringify(obj);
+        // 当你试图在当前页获取iframe页的DOM元素时，你可以用此方法。selector即iframe页的选择器
+        layer.open({
+            type: 2,
+            title: '编辑菜单',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['893px', '630px'],
+            content: 'iframe.html',
+            success: function (layero, index) {
+                var body = layer.getChildFrame('body', index);
+                var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
+                body.find('#json').val(json)
+            }
+        });
+    }
 
 
 </script>

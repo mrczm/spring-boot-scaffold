@@ -54,7 +54,6 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
         old.setUrl(null != menu ? menu.getUrl() : old.getUrl());
         old.setIcon(null != menu ? menu.getIcon() : old.getIcon());
         old.setSort(null != menu ? menu.getSort() : old.getSort());
-        old.setLevel(null != menu ? menu.getLevel() : old.getLevel());
         return super.update(old);
     }
 
