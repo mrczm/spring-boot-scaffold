@@ -38,13 +38,13 @@ public class DataInit implements CommandLineRunner {
             user = new User();
             user.setLoginName("admin");
             user.setPassword("admin");
-            user.setCrateTime(now);
+            user.setCreateTime(now);
             user.setUpdateTime(now);
             Set<Role> roleSet = new HashSet<>();
             Role role = new Role();
             role.setName("ADMIN");
             role.setRoleType("ADMIN");
-            role.setCrateTime(now);
+            role.setCreateTime(now);
             role.setUpdateTime(now);
             roleSet.add(role);
             user.setRoleSet(roleSet);
@@ -55,7 +55,7 @@ public class DataInit implements CommandLineRunner {
             menu = new Menu();
             menu.setName("ROOT");
             menu.setLevel(0L);
-            menu.setCrateTime(now);
+            menu.setCreateTime(now);
             menu.setUpdateTime(now);
             menuRepository.save(menu);
         }

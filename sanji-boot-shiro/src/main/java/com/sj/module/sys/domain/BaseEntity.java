@@ -16,19 +16,19 @@ import java.util.Date;
 public abstract class BaseEntity<PK extends Serializable> extends AbstractPersistable<PK> {
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date crateTime;
+    private Date createTime;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
 
     private String mark;
 
-    public Date getCrateTime() {
-        return crateTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCrateTime(Date crateTime) {
-        this.crateTime = crateTime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Date getUpdateTime() {

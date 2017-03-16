@@ -21,7 +21,7 @@ public class BaseController<D extends JpaRepository<T, PK>, T extends BaseEntity
     @Transactional
     protected HttpResponse<String> save(T t) {
         Date now = new Date();
-        t.setCrateTime(now);
+        t.setCreateTime(now);
         return updateTime(t, now);
     }
 

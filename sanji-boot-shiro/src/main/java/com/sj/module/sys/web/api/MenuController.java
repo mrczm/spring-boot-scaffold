@@ -34,6 +34,7 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
     @Autowired
     private TreeService treeService;
 
+    @Transactional
     @PostMapping
     public HttpResponse<String> add(@RequestParam(name = "pid", defaultValue = "1") Menu parent, Menu menu) {
         menu.setParent(parent);
@@ -41,6 +42,7 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
         return super.save(menu);
     }
 
+    @Transactional
     @DeleteMapping("/{id}")
     public HttpResponse<String> delete(@PathVariable Long id) {
         return super.delete(id);
@@ -54,12 +56,20 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
         old.setUrl(null != menu ? menu.getUrl() : old.getUrl());
         old.setIcon(null != menu ? menu.getIcon() : old.getIcon());
         old.setSort(null != menu ? menu.getSort() : old.getSort());
+        old.setPermission(null != menu ? menu.getPermission() : old.getPermission());
         return super.update(old);
     }
 
+    //给 treeTable 使用
     @GetMapping
-    public List<Menu> getAll() {
+    public List<Menu> getTreeTable() {
         return treeService.listFlatMenuTree();
+    }
+
+    //给 zTree
+    @GetMapping("/all")
+    public List<Menu> getAll() {
+        return repository.findAll();
     }
 
     //TODO 树形菜单构建

@@ -101,7 +101,7 @@ public class Menu extends BaseEntity<Long> {
     }
 
     public Long getParentId() {
-        if(null!=parent){
+        if (null != parent) {
             this.parentId = parent.getId();
         }
         return parentId;

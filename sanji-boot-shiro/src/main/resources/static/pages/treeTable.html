@@ -52,19 +52,30 @@
 <body>
 <div id="app" class="container-fluid">
     <div class="btn-groups">
+        <button class="layui-btn layui-btn-normal layui-btn-small layui-btn-radius glyphicon glyphicon-refresh"
+                @click="load">&nbsp;刷新
+        </button>
+        <button class="layui-btn layui-btn-normal layui-btn-small layui-btn-radius glyphicon glyphicon-refresh"
+                @click="reload">&nbsp;刷新结构
+        </button>
         <button class="layui-btn  layui-btn-small  layui-btn-radius glyphicon glyphicon-plus" @click="add">&nbsp;添加
         </button>
         <button class="layui-btn  layui-btn-small layui-btn-radius glyphicon glyphicon-edit" @click="edit">&nbsp;编辑
         </button>
+        <button class="layui-btn layui-btn-danger  layui-btn-small layui-btn-radius glyphicon glyphicon-trash"
+                @click="deleteMenu">&nbsp;刪除
+        </button>
     </div>
     <table id="example-advanced">
         <thead>
-        <th>菜单名称</th>
-        <th>地址链接</th>
-        <th>描述</th>
-        <th>图标</th>
-        <th>排序数字</th>
-        <th>权限标识</th>
+        <tr>
+            <th>菜单名称</th>
+            <th>地址链接</th>
+            <th>描述</th>
+            <th>图标</th>
+            <th>排序数字</th>
+            <th>权限标识</th>
+        </tr>
         </thead>
         <tbody>
         <tr v-for="menu in menus" :id="menu.id" :data-tt-id="menu.id" :data-tt-parent-id="menu.parentId"
@@ -89,6 +100,7 @@
 <script src="https://cdn.bootcss.com/vue/2.2.0/vue.min.js"></script>
 <script src="/plugins/layer/layer.js"></script>
 <script>
+    var api_path = "http://localhost:8080/api/menu";
     var app = new Vue({
         el: '#app',
         data: {
@@ -96,27 +108,29 @@
             selectObj: undefined
         },
         created: function () {
-            var _this = this;
-            $.get("menu.json", function (data) {
-                for (var i in data) {
-                    var d = data[i];
-                    d.select = false;
-                }
-                _this.menus = data;
-            })
-            _this.buildTreeTable();
+            this.load();
         },
         methods: {
+            load: function () {
+                var _this = this;
+                $.get(api_path, function (data) {
+                    for (var i in data) {
+                        var d = data[i];
+                        d.select = false;
+                    }
+                    _this.menus = data;
+                })
+                _this.buildTreeTable();
+            },
             buildTreeTable: function () {
                 var f = function () {
                     $("#example-advanced").treetable({
                         expandable: true
                     });
-                    console.log("-----")
                 }
-                setTimeout(f, 60);
+                setTimeout(f, 160);
             },
-            select: function (menu) {
+            select: function (menu) {//添加鼠标选中效果
                 menu.select = menu.select ? false : true;
                 if (menu.select) {
                     $("tbody tr").removeClass("select");
@@ -132,6 +146,12 @@
             },
             add: function () {
                 add(this.selectObj);
+            },
+            deleteMenu: function () {
+                deleteMenu(this.selectObj)
+            },
+            reload: function () {
+                location.reload();
             }
         }
     })
@@ -141,7 +161,7 @@
             layer.msg('请选中要修改的列');
             return;
         }
-        obj.isParent=false;
+        obj.isParent = false;
         open_page(obj);
     }
 
@@ -153,7 +173,28 @@
         var parent = {p_id: obj.id, p_name: obj.name, isParent: true};
         open_page(parent)
     }
-    
+
+    function deleteMenu(obj) {
+        if (!obj) {
+            layer.msg('请选中要删除的菜单列');
+            return;
+        }
+        layer.confirm('您确认删除？', {
+            icon: 0,
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            var id = obj.id;
+            $.post("/api/menu/" + id, {_method: "DELETE"}, function (data) {
+                layer.msg(data.msg, {icon: data.status == "SUCCESS" ? 1 : 2});
+                app.load();
+            }).error(function () {
+                layer.msg("删除失败，不建议删除", {icon: 2});
+            })
+        }, function () {
+            layer.msg('取消成功', {icon: 1});
+        });
+    }
+
     function open_page(obj) {
         var json = JSON.stringify(obj);
         // 当你试图在当前页获取iframe页的DOM元素时，你可以用此方法。selector即iframe页的选择器
@@ -163,7 +204,7 @@
             shadeClose: true,
             shade: false,
             maxmin: true, //开启最大化最小化按钮
-            area: ['893px', '630px'],
+            area: ['893px', '636px'],
             content: 'iframe.html',
             success: function (layero, index) {
                 var body = layer.getChildFrame('body', index);
