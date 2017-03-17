@@ -15,7 +15,9 @@ import javafx.collections.transformation.SortedList;
 import org.apache.commons.collections.list.TreeList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +40,16 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
     @PostMapping
     public HttpResponse<String> add(@RequestParam(name = "pid", defaultValue = "1") Menu parent, Menu menu) {
         menu.setParent(parent);
+        //层级添加+排序添加
         menu.setLevel(parent.getLevel() + 1);
+        if (menu.getSort() == 0L) {
+            Menu brothers = findByParentTop1(parent);
+            if (null != brothers) {
+                menu.setSort(brothers.getSort() + 1);
+            } else {
+                menu.setSort(parent.getSort() * 10 + 1);
+            }
+        }
         return super.save(menu);
     }
 
@@ -78,5 +89,20 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
         return menuService.getMenuTree();
     }
 
+
+    private Menu findByParentTop1(Menu parent) {
+        Sort sort = new Sort(Sort.Direction.DESC, "sort");
+        Pageable pageable = new PageRequest(0, 1, sort);
+        Page<Menu> page = repository.findByParent(parent, pageable);
+        if (null != page) {
+            List<Menu> list = page.getContent();
+            if (null != list) {
+                if (list.size() > 0) {
+                    return list.get(0);
+                }
+            }
+        }
+        return null;
+    }
 
 }

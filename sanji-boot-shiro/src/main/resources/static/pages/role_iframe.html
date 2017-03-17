@@ -10,9 +10,7 @@
     <!--ztree-->
     <link rel="stylesheet" href="/plugins/zTree/css/demo.css" type="text/css">
     <link rel="stylesheet" href="/plugins/zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
-    <script type="text/javascript" src="/plugins/zTree/js/jquery-1.4.4.min.js"></script>
-    <script type="text/javascript" src="/plugins/zTree/js/jquery.ztree.core.js"></script>
-    <script type="text/javascript" src="/plugins/zTree/js/jquery.ztree.excheck.js"></script>
+
 
     <style>
         body {
@@ -22,13 +20,15 @@
         div.content_wrap {
             width: 260px;
         }
-        .zTreeDemoBackground{
+
+        .zTreeDemoBackground {
             width: 260px;
         }
-        ul.ztree{
+
+        ul.ztree {
             background-color: #FFF;
             border: none;
-            height:500px;
+            height: 500px;
         }
     </style>
 
@@ -55,21 +55,28 @@
         <div class="layui-form-item">
             <label class="layui-form-label">角色名称</label>
             <div class="layui-input-block">
-                <input type="text" autocomplete="off"
+                <input name="name" type="text" autocomplete="off"
                        class="layui-input" :value="obj.name">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">角色标识</label>
             <div class="layui-input-block">
-                <input type="text" autocomplete="off"
-                       class="layui-input" :value="obj.name">
+                <input name="roleType" type="text" autocomplete="off"
+                       class="layui-input" :value="obj.roleType">
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">描述</label>
             <div class="layui-input-block">
                 <textarea name="description" placeholder="请输入内容" class="layui-textarea">{{obj.description}}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text" style="display: none">
+            <label class="layui-form-label">meunIds</label>
+            <div class="layui-input-block">
+                <input name="meunIds[]" type="text" autocomplete="off"
+                       class="layui-input" :value="meunIds">
             </div>
         </div>
 
@@ -84,129 +91,121 @@
 
 <input id="json" type="text" style="display: none" value="{}">
 <!--tree-->
-
+<script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="/plugins/zTree/js/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="/plugins/zTree/js/jquery.ztree.excheck.js"></script>
 <!--表单组件-->
 <script src="https://cdn.bootcss.com/vue/2.2.0/vue.min.js"></script>
 <script src="/plugins/layui/layui.js"></script>
 <script src="https://cdn.bootcss.com/jquery.form/3.51/jquery.form.min.js"></script>
-<!--z_tree-->
-<SCRIPT type="text/javascript">
-    <!--
-    var setting = {
-        check: {
-            enable: true,
-            chkboxType :{ "Y" : "ps", "N" : "ps" }
-        },
-        data: {
-            simpleData: {
-                enable: true
-            }
-        }
-    };
-
-    var zNodes =[
-        { id:1, pId:0, name:"随意勾选 1", open:true},
-        { id:11, pId:1, name:"随意勾选 1-1", open:true},
-        { id:111, pId:11, name:"随意勾选 1-1-1"},
-        { id:112, pId:11, name:"随意勾选 1-1-2"},
-        { id:12, pId:1, name:"随意勾选 1-2", },
-        { id:121, pId:12, name:"随意勾选 1-2-1"},
-        { id:122, pId:12, name:"随意勾选 1-2-2"},
-        { id:2, pId:0, name:"随意勾选 2", checked:true, open:true},
-        { id:21, pId:2, name:"随意勾选 2-1"},
-        { id:22, pId:2, name:"随意勾选 2-2", open:true},
-        { id:221, pId:22, name:"随意勾选 2-2-1", checked:true},
-        { id:222, pId:22, name:"随意勾选 2-2-2"},
-        { id:23, pId:2, name:"随意勾选 2-3"}
-    ];
-
-    $(document).ready(function(){
-        $.fn.zTree.init($("#treeDemo"), setting,zNodes);
-    });
-    //-->
-</SCRIPT>
+<script src="/dist/js/zTree_menu.js"></script>
 
 <script>
-    var id = 0;
-    var path = "/api/menu/";
-    layui.use(['form', 'layedit', 'laydate'], function () {
-        var form = layui.form()
-            , layer = layui.layer
+    (function () {
+        var id = 0;
+        var app;
+        var path = "/api/role/";
+        layui.use(['form', 'layedit', 'laydate'], function () {
+            var form = layui.form()
+                , layer = layui.layer
 
-        //自定义验证规则
-        form.verify({
-            name: function (value) {
-                if (value.length < 3) {
-                    return '名称至少得3个字符啊';
+            //自定义验证规则
+            form.verify({
+                name: function (value) {
+                    if (value.length < 3) {
+                        return '名称至少得3个字符啊';
+                    }
                 }
+            });
+
+            //监听提交
+            form.on('submit(demo1)', function (data) {
+                if (id == 0) {
+                    add();
+                } else {
+                    edit()
+                }
+                return false;
+            });
+            var f = function () {
+                //渲染页面
+                var obj = JSON.parse($("#json").val());
+                id = obj.id == undefined ? 0 : obj.id;
+                console.log('json-obj', obj)
+                app = new Vue({
+                    el: '#app',
+                    data: {
+                        obj: obj,
+                        meunIds: []
+                    }
+                })
+                var role_id = id;
+                buildZTreeMenus(role_id);
             }
+            setTimeout(f, 200)
         });
 
-        //监听提交
-        form.on('submit(demo1)', function (data) {
-            if (id) {
-                edit()
-            } else {
-                add();
-            }
-            return false;
-        });
-        var f = function () {
-            var obj = JSON.parse($("#json").val());
-            id = obj.id;
-            console.log(obj)
-            var app = new Vue({
-                el: '#app',
-                data: {
-                    obj: obj
+        function edit() {
+            var url = path + id;
+            var method = "PUT";
+            save(url, method);
+            console.log("PUT")
+        }
+
+        function add() {
+            var url = path;
+            var method = "POST";
+            save(url, method);
+            console.log("post")
+        }
+
+        function save(url, method) {
+            var options = {
+                url: url,
+                method: method,
+                success: function (data) {
+                    layer.msg(data.msg)
+                }
+            };
+            $("#app").ajaxSubmit(options)
+        }
+
+        var menus = [];
+        <!--z_tree-->
+        function buildZTreeMenus(role_id) {
+            buildRoleMenusChecked(role_id, function (zNodes, roleMenuIds) {
+                menus = roleMenuIds;
+                app.meunIds = menus;
+                function onCheck(e, treeId, treeNode) {
+                    var treeObj = $.fn.zTree.getZTreeObj("treeDemo"),
+                        nodes = treeObj.getCheckedNodes(true);
+                    menus = [];
+                    for (var i = 0; i < nodes.length; i++) {
+                        menus.push(nodes[i].id); //获取选中节点的值
+                    }
+                    app.meunIds = menus;
                 }
 
+                var setting = {
+                    check: {
+                        enable: true,
+                        chkboxType: {"Y": "ps", "N": "ps"}
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
+                        }
+                    },
+                    callback: {
+                        onCheck: onCheck
+                    }
+                };
+                $.fn.zTree.init($("#treeDemo"), setting, zNodes);
             })
         }
-        setTimeout(f, 200)
-    });
 
-    function edit() {
-        var url = path + id;
-        var method = "PUT";
-        save(url, method);
-    }
+    })();
 
-    function add() {
-        var url = path;
-        var method = "POST";
-        save(url, method);
-    }
-
-    function save(url, method) {
-        var options = {
-            url: url,
-            method: method,
-            success: function (data) {
-                layer.msg(data.msg)
-            }
-        };
-        $("#app").ajaxSubmit(options)
-    }
-
-    var menu;
-    getMenu(menu)
-    console.info(menu);
-
-    function getMenu(menus){
-        $.get("/api/menu",function (data) {
-           menus = [];
-            for(var index in data){
-                var d = data[index];
-                var obj = {};
-                obj.id=d.id;
-                obj.pId = d.parentId;
-                obj.name=d.name;
-                menus.push(obj);
-            }
-            console.log(menus)
-        });
-    }
 </script>
 
 </body>

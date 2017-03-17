@@ -9,6 +9,7 @@ import com.sj.module.sys.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -51,20 +52,33 @@ public class RoleController extends BaseController<RoleRepository, Role, Long> {
     }
 
     @PutMapping("/{id}")
-    public HttpResponse<String> update(@PathVariable("id") Role old, Role role, @RequestBody(required = false) Set<Long> meunIds) {
+    public HttpResponse<String> update(@PathVariable("id") Role old, Role role, @RequestParam(value = "meunIds[]", required = false) String[] menus) {
+        Set<Long> meunIds = Arrays.stream(menus).map(id -> (Long.valueOf(id))).collect(Collectors.toSet());
         old.setName(null != role.getName() ? role.getName() : old.getName());
         old.setRoleType(null != role.getRoleType() ? role.getRoleType() : old.getRoleType());
         old.setDescription(null != role.getDescription() ? role.getDescription() : old.getDescription());
         if (null != meunIds) {
             Set<Menu> menuSet = menuRepository.findAll(meunIds).stream().collect(Collectors.toSet());
-            role.setMenuSet(menuSet);
+            old.setMenuSet(menuSet);
         }
-        return super.save(role);
+        return super.update(old);
     }
 
     @GetMapping
     public Page<Role> getAll(@RequestParam(name = "name", defaultValue = "") String name, Pageable pageable) {
         return repository.findByNameLike("%" + name + "%", pageable);
+    }
+
+    @GetMapping("/{id}/menu")
+    public List<Long> listMenuId(@PathVariable("id") Role role) {
+        if (null == role) {
+            return null;
+        }
+        Set<Menu> menuSet = role.getMenuSet();
+        if (null == menuSet) {
+            return null;
+        }
+        return menuSet.parallelStream().map(Menu::getId).collect(Collectors.toList());
     }
 
 }
