@@ -7,6 +7,7 @@ import com.sj.module.sys.repository.MenuRepository;
 import com.sj.module.sys.service.MenuService;
 import com.sj.module.sys.service.TreeService;
 import com.sj.module.sys.web.BaseController;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
     @Autowired
     private TreeService treeService;
 
+    @RequiresPermissions("sys:menu:add")
     @Transactional
     @PostMapping
     public Result<String> add(@RequestParam(name = "pid", defaultValue = "1") Menu parent, Menu menu) {
@@ -45,12 +47,14 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
         return super.save(menu);
     }
 
+    @RequiresPermissions("sys:menu:delete")
     @Transactional
     @DeleteMapping("/{id}")
     public Result<String> delete(@PathVariable Long id) {
         return super.delete(id);
     }
 
+    @RequiresPermissions("sys:menu:update")
     @Transactional
     @PutMapping("/{id}")
     public Result<String> update(@PathVariable("id") Menu old, Menu menu) {
@@ -58,17 +62,20 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
         return super.update(news);
     }
 
+    @RequiresPermissions("sys:menu:views")
     //给 treeTable 使用
     @GetMapping
     public List<Menu> getTreeTable() {
         return treeService.listFlatMenuTree();
     }
 
+    @RequiresPermissions("sys:menu:views")
     //给 zTree
     @GetMapping("/all")
     public List<Menu> getAll() {
         return repository.findAll();
     }
+
 
     //TODO 树形菜单构建 需要根据用户调整
     @GetMapping("/tree")

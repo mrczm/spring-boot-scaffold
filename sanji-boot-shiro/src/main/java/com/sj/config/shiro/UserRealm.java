@@ -44,7 +44,11 @@ public class UserRealm extends AbstractUserRealm {
     private void loadRolesAndPermissions(Set<String> userRoles, Set<String> userPermissions, Set<Role> roles) {
         if (null != roles) {
             roles.forEach(role -> {
-                userRoles.add(role.getRoleType());
+                if (null != role.getRoleType()) {
+                    if (!role.getRoleType().trim().equals("")) {
+                        userRoles.add(role.getRoleType());
+                    }
+                }
                 Set<Menu> menuSet = role.getMenuSet();
                 loadPermissions(userPermissions, menuSet);
             });
@@ -53,7 +57,7 @@ public class UserRealm extends AbstractUserRealm {
 
     private void loadPermissions(Set<String> userPermissions, Set<Menu> menuSet) {
         if (null != menuSet) {
-            Set<String> permissionResourcesNameSet = menuSet.stream().filter(menu -> null != menu.getPermission()).map(Menu::getPermission).collect(Collectors.toSet());
+            Set<String> permissionResourcesNameSet = menuSet.stream().filter(menu -> null != menu.getPermission()&&!(menu.getPermission().trim().equals(""))).map(Menu::getPermission).collect(Collectors.toSet());
             userPermissions.addAll(permissionResourcesNameSet);
         }
     }

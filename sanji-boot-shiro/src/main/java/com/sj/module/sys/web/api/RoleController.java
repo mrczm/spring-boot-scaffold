@@ -9,6 +9,7 @@ import com.sj.module.sys.repository.RoleRepository;
 import com.sj.module.sys.repository.UserRepository;
 import com.sj.module.sys.web.BaseController;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
@@ -37,6 +38,8 @@ public class RoleController extends BaseController<RoleRepository, Role, Long> {
     @Autowired
     private UserRepository userRepository;
 
+    @RequiresPermissions("sys:role:add")
+    @Transactional
     @PostMapping
     public Result<String> add(Role role, @RequestParam(value = "meunId", required = false) List<String> meunIds, @RequestParam(value = "meunIds[]", required = false) String[] menus) {
         try {
@@ -55,12 +58,14 @@ public class RoleController extends BaseController<RoleRepository, Role, Long> {
         }
         return super.save(role);
     }
-
+    @RequiresPermissions("sys:role:delete")
+    @Transactional
     @DeleteMapping("/{id}")
     public Result<String> delete(@PathVariable Long id) {
         return super.delete(id);
     }
-
+    @RequiresPermissions("sys:role:update")
+    @Transactional
     @PutMapping("/{id}")
     public Result<String> update(@PathVariable("id") Role old, Role role, @RequestParam(value = "meunIds[]", required = false) String[] menus) {
         Set<Long> meunIds = Arrays.stream(menus).map(id -> (Long.valueOf(id))).collect(Collectors.toSet());
@@ -74,11 +79,13 @@ public class RoleController extends BaseController<RoleRepository, Role, Long> {
         return super.update(old);
     }
 
+    @RequiresPermissions("sys:role:view")
     @GetMapping
     public Page<Role> getAll(@RequestParam(name = "name", defaultValue = "") String name, Pageable pageable) {
         return repository.findByNameLike("%" + name + "%", pageable);
     }
 
+    @RequiresPermissions("sys:role:view")
     @GetMapping("/{id}/menu")
     public List<Long> listMenuId(@PathVariable("id") Role role) {
         if (null == role) {
@@ -91,6 +98,7 @@ public class RoleController extends BaseController<RoleRepository, Role, Long> {
         return menuSet.parallelStream().map(Menu::getId).collect(Collectors.toList());
     }
 
+    @RequiresPermissions("sys:role:user:view")
     @GetMapping("/{id}/user")
     public Page<User> listUser(@PathVariable("id") Role role, @RequestParam(value = "name", defaultValue = "") String name, Pageable pageable) {
         Set<Role> roles = new HashSet<>();
@@ -98,6 +106,7 @@ public class RoleController extends BaseController<RoleRepository, Role, Long> {
         return userRepository.findByRoleSetAndLoginNameLike(roles, "%" + name + "%", pageable);
     }
 
+    @RequiresPermissions("sys:role:user:delete")
     @Transactional
     @DeleteMapping("{roleId}/user/{userId}")
     public Result<String> deleteUser(@PathVariable("roleId") Role role, @PathVariable("userId") User user) {
