@@ -7,6 +7,10 @@ import com.sj.module.sys.domain.vo.MenuTreeVO;
 import com.sj.module.sys.repository.MenuRepository;
 import com.sj.module.sys.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,6 +26,21 @@ public class MenuService {
 
     @Autowired
     private MenuRepository repository;
+
+    private static final Pageable PAGE_REQUEST = new PageRequest(0, 1, new Sort(Sort.Direction.DESC, "sort"));
+
+    public Menu findByParentTop1(Menu parent) {
+        Page<Menu> page = repository.findByParent(parent, PAGE_REQUEST);
+        if (null != page) {
+            List<Menu> list = page.getContent();
+            if (null != list) {
+                if (list.size() > 0) {
+                    return list.get(0);
+                }
+            }
+        }
+        return null;
+    }
 
     /**
      * TODO 此处需要加入缓冲

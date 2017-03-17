@@ -1,23 +1,14 @@
 package com.sj.module.sys.web.api;
 
-import com.alibaba.fastjson.JSON;
-import com.sj.common.HttpResponse;
+import com.sj.common.Result;
 import com.sj.module.sys.domain.Menu;
-import com.sj.module.sys.domain.Role;
-import com.sj.module.sys.domain.User;
 import com.sj.module.sys.domain.vo.MenuTreeVO;
 import com.sj.module.sys.repository.MenuRepository;
-import com.sj.module.sys.repository.UserRepository;
 import com.sj.module.sys.service.MenuService;
 import com.sj.module.sys.service.TreeService;
 import com.sj.module.sys.web.BaseController;
-import javafx.collections.transformation.SortedList;
-import org.apache.commons.collections.list.TreeList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,12 +29,12 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
 
     @Transactional
     @PostMapping
-    public HttpResponse<String> add(@RequestParam(name = "pid", defaultValue = "1") Menu parent, Menu menu) {
+    public Result<String> add(@RequestParam(name = "pid", defaultValue = "1") Menu parent, Menu menu) {
         menu.setParent(parent);
         //层级添加+排序添加
         menu.setLevel(parent.getLevel() + 1);
         if (menu.getSort() == 0L) {
-            Menu brothers = findByParentTop1(parent);
+            Menu brothers = menuService.findByParentTop1(parent);
             if (null != brothers) {
                 menu.setSort(brothers.getSort() + 1);
             } else {
@@ -55,20 +46,15 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
 
     @Transactional
     @DeleteMapping("/{id}")
-    public HttpResponse<String> delete(@PathVariable Long id) {
+    public Result<String> delete(@PathVariable Long id) {
         return super.delete(id);
     }
 
     @Transactional
     @PutMapping("/{id}")
-    public HttpResponse<String> update(@PathVariable("id") Menu old, Menu menu) {
-        old.setName(null != menu ? menu.getName() : old.getName());
-        old.setDescription(null != menu ? menu.getDescription() : old.getDescription());
-        old.setUrl(null != menu ? menu.getUrl() : old.getUrl());
-        old.setIcon(null != menu ? menu.getIcon() : old.getIcon());
-        old.setSort(null != menu ? menu.getSort() : old.getSort());
-        old.setPermission(null != menu ? menu.getPermission() : old.getPermission());
-        return super.update(old);
+    public Result<String> update(@PathVariable("id") Menu old, Menu menu) {
+        Menu news = valueUpdate(old, menu);
+        return super.update(news);
     }
 
     //给 treeTable 使用
@@ -83,26 +69,20 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
         return repository.findAll();
     }
 
-    //TODO 树形菜单构建
+    //TODO 树形菜单构建 需要根据用户调整
     @GetMapping("/tree")
     public Set<MenuTreeVO> getTree(Pageable pageable) {
         return menuService.getMenuTree();
     }
 
-
-    private Menu findByParentTop1(Menu parent) {
-        Sort sort = new Sort(Sort.Direction.DESC, "sort");
-        Pageable pageable = new PageRequest(0, 1, sort);
-        Page<Menu> page = repository.findByParent(parent, pageable);
-        if (null != page) {
-            List<Menu> list = page.getContent();
-            if (null != list) {
-                if (list.size() > 0) {
-                    return list.get(0);
-                }
-            }
-        }
-        return null;
+    private Menu valueUpdate(Menu old, Menu menu) {
+        old.setName(null != menu ? menu.getName() : old.getName());
+        old.setDescription(null != menu ? menu.getDescription() : old.getDescription());
+        old.setUrl(null != menu ? menu.getUrl() : old.getUrl());
+        old.setIcon(null != menu ? menu.getIcon() : old.getIcon());
+        old.setSort(null != menu ? menu.getSort() : old.getSort());
+        old.setPermission(null != menu ? menu.getPermission() : old.getPermission());
+        return old;
     }
 
 }

@@ -1,6 +1,6 @@
 package com.sj.module.sys.web.api;
 
-import com.sj.common.HttpResponse;
+import com.sj.common.Result;
 import com.sj.module.sys.domain.Menu;
 import com.sj.module.sys.domain.Role;
 import com.sj.module.sys.repository.MenuRepository;
@@ -9,7 +9,6 @@ import com.sj.module.sys.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -28,7 +27,7 @@ public class RoleController extends BaseController<RoleRepository, Role, Long> {
     private MenuRepository menuRepository;
 
     @PostMapping
-    public HttpResponse<String> add(Role role, @RequestParam(value = "meunId", required = false) List<String> meunIds, @RequestParam(value = "meunIds[]", required = false) String[] menus) {
+    public Result<String> add(Role role, @RequestParam(value = "meunId", required = false) List<String> meunIds, @RequestParam(value = "meunIds[]", required = false) String[] menus) {
         try {
             Set<Long> meunIdSet;
             //接受 meunId = 1 & meunId = 2 || menuIds[] = [1,2,3]
@@ -41,18 +40,18 @@ public class RoleController extends BaseController<RoleRepository, Role, Long> {
             Set<Menu> menuSet = menuRepository.findAll(meunIdSet).stream().collect(Collectors.toSet());
             role.setMenuSet(menuSet);
         } catch (Exception e) {
-            return HttpResponse.error();
+            return Result.error();
         }
         return super.save(role);
     }
 
     @DeleteMapping("/{id}")
-    public HttpResponse<String> delete(Long id) {
+    public Result<String> delete(Long id) {
         return super.delete(id).orGetErrorMsg("有用户正在使用该菜单，不能进行删除");
     }
 
     @PutMapping("/{id}")
-    public HttpResponse<String> update(@PathVariable("id") Role old, Role role, @RequestParam(value = "meunIds[]", required = false) String[] menus) {
+    public Result<String> update(@PathVariable("id") Role old, Role role, @RequestParam(value = "meunIds[]", required = false) String[] menus) {
         Set<Long> meunIds = Arrays.stream(menus).map(id -> (Long.valueOf(id))).collect(Collectors.toSet());
         old.setName(null != role.getName() ? role.getName() : old.getName());
         old.setRoleType(null != role.getRoleType() ? role.getRoleType() : old.getRoleType());

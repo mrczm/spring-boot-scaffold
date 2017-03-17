@@ -4,19 +4,18 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
  * Created by sunxyz on 2017/3/14.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class HttpResponse<T> {
+public class Result<T> {
 
     private static final String SUCCESS_MSG = "操作成功";
     private static final String ERROR_MSG = "操作失败";
-    public static final HttpResponse<String> OK = new HttpResponse<>();
-    public static final HttpResponse<String> ERROR = new HttpResponse<>();
+    public static final Result<String> OK = new Result<>();
+    public static final Result<String> ERROR = new Result<>();
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -35,52 +34,52 @@ public class HttpResponse<T> {
         msg = SUCCESS_MSG;
     }
 
-    public HttpResponse() {
+    private Result() {
 
     }
 
-    public HttpResponse(T content) {
+    private Result(T content) {
         this.content = content;
     }
 
-    public static HttpResponse<String> error() {
+    public static Result<String> error() {
         return ERROR;
     }
 
-    public static <T> HttpResponse<T> error(String msg) {
-        HttpResponse<T> httpResponse = new HttpResponse<>();
+    public static <T> Result<T> error(String msg) {
+        Result<T> httpResponse = new Result<>();
         httpResponse.setStatus(Status.ERROR);
         httpResponse.setMsg(msg);
         return httpResponse;
     }
 
-    public static HttpResponse<String> ok() {
+    public static Result<String> ok() {
         return OK;
     }
 
-    public static <T> HttpResponse<T> ok(T content) {
-        return new HttpResponse<T>(content);
+    public static <T> Result<T> ok(T content) {
+        return new Result<T>(content);
     }
 
-    public static <T> HttpResponse<T> ok(String msg, T content) {
-        HttpResponse<T> httpResponse = new HttpResponse<T>(content);
+    public static <T> Result<T> ok(String msg, T content) {
+        Result<T> httpResponse = new Result<T>(content);
         httpResponse.setMsg(msg);
         return httpResponse;
     }
 
-    public HttpResponse<T> orGetErrorMsg(Supplier<String> message) {
+    public Result<T> orGetErrorMsg(Supplier<String> message) {
         return this.orGetErrorMsg(message.get());
     }
 
-    public HttpResponse<T> orGetErrorMsg(String message) {
+    public Result<T> orGetErrorMsg(String message) {
         return this.status.equals(Status.ERROR) ? error(message) : this;
     }
 
-    public HttpResponse<T> orGetSuccessMsg(Supplier<String> message) {
+    public Result<T> orGetSuccessMsg(Supplier<String> message) {
         return this.orGetSuccessMsg(message.get());
     }
 
-    public HttpResponse<T> orGetSuccessMsg(String message) {
+    public Result<T> orGetSuccessMsg(String message) {
         return this.status.equals(Status.SUCCESS) ? ok(message, this.getContent()) : this;
     }
 
