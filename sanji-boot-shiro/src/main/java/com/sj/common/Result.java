@@ -72,6 +72,7 @@ public class Result<T> {
     }
 
     public Result<T> orGetErrorMsg(String message) {
+        System.out.print("-------------");
         return this.status.equals(Status.ERROR) ? error(message) : this;
     }
 

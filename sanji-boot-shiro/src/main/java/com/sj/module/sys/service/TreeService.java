@@ -40,7 +40,7 @@ public class TreeService {
 
     private Set<Tree> getTree() {
         Set<Tree> treeSet = new TreeSet<>((obj1, obj2) -> obj1.getSelf().getSort().compareTo(obj2.getSelf().getSort()));
-        Map<Long, Set<Menu>> menuLevel = getMenuLevelTest();
+        Map<Long, Set<Menu>> menuLevel = getAllMenuLevel();//获取所有的菜单
         Map<Long, Tree> menuTreeVOMap = new HashMap<>();
         for (Map.Entry<Long, Set<Menu>> entry : menuLevel.entrySet()) {
             Set<Menu> menuSet = entry.getValue();
@@ -62,7 +62,7 @@ public class TreeService {
         return treeSet;
     }
 
-    private Map<Long, Set<Menu>> getMenuLevelTest() {
+    private Map<Long, Set<Menu>> getAllMenuLevel() {
         Map<Long, Set<Menu>> menuLevel = new TreeMap<>();
         List<Menu> menuSet = repository.findAll();
         if (null != menuSet) {

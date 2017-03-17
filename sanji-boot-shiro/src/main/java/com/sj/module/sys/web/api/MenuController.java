@@ -18,7 +18,7 @@ import java.util.*;
  * Created by sunxyz on 2017/3/14.
  */
 @RestController
-@RequestMapping("/api/menu")
+@RequestMapping("/api/sys/menu")
 public class MenuController extends BaseController<MenuRepository, Menu, Long> {
 
     @Autowired

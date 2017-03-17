@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * Created by sunxyz on 2017/3/15.
  */
 @RestController
-@RequestMapping("/api/role")
+@RequestMapping("/api/sys/role")
 public class RoleController extends BaseController<RoleRepository, Role, Long> {
 
     @Autowired
@@ -57,8 +57,8 @@ public class RoleController extends BaseController<RoleRepository, Role, Long> {
     }
 
     @DeleteMapping("/{id}")
-    public Result<String> delete(Long id) {
-        return super.delete(id).orGetErrorMsg("有用户正在使用该菜单，不能进行删除");
+    public Result<String> delete(@PathVariable Long id) {
+        return super.delete(id);
     }
 
     @PutMapping("/{id}")
@@ -100,7 +100,7 @@ public class RoleController extends BaseController<RoleRepository, Role, Long> {
 
     @Transactional
     @DeleteMapping("{roleId}/user/{userId}")
-    public Result<String> deleteUser(@PathVariable("roleId") Role role,@PathVariable("userId") User user) {
+    public Result<String> deleteUser(@PathVariable("roleId") Role role, @PathVariable("userId") User user) {
         Set<Role> roleSet = user.getRoleSet();
         roleSet.remove(role);
         return Result.ok();

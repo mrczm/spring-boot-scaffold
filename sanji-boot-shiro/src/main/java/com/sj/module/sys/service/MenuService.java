@@ -1,5 +1,6 @@
 package com.sj.module.sys.service;
 
+import com.sj.module.sys.domain.Group;
 import com.sj.module.sys.domain.Menu;
 import com.sj.module.sys.domain.Role;
 import com.sj.module.sys.domain.User;
@@ -52,7 +53,7 @@ public class MenuService {
      */
     public Set<MenuTreeVO> getMenuTree() {
         Set<MenuTreeVO> treeSet = new TreeSet<>((obj1, obj2) -> obj1.getSort().compareTo(obj2.getSort()));
-        Map<Long, Set<Menu>> menuLevel = getMenuLevel();
+        Map<Long, Set<Menu>> menuLevel = getMenuLevel();//获取用户菜单
         Map<Long, MenuTreeVO> menuTreeVOMap = new HashMap<>();
         for (Map.Entry<Long, Set<Menu>> entry : menuLevel.entrySet()) {
             Set<Menu> menuSet = entry.getValue();

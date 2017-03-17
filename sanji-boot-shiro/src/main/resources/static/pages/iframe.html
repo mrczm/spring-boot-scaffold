@@ -91,70 +91,8 @@
 <script src="https://cdn.bootcss.com/vue/2.2.0/vue.min.js"></script>
 <script src="/plugins/layui/layui.js"></script>
 <script src="https://cdn.bootcss.com/jquery.form/3.51/jquery.form.min.js"></script>
-<script>
-    var id = 0;
-    var path = "/api/menu/";
-    layui.use(['form', 'layedit', 'laydate'], function () {
-        var form = layui.form()
-            , layer = layui.layer
-
-        //自定义验证规则
-        form.verify({
-            name: function (value) {
-                if (value.length < 3) {
-                    return '名称至少得3个字符啊';
-                }
-            }
-        });
-
-        //监听提交
-        form.on('submit(demo1)', function (data) {
-            if (id) {
-                edit()
-            } else {
-                add();
-            }
-            return false;
-        });
-        var f = function () {
-            var obj = JSON.parse($("#json").val());
-            id = obj.id;
-            console.log(obj)
-            var app = new Vue({
-                el: '#app',
-                data: {
-                    obj: obj,
-                    icon: obj.icon,
-                    isChild: obj.isParent
-                }
-
-            })
-        }
-        setTimeout(f, 200)
-    });
-
-    function edit() {
-        var url = path + id;
-        var method = "PUT";
-        save(url, method);
-    }
-
-    function add() {
-        var url = path;
-        var method = "POST";
-        save(url, method);
-    }
-
-    function save(url, method) {
-        var options = {
-            url: url,
-            method: method,
-            success: function (data) {
-                layer.msg(data.msg)
-            }
-        };
-        $("#app").ajaxSubmit(options)
-    }
+<script src="/dist/js/config.js"></script>
+<script src="/dist/js/pages/menu_frame_page.js">
 </script>
 
 </body>
