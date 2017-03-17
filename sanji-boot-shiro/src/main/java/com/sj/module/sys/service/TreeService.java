@@ -23,7 +23,6 @@ public class TreeService {
      */
     public List<Menu> listFlatMenuTree() {
         Set<Tree> treeSet = getTree();
-        System.out.println(JSON.toJSON(treeSet));
         List<Menu> flatMenuList = new ArrayList<>();
         treeSet.forEach(tree -> {
             addFlatMenu(tree, flatMenuList);

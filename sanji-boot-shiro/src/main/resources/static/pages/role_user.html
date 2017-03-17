@@ -40,10 +40,6 @@
         <button class="layui-btn layui-btn-normal layui-btn-small layui-btn-radius glyphicon glyphicon-refresh"
                 @click="load">&nbsp;刷新
         </button>
-        <button class="layui-btn  layui-btn-small  layui-btn-radius glyphicon glyphicon-plus" @click="add">&nbsp;添加
-        </button>
-        <button class="layui-btn  layui-btn-small layui-btn-radius glyphicon glyphicon-edit" @click="edit">&nbsp;编辑
-        </button>
         <button class="layui-btn layui-btn-danger  layui-btn-small layui-btn-radius glyphicon glyphicon-trash"
                 @click="deleteObj">&nbsp;刪除
         </button>
@@ -61,19 +57,13 @@
                         <thead>
                         <tr>
                             <th>序号</th>
-                            <th>角色</th>
-                            <th>角色描述</th>
-                            <th>关联人员</th>
-                            <th>创建日期</th>
+                            <th>配置人员</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="(role, index) in roles" @click="select(role)" :id="role.id">
+                        <tr v-for="(user, index) in users" @click="select(user)" :id="user.id">
                             <td>{{index+1}}</td>
-                            <td>{{role.name}}</td>
-                            <td>{{role.description}}</td>
-                            <td>{{role.name}}</td>
-                            <td>{{ role.createTime | date-formatter }}</td>
+                            <td>{{user.loginName}}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -106,13 +96,11 @@
 <script>
     //首先使用一个闭包,防止污染全局对象
     (function () {
-        Vue.filter('date-formatter', function (value) {
-            return moment(value).format('YYYY.MM.DD');
-        })
-        var vm = new Vue({
+        var roleId = 1;
+        var app = new Vue({
             el: "#app",
             data: {
-                roles: [],
+                users: [],
                 name: "",
                 selectObj: undefined,
                 pageTotal: 0,
@@ -181,13 +169,13 @@
                         name: _this.name
                     };
 
-                    getRoleData(param, function (data) {
+                    geUserData(roleId, param, function (data) {
                         var ds = data.content;
                         for (var i in ds) {
                             var d = ds[i];
                             d.select = false;
                         }
-                        _this.roles = ds;
+                        _this.users = ds;
                         _this.pageTotal = data.totalPages;
                     });
                 },
@@ -203,12 +191,6 @@
                     console.log("-----------")
                     this.selectObj = obj;
                 },
-                edit: function () {
-                    edit(this.selectObj);
-                },
-                add: function () {
-                    add();
-                },
                 deleteObj: function () {
                     deleteObj(this.selectObj)
                 },
@@ -219,23 +201,8 @@
 
         });
 
-        function getRoleData(param, cb) {
-            $.get("../api/role", param, cb);
-        }
-
-
-        function edit(obj) {
-            if (!obj) {
-                layer.msg('请选中要修改的列');
-                return;
-            }
-            obj.isParent = false;
-            open_page(obj);
-        }
-
-        function add() {
-            var obj = {method: "POST"};
-            open_page(obj)
+        function geUserData(roleId, param, cb) {
+            $.get("../api/role/" + roleId + "/user", param, cb);
         }
 
         function deleteObj(obj) {
@@ -248,7 +215,7 @@
                 btn: ['确定', '取消'] //按钮
             }, function () {
                 var id = obj.id;
-                $.post("/api/role/" + id, {_method: "DELETE"}, function (data) {
+                $.post("/api/role/" + roleId + "/user/" + id, {_method: "DELETE"}, function (data) {
                     layer.msg(data.msg, {icon: data.status == "SUCCESS" ? 1 : 2});
                     app.load();
                 }).error(function () {
@@ -258,27 +225,9 @@
                 layer.msg('取消成功', {icon: 1});
             });
         }
-
-        function open_page(obj) {
-            var json = JSON.stringify(obj);
-            // 当你试图在当前页获取iframe页的DOM元素时，你可以用此方法。selector即iframe页的选择器
-            layer.open({
-                type: 2,
-                title: '编辑菜单',
-                shadeClose: true,
-                shade: false,
-                maxmin: true, //开启最大化最小化按钮
-                area: ['816px', '636px'],
-                content: 'role_iframe.html',
-                success: function (layero, index) {
-                    var body = layer.getChildFrame('body', index);
-                    var iframeWin = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
-                    body.find('#json').val(json)
-                }
-            });
-        }
     })();
-    
+
+
 </script>
 </body>
 </html>

@@ -33,6 +33,7 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
         menu.setParent(parent);
         //层级添加+排序添加
         menu.setLevel(parent.getLevel() + 1);
+        menu.setSort(null != menu.getSort() ? menu.getSort() : 0L);
         if (menu.getSort() == 0L) {
             Menu brothers = menuService.findByParentTop1(parent);
             if (null != brothers) {
@@ -71,7 +72,7 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
 
     //TODO 树形菜单构建 需要根据用户调整
     @GetMapping("/tree")
-    public Set<MenuTreeVO> getTree(Pageable pageable) {
+    public Set<MenuTreeVO> getTree() {
         return menuService.getMenuTree();
     }
 

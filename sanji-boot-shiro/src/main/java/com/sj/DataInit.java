@@ -1,5 +1,6 @@
 package com.sj;
 
+import com.sj.common.utils.EncryptionUtils;
 import com.sj.module.sys.domain.Menu;
 import com.sj.module.sys.domain.Role;
 import com.sj.module.sys.domain.User;
@@ -37,7 +38,7 @@ public class DataInit implements CommandLineRunner {
         if(null == user){
             user = new User();
             user.setLoginName("admin");
-            user.setPassword("admin");
+            user.setPassword(EncryptionUtils.getSha512Hash("admin"));
             user.setCreateTime(now);
             user.setUpdateTime(now);
             Set<Role> roleSet = new HashSet<>();

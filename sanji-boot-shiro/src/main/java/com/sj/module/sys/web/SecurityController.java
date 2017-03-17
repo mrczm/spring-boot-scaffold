@@ -1,6 +1,9 @@
 package com.sj.module.sys.web;
 
+import com.sj.common.Result;
+import com.sj.common.utils.EncryptionUtils;
 import com.sj.module.sys.domain.User;
+import com.sj.module.sys.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -8,12 +11,11 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -25,6 +27,9 @@ import javax.validation.Valid;
 public class SecurityController {
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityController.class);
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/login")
     public String loginForm() {
@@ -38,7 +43,7 @@ public class SecurityController {
         }
         String loginName = user.getLoginName();
         logger.info("准备登陆用户 => {}", loginName);
-        UsernamePasswordToken token = new UsernamePasswordToken(loginName, user.getPassword());
+        UsernamePasswordToken token = new UsernamePasswordToken(loginName, EncryptionUtils.getSha512Hash(user.getPassword()));
         //获取当前的Subject
         Subject currentUser = SecurityUtils.getSubject();
         try {
@@ -82,5 +87,16 @@ public class SecurityController {
         SecurityUtils.getSubject().logout();
         redirectAttributes.addFlashAttribute("message", "您已安全退出");
         return "redirect:/login";
+    }
+
+
+    @GetMapping("/reg")
+    @ResponseBody
+    public Result<String> reg(@Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return Result.error("用户信息填写不完整");
+        }
+        userService.save(user);
+        return Result.ok();
     }
 }

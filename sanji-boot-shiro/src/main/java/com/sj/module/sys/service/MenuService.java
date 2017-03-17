@@ -6,6 +6,10 @@ import com.sj.module.sys.domain.User;
 import com.sj.module.sys.domain.vo.MenuTreeVO;
 import com.sj.module.sys.repository.MenuRepository;
 import com.sj.module.sys.repository.UserRepository;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,7 +52,7 @@ public class MenuService {
      */
     public Set<MenuTreeVO> getMenuTree() {
         Set<MenuTreeVO> treeSet = new TreeSet<>((obj1, obj2) -> obj1.getSort().compareTo(obj2.getSort()));
-        Map<Long, Set<Menu>> menuLevel = getMenuLevelTest();
+        Map<Long, Set<Menu>> menuLevel = getMenuLevel();
         Map<Long, MenuTreeVO> menuTreeVOMap = new HashMap<>();
         for (Map.Entry<Long, Set<Menu>> entry : menuLevel.entrySet()) {
             Set<Menu> menuSet = entry.getValue();
@@ -75,7 +79,7 @@ public class MenuService {
      * Created by sunxyz on 2017/3/14.
      */
     private Map<Long, Set<Menu>> getMenuLevel() {
-        User userInfo = userRepository.findOne(getUserId());
+        User userInfo = userRepository.findByLoginName(getCurrentLoginName());
         Set<Role> roleSet = userInfo.getRoleSet();
         Map<Long, Set<Menu>> menuLevel = new TreeMap<>();
         if (null != roleSet) {
@@ -97,24 +101,10 @@ public class MenuService {
         return menuLevel;
     }
 
-    private Map<Long, Set<Menu>> getMenuLevelTest() {
-        Map<Long, Set<Menu>> menuLevel = new TreeMap<>();
-        List<Menu> menuSet = repository.findAll();
-        if (null != menuSet) {
-            menuSet.forEach(menu -> {
-                Long level = menu.getLevel();
-                Set<Menu> menuLevelSet = menuLevel.get(level);
-                if (menuLevelSet == null) {
-                    menuLevelSet = new HashSet<>();
-                    menuLevel.put(level, menuLevelSet);
-                }
-                menuLevelSet.add(menu);
-            });
-        }
-        return menuLevel;
-    }
-
-    private Long getUserId() {
-        return 0L;
+    private String getCurrentLoginName() {
+        Subject subject = SecurityUtils.getSubject();
+        PrincipalCollection principals = subject.getPrincipals();
+        String currentLoginName = (String) principals.getPrimaryPrincipal();
+        return currentLoginName;
     }
 }

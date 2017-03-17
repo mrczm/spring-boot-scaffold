@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * Created by sunxyz on 2017/3/13.
  */
-@JsonIgnoreProperties({"hibernateLazyInitializer", "password", "news"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "password", "news", "roleSet"})
 @DynamicUpdate
 @Entity(name = "sys_user")
 @Inheritance(strategy = InheritanceType.JOINED)
