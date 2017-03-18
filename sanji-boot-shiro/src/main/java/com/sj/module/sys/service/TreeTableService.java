@@ -12,7 +12,7 @@ import java.util.*;
  * Created by sunxyz on 2017/3/15.
  */
 @Service
-public class TreeService {
+public class TreeTableService {
 
     @Autowired
     private MenuRepository repository;
@@ -55,7 +55,9 @@ public class TreeService {
                     Tree tree = new Tree(menu);
                     menuTreeVOMap.put(menu.getId(), tree);
                     Tree parentTree = menuTreeVOMap.get(menu.getParent().getId());
-                    parentTree.getChild().add(tree);
+                    if (parentTree != null) {
+                        parentTree.getChild().add(tree);
+                    }
                 });
             }
         }

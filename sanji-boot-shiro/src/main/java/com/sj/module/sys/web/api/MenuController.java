@@ -5,11 +5,10 @@ import com.sj.module.sys.domain.Menu;
 import com.sj.module.sys.domain.vo.MenuTreeVO;
 import com.sj.module.sys.repository.MenuRepository;
 import com.sj.module.sys.service.MenuService;
-import com.sj.module.sys.service.TreeService;
+import com.sj.module.sys.service.TreeTableService;
 import com.sj.module.sys.web.BaseController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +25,7 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
     private MenuService menuService;
 
     @Autowired
-    private TreeService treeService;
+    private TreeTableService treeService;
 
     @RequiresPermissions("sys:menu:add")
     @Transactional
@@ -63,15 +62,15 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
         return super.update(news);
     }
 
-    @RequiresPermissions("sys:menu:views")
     //给 treeTable 使用
+    @RequiresPermissions("sys:menu:views")
     @GetMapping
     public List<Menu> getTreeTable() {
         return treeService.listFlatMenuTree();
     }
 
-    @RequiresPermissions("sys:menu:views")
     //给 zTree
+    @RequiresPermissions("sys:menu:views")
     @GetMapping("/all")
     public List<Menu> getAll() {
         return repository.findAll();
@@ -80,8 +79,8 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
 
     //--需要用户登录之后使用 TODO 树形菜单构建 需要根据用户调整
     @GetMapping("/tree")
-    public Set<MenuTreeVO> getTree() {
-        return menuService.getMenuTree();
+    public Set<MenuTreeVO> getTreeByCurrentUser() {
+        return menuService.getMenuTreeByCurrentUser();
     }
 
     private Menu valueUpdate(Menu old, Menu menu) {

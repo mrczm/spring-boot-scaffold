@@ -51,24 +51,26 @@ public class MenuService {
      * TODO 此处需要加入缓冲
      * Created by sunxyz on 2017/3/15.
      */
-    public Set<MenuTreeVO> getMenuTree() {
+    public Set<MenuTreeVO> getMenuTreeByCurrentUser() {
         Set<MenuTreeVO> treeSet = new TreeSet<>((obj1, obj2) -> obj1.getSort().compareTo(obj2.getSort()));
-        Map<Long, Set<Menu>> menuLevel = getMenuLevel();//获取用户菜单
+        Map<Long, Set<Menu>> menuLevel = getMenuLevelByCurrentUser();//获取用户菜单
         Map<Long, MenuTreeVO> menuTreeVOMap = new HashMap<>();
         for (Map.Entry<Long, Set<Menu>> entry : menuLevel.entrySet()) {
             Set<Menu> menuSet = entry.getValue();
             if (treeSet.isEmpty()) {//顶级菜单
                 menuSet.forEach(menu -> {
-                    MenuTreeVO menuTreeVO = new MenuTreeVO(menu.getName(), menu.getIcon(), menu.getUrl(), menu.getDescription(), null == menu.getSort() ? 0 : menu.getSort());
-                    treeSet.add(menuTreeVO);
-                    menuTreeVOMap.put(menu.getId(), menuTreeVO);
+                    if (null == menu.getParent()) {//如果不存在父节点也就意味着是顶级菜单
+                        MenuTreeVO menuTreeVO = new MenuTreeVO(menu.getName(), menu.getIcon(), menu.getUrl(), menu.getDescription(), null == menu.getSort() ? 0 : menu.getSort());
+                        treeSet.add(menuTreeVO);
+                        menuTreeVOMap.put(menu.getId(), menuTreeVO);
+                    }
                 });
             } else {//子菜单
                 menuSet.forEach(menu -> {
                     MenuTreeVO menuTreeVO = new MenuTreeVO(menu.getName(), menu.getIcon(), menu.getUrl(), menu.getDescription(), null == menu.getSort() ? 0 : menu.getSort());
                     menuTreeVOMap.put(menu.getId(), menuTreeVO);
                     MenuTreeVO parentMenuTree = menuTreeVOMap.get(menu.getParent().getId());
-                    if (parentMenuTree != null) {//对用户不可见
+                    if (parentMenuTree != null) {//对用户可见
                         parentMenuTree.getMenuTrees().add(menuTreeVO);
                     }
                 });
@@ -81,7 +83,7 @@ public class MenuService {
      * TODO 暂时没有组的概念
      * Created by sunxyz on 2017/3/14.
      */
-    private Map<Long, Set<Menu>> getMenuLevel() {
+    private Map<Long, Set<Menu>> getMenuLevelByCurrentUser() {
         User userInfo = userRepository.findByLoginName(getCurrentLoginName());
         Set<Role> roleSet = userInfo.getRoleSet();
         Map<Long, Set<Menu>> menuLevel = new TreeMap<>();
@@ -101,7 +103,6 @@ public class MenuService {
                                 menuLevelSet.add(menu);
                             }
                         }
-
                     });
                 }
             });
