@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class GlobalDefaultExceptionHandler {
 
+    private static final Result<String> RESULT = Result.error("操作异常");
+
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public Result<String> defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
@@ -26,7 +28,7 @@ public class GlobalDefaultExceptionHandler {
         if (e instanceof SanJiException) {
             return Result.error(e.getMessage());
         } else {
-            return Result.error();
+            return RESULT;
         }
     }
 }
