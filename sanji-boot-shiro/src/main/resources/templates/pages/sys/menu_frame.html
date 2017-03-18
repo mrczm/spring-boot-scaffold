@@ -55,9 +55,18 @@
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">图标</label>
-        <div class="layui-input-inline">
-            <input type="text" name="icon" class="layui-input" :value="icon" />
+        <div class="layui-inline">
+            <label class="layui-form-label">图标</label>
+            <div class="layui-input-inline">
+                <input type="text" name="icon" class="layui-input" :value="icon" />
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">用户可见</label>
+            <div class="layui-input-inline">
+                <input type="checkbox" id="visible" name="visible" value="1" title="可见" />
+            </div>
         </div>
         <!--        <div class="layui-input-inline" style="padding: 10px 5px 5px;font-size:16px">
                     <i :class="icon"></i>

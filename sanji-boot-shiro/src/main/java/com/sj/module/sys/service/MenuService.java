@@ -68,7 +68,9 @@ public class MenuService {
                     MenuTreeVO menuTreeVO = new MenuTreeVO(menu.getName(), menu.getIcon(), menu.getUrl(), menu.getDescription(), null == menu.getSort() ? 0 : menu.getSort());
                     menuTreeVOMap.put(menu.getId(), menuTreeVO);
                     MenuTreeVO parentMenuTree = menuTreeVOMap.get(menu.getParent().getId());
-                    parentMenuTree.getMenuTrees().add(menuTreeVO);
+                    if (parentMenuTree != null) {//对用户不可见
+                        parentMenuTree.getMenuTrees().add(menuTreeVO);
+                    }
                 });
             }
         }
@@ -94,7 +96,12 @@ public class MenuService {
                             menuLevelSet = new HashSet<>();
                             menuLevel.put(level, menuLevelSet);
                         }
-                        menuLevelSet.add(menu);
+                        if (null != menu.getVisible()) {
+                            if (menu.getVisible()) {//对用户是否可见
+                                menuLevelSet.add(menu);
+                            }
+                        }
+
                     });
                 }
             });

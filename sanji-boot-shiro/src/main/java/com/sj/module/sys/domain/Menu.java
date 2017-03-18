@@ -29,6 +29,8 @@ public class Menu extends BaseEntity<Long> {
 
     private String permission; // 权限标识，例如views，del等等
 
+    private Boolean visible;//用户是否可见->true可见，false不可见
+
     @Transient
     private Long parentId;
 
@@ -98,6 +100,14 @@ public class Menu extends BaseEntity<Long> {
 
     public void setPermission(String permission) {
         this.permission = permission;
+    }
+
+    public Boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
     }
 
     public Long getParentId() {

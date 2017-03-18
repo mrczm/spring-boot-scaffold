@@ -10,7 +10,7 @@
     <link href="/plugins/bootstrap/css/bootstrap.css " rel="stylesheet"/>
     <link href="/plugins/bootstrap/css/bootstrap-theme.css" rel="stylesheet"/>
     <link href="/plugins/layui/css/layui.css" rel="stylesheet" />
-
+    <link href="/dist/css/default.css" rel="stylesheet" />
     <style>
         table, tbody, table.treetable thead tr th {
             border: 1px solid #e3e8ee;
@@ -73,19 +73,19 @@
             <th>菜单名称</th>
             <th>地址链接</th>
             <th>描述</th>
-            <th>图标</th>
             <th>排序数字</th>
+            <th>对用户可见</th>
             <th>权限标识</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="menu in menus" :id="menu.id" :data-tt-id="menu.id" :data-tt-parent-id="menu.parentId"
             v-on:click="select(menu)">
-            <td>{{menu.name}}</td>
+            <td><i :class="menu.icon"></i>&nbsp;{{menu.name}}</td>
             <td>{{menu.url}}</td>
             <td>{{menu.description}}</td>
-            <td>{{menu.icon}}</td>
             <td>{{menu.sort}}</td>
+            <td>{{menu.visible| visible-formatter }}</td>
             <td>{{menu.permission}}</td>
         </tr>
 

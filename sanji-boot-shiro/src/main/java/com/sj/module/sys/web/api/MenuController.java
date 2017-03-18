@@ -36,6 +36,7 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
         //层级添加+排序添加
         menu.setLevel(parent.getLevel() + 1);
         menu.setSort(null != menu.getSort() ? menu.getSort() : 0L);
+        menu.setVisible(null != menu.getVisible() ? menu.getVisible() : false);
         if (menu.getSort() == 0L) {
             Menu brothers = menuService.findByParentTop1(parent);
             if (null != brothers) {
@@ -77,7 +78,7 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
     }
 
 
-    //TODO 树形菜单构建 需要根据用户调整
+    //--需要用户登录之后使用 TODO 树形菜单构建 需要根据用户调整
     @GetMapping("/tree")
     public Set<MenuTreeVO> getTree() {
         return menuService.getMenuTree();
@@ -90,6 +91,7 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
         old.setIcon(null != menu ? menu.getIcon() : old.getIcon());
         old.setSort(null != menu ? menu.getSort() : old.getSort());
         old.setPermission(null != menu ? menu.getPermission() : old.getPermission());
+        old.setVisible(null != menu.getVisible() ? menu.getVisible() : false);
         return old;
     }
 
