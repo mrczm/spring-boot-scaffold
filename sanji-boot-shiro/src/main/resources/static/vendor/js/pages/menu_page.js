@@ -24,7 +24,7 @@
                         var d = data[i];
                         d.select = false;
                     }
-                    console.log(data)
+                    // console.log(data)
                     _this.menus = data;
                 })
                 _this.buildTreeTable();
