@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>title</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link href="/plugins/bootstrap/css/bootstrap.css " rel="stylesheet"/>
     <link href="/plugins/bootstrap/css/bootstrap-theme.css" rel="stylesheet"/>
     <link href="/plugins/layui/css/layui.css" rel="stylesheet"/>
-    <link href="/plugins/adminLTE/css/AdminLTE.css" rel="stylesheet"/>
-    <link href="/plugins/adminLTE/css/skins/_all-skins.css" rel="stylesheet"/>
-    <link href="/vendor/css/default.css" rel="stylesheet" />
+    <link href="/plugins/adminLTE/dist/css/AdminLTE.css" rel="stylesheet"/>
+    <link href="/plugins/adminLTE/dist/css/skins/_all-skins.css" rel="stylesheet"/>
     <style>
         .box-body {
             padding: 0;
@@ -39,16 +38,16 @@
 <div id="app" class="container-fluid">
     <div class="btn-groups" style="margin-bottom: 10px;">
         <button class="layui-btn layui-btn-normal layui-btn-small layui-btn-radius glyphicon glyphicon-refresh"
-                v-on:click="load">&nbsp;刷新
+                @click="load">&nbsp;刷新
         </button>
-        <button class="layui-btn  layui-btn-small  layui-btn-radius glyphicon glyphicon-plus" v-on:click="add">&nbsp;添加
+        <button class="layui-btn  layui-btn-small  layui-btn-radius glyphicon glyphicon-plus" @click="add">&nbsp;添加
         </button>
-        <button class="layui-btn  layui-btn-small layui-btn-radius glyphicon glyphicon-edit" v-on:click="edit">&nbsp;编辑
+        <button class="layui-btn  layui-btn-small layui-btn-radius glyphicon glyphicon-edit" @click="edit">&nbsp;编辑
         </button>
         <button class="layui-btn layui-btn-danger  layui-btn-small layui-btn-radius glyphicon glyphicon-trash"
-                v-on:click="deleteObj">&nbsp;刪除
+                @click="deleteObj">&nbsp;刪除
         </button>
-        <form v-on:submit.prevent="search" class="form-inline pull-right">
+        <form @submit.prevent="search" class="form-inline pull-right">
             <input v-model="name" :name="name" type="text" class="form-control" placeholder="请输入角色名称"/>
             <button type="submit" class="btn btn-default">搜索</button>
         </form>
@@ -69,11 +68,11 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="(role, index) in roles" v-on:click="select(role)" :id="role.id">
+                        <tr v-for="(role, index) in roles" @click="select(role)" :id="role.id">
                             <td>{{index+1}}</td>
                             <td>{{role.name}}</td>
                             <td>{{role.description}}</td>
-                            <td><a :href="'/page/sys/role/'+role.id+'/user'">查看关联人员</a></td>
+                            <td>{{role.name}}</td>
                             <td>{{ role.createTime | date-formatter }}</td>
                         </tr>
                         </tbody>
@@ -82,14 +81,14 @@
                 <nav class="pull-right">
                     <ul class="pagination">
                         <li v-if="showFirst">
-                            <a v-on:click.prevent="pageIndexClick(--pageCurrent)" href="#" aria-label="Previous">
+                            <a @click.prevent="pageIndexClick(--pageCurrent)" href="#" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
                         <li v-for="index in indexs" :class="{'active':index==pageCurrent}"><a
-                                v-on:click.prevent="pageIndexClick(index)" href="#">{{index}}</a></li>
+                                @click.prevent="pageIndexClick(index)" href="#">{{index}}</a></li>
                         <li v-if="showLast">
-                            <a v-on:click.prevent="pageIndexClick(++pageCurrent)" href="#" aria-label="Next">
+                            <a @click.prevent="pageIndexClick(++pageCurrent)" href="#" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
@@ -104,8 +103,8 @@
 <script src="/plugins/vue/vue.min.js"></script>
 <script src="/plugins/layer/layer.js"></script>
 <script src="/plugins/moment/moment.min.js"></script>
-<script src="/vendor/js/config.js"></script>
-<script src="/vendor/js/pages/role_page.js">
+<script src="/dist/js/config.js"></script>
+<script src="/dist/js/pages/role_page.js">
 </script>
 </body>
 </html>

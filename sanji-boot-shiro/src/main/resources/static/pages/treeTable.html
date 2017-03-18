@@ -4,13 +4,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>TreeTable</title>
-    <link href="/plugins/treeTable/jquery.treetable.min.css" rel="stylesheet" />
+    <link href="/plugins/treeTable/jquery.treetable.min.css" rel="stylesheet">
     <link href="/plugins/treeTable/jquery.treetable.theme.default.min.css"
-          rel="stylesheet" />
+          rel="stylesheet">
     <link href="/plugins/bootstrap/css/bootstrap.css " rel="stylesheet"/>
     <link href="/plugins/bootstrap/css/bootstrap-theme.css" rel="stylesheet"/>
-    <link href="/plugins/layui/css/layui.css" rel="stylesheet" />
-    <link href="/vendor/css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/plugins/layui/css/layui.css" media="all">
+
     <style>
         table, tbody, table.treetable thead tr th {
             border: 1px solid #e3e8ee;
@@ -53,17 +53,17 @@
 <div id="app" class="container-fluid">
     <div class="btn-groups">
         <button class="layui-btn layui-btn-normal layui-btn-small layui-btn-radius glyphicon glyphicon-refresh"
-                v-on:click="load">&nbsp;刷新
+                @click="load">&nbsp;刷新
         </button>
         <button class="layui-btn layui-btn-normal layui-btn-small layui-btn-radius glyphicon glyphicon-refresh"
-                v-on:click="reload">&nbsp;刷新结构
+                @click="reload">&nbsp;刷新结构
         </button>
-        <button class="layui-btn  layui-btn-small  layui-btn-radius glyphicon glyphicon-plus" v-on:click="add">&nbsp;添加子菜单
+        <button class="layui-btn  layui-btn-small  layui-btn-radius glyphicon glyphicon-plus" @click="add">&nbsp;添加子菜单
         </button>
-        <button class="layui-btn  layui-btn-small layui-btn-radius glyphicon glyphicon-edit" v-on:click="edit">&nbsp;编辑
+        <button class="layui-btn  layui-btn-small layui-btn-radius glyphicon glyphicon-edit" @click="edit">&nbsp;编辑
         </button>
         <button class="layui-btn layui-btn-danger  layui-btn-small layui-btn-radius glyphicon glyphicon-trash"
-                v-on:click="deleteMenu">&nbsp;刪除
+                @click="deleteMenu">&nbsp;刪除
         </button>
     </div>
 
@@ -73,19 +73,19 @@
             <th>菜单名称</th>
             <th>地址链接</th>
             <th>描述</th>
+            <th>图标</th>
             <th>排序数字</th>
-            <th>对用户可见</th>
             <th>权限标识</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="menu in menus" :id="menu.id" :data-tt-id="menu.id" :data-tt-parent-id="menu.parentId"
-            v-on:click="select(menu)">
-            <td><i :class="menu.icon"></i>&nbsp;{{menu.name}}</td>
+            @click="select(menu)">
+            <td>{{menu.name}}</td>
             <td>{{menu.url}}</td>
             <td>{{menu.description}}</td>
+            <td>{{menu.icon}}</td>
             <td>{{menu.sort}}</td>
-            <td>{{menu.visible| visible-formatter }}</td>
             <td>{{menu.permission}}</td>
         </tr>
 
@@ -99,7 +99,7 @@
 <script src="/plugins/treeTable/jquery.treetable.min.js"></script>
 <script src="/plugins/vue/vue.min.js"></script>
 <script src="/plugins/layer/layer.js"></script>
-<script src="/vendor/js/config.js"></script>
+<script src="/dist/js/config.js"></script>
 <script src="/dist/js/pages/menu_page.js">
 </script>
 </body>
