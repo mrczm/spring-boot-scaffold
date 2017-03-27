@@ -63,21 +63,21 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
     }
 
     //给 treeTable 使用
-    @RequiresPermissions("sys:menu:views")
+    @RequiresPermissions("sys:menu:view")
     @GetMapping
     public List<Menu> getTreeTable() {
         return treeService.listFlatMenuTree();
     }
 
     //给 zTree
-    @RequiresPermissions("sys:menu:views")
+    @RequiresPermissions("sys:menu:view")
     @GetMapping("/all")
     public List<Menu> getAll() {
         return repository.findAll();
     }
 
 
-    //--需要用户登录之后使用 TODO 树形菜单构建 需要根据用户调整
+    //--需要用户登录之后使用 树形菜单构建 需要根据用户调整
     @GetMapping("/tree")
     public Set<MenuTreeVO> getTreeByCurrentUser() {
         return menuService.getMenuTreeByCurrentUser();

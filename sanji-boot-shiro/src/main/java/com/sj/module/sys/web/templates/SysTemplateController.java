@@ -1,4 +1,4 @@
-package com.sj.module.sys.web.page;
+package com.sj.module.sys.web.templates;
 
 import com.sj.module.sys.domain.Role;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -13,39 +13,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/page/sys")
-public class SysPageController {
+public class SysTemplateController {
 
-    private static final String TEMPLATE_PATH = "/pages/sys/";
+    private static final String TEMPLATE_PATH = "/module/sys/";
 
     @RequiresPermissions("sys:menu:view")
     @GetMapping("/menu")
-    public String menuPage() {
-        return TEMPLATE_PATH + "menu";
+    public String menu() {
+        return template("menu");
     }
 
-    @RequiresPermissions("sys:menu:frame:view")
+    @RequiresPermissions("sys:menu:view")
     @GetMapping("/menu/frame")
-    public String menuFramePage() {
-        return TEMPLATE_PATH + "menu_frame";
+    public String menuFrame() {
+        return template("menu_frame");
     }
 
     @RequiresPermissions("sys:role:view")
     @GetMapping("/role")
-    public String rolePage() {
-        return TEMPLATE_PATH + "role";
+    public String role() {
+        return template("role");
     }
 
-    @RequiresPermissions("sys:role:frame:view")
+    @RequiresPermissions("sys:role:view")
     @GetMapping("/role/frame")
-    public String roleFramePage() {
-        return TEMPLATE_PATH + "role_frame";
+    public String roleFrame() {
+        return template("role_frame");
     }
 
     @RequiresPermissions("sys:role:user:view")
     @GetMapping("/role/{roleId}/user")
-    public String roleUserPage(@PathVariable("roleId") Role role, Model model) {
+    public String roleUser(@PathVariable("roleId") Role role, Model model) {
         model.addAttribute("role", role);
-        return TEMPLATE_PATH + "role_user";
+        return template("role_user");
+    }
+
+    private String template(String template) {
+        return TEMPLATE_PATH + template;
     }
 
 }

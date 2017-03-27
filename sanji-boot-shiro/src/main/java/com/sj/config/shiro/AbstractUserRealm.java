@@ -30,6 +30,10 @@ public abstract class AbstractUserRealm extends AuthorizingRealm {
 
     public abstract UserRolesAndPermissions doGetRoleAuthorizationInfo(User userInfo);
 
+    /**
+     * 获取授权信息
+     * Created by sunxyz on 2017/3/27.
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String currentLoginName = (String) principals.getPrimaryPrincipal();

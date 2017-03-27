@@ -20,7 +20,7 @@ public class UserRealm extends AbstractUserRealm {
     public UserRolesAndPermissions doGetGroupAuthorizationInfo(User userInfo) {
         Set<String> userRoles = new HashSet<>();
         Set<String> userPermissions = new HashSet<>();
-        //获取当前用户下所有ACL权限列表 待续。。。
+        //获取当前用户下所有ACL权限列表
         //获取当前用户下拥有的所有角色列表
         Set<Role> roles = userInfo.getRoleSet();
         loadRolesAndPermissions(userRoles, userPermissions, roles);
