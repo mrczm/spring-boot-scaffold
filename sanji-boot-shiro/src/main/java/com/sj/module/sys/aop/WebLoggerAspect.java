@@ -1,5 +1,6 @@
 package com.sj.module.sys.aop;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -54,6 +55,9 @@ public class WebLoggerAspect {
     @Before("@annotation(requiresPermissions)")
     public void Ann(JoinPoint joinPoint, RequiresPermissions requiresPermissions){
         logger.info(Arrays.toString(requiresPermissions.value()));
+        logger.info("CLASS_METHOD => {}", joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+        logger.info(JSON.toJSONString(joinPoint.getArgs()));
     }
+
 
 }

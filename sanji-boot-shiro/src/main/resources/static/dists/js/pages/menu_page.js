@@ -26,8 +26,8 @@
                     }
                     // console.log(data)
                     _this.menus = data;
+                    _this.buildTreeTable();
                 })
-                _this.buildTreeTable();
             },
             buildTreeTable: function () {
                 var f = function () {

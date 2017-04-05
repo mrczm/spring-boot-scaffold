@@ -41,7 +41,7 @@ public class SysTemplateController {
         return template("role_frame");
     }
 
-    @RequiresPermissions("sys:role:user:view")
+    @RequiresPermissions("sys:role:view")
     @GetMapping("/role/{roleId}/user")
     public String roleUser(@PathVariable("roleId") Role role, Model model) {
         model.addAttribute("role", role);
