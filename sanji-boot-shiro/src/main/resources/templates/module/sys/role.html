@@ -1,15 +1,17 @@
+
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
     <title>角色管理</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
-    <link href="/plugins/bootstrap/css/bootstrap.css " rel="stylesheet"/>
-    <link href="/plugins/bootstrap/css/bootstrap-theme.css" rel="stylesheet"/>
-    <link href="/plugins/layui/css/layui.css" rel="stylesheet"/>
-    <link href="/plugins/adminLTE/css/AdminLTE.css" rel="stylesheet"/>
-    <link href="/plugins/adminLTE/css/skins/_all-skins.css" rel="stylesheet"/>
+    <link href="/plugins/bootstrap/css/bootstrap.css " rel="stylesheet" />
+    <link href="/plugins/bootstrap/css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="/plugins/layui/css/layui.css" rel="stylesheet" />
+    <link href="/plugins/adminLTE/css/AdminLTE.css" rel="stylesheet" />
+    <link href="/plugins/adminLTE/css/skins/_all-skins.css" rel="stylesheet" />
     <link href="/dists/css/default.css" rel="stylesheet" />
     <style>
         .box-body {
@@ -26,7 +28,7 @@
             overflow: hidden;
             background-color: #f5f7f9;
             border: 1px solid #e3e8ee;
-            height: 50px;
+            min-height: 50px;
             padding: 8px;
         }
 
@@ -36,22 +38,35 @@
     </style>
 </head>
 <body>
-<div id="app" class="container-fluid">
-    <div class="btn-groups" style="margin-bottom: 10px;">
-        <button class="layui-btn layui-btn-normal layui-btn-small layui-btn-radius glyphicon glyphicon-refresh"
-                v-on:click="load">&nbsp;刷新
-        </button>
-        <button class="layui-btn  layui-btn-small  layui-btn-radius glyphicon glyphicon-plus" v-on:click="add">&nbsp;添加
-        </button>
-        <button class="layui-btn  layui-btn-small layui-btn-radius glyphicon glyphicon-edit" v-on:click="edit">&nbsp;编辑
-        </button>
-        <button class="layui-btn layui-btn-danger  layui-btn-small layui-btn-radius glyphicon glyphicon-trash"
-                v-on:click="deleteObj">&nbsp;刪除
-        </button>
-        <form v-on:submit.prevent="search" class="form-inline pull-right">
-            <input v-model="name" :name="name" type="text" class="form-control" placeholder="请输入角色名称"/>
-            <button type="submit" class="btn btn-default">搜索</button>
-        </form>
+<div class="container-fluid" id="app">
+    <div class="btn-groups row" style="margin-bottom: 10px;">
+        <div class="col-md-8">
+
+            <button class="layui-btn layui-btn-normal layui-btn-small layui-btn-radius glyphicon glyphicon-refresh" v-on:click="load">&nbsp;刷新
+            </button>
+
+            <button class="layui-btn  layui-btn-small  layui-btn-radius glyphicon glyphicon-plus" v-on:click="add">
+                &nbsp;添加
+            </button>
+
+
+            <button class="layui-btn  layui-btn-small layui-btn-radius glyphicon glyphicon-edit" v-on:click="edit">
+                &nbsp;编辑
+            </button>
+
+
+            <button class="layui-btn layui-btn-danger  layui-btn-small layui-btn-radius glyphicon glyphicon-trash" v-on:click="deleteObj">
+                &nbsp;刪除
+            </button>
+
+        </div>
+        <div class="col-md-4">
+            <form class=" form-inline pull-right" v-on:submit.prevent="search">
+                <input :name="name" class="form-control" placeholder="请输入角色名称" type="text" v-model="name" />
+                <button class="btn btn-default" type="submit">搜索</button>
+            </form>
+        </div>
+
     </div>
 
     <div class="row">
@@ -69,7 +84,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="(role, index) in roles" v-on:click="select(role)" :id="role.id">
+                        <tr :id="role.id" v-for="(role, index) in roles" v-on:click="select(role)">
                             <td>{{index+1}}</td>
                             <td>{{role.name}}</td>
                             <td>{{role.description}}</td>
@@ -82,14 +97,13 @@
                 <nav class="pull-right">
                     <ul class="pagination">
                         <li v-if="showFirst">
-                            <a v-on:click.prevent="pageIndexClick(--pageCurrent)" href="#" aria-label="Previous">
+                            <a aria-label="Previous" href="#" v-on:click.prevent="pageIndexClick(--pageCurrent)">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li v-for="index in indexs" :class="{'active':index==pageCurrent}"><a
-                                v-on:click.prevent="pageIndexClick(index)" href="#">{{index}}</a></li>
+                        <li :class="{'active':index==pageCurrent}" v-for="index in indexs"><a href="#" v-on:click.prevent="pageIndexClick(index)">{{index}}</a></li>
                         <li v-if="showLast">
-                            <a v-on:click.prevent="pageIndexClick(++pageCurrent)" href="#" aria-label="Next">
+                            <a aria-label="Next" href="#" v-on:click.prevent="pageIndexClick(++pageCurrent)">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
@@ -107,5 +121,5 @@
 <script src="/dists/js/config.js"></script>
 <script src="/dists/js/pages/role_page.js">
 </script>
-</body>
-</html>
+
+</body></html>

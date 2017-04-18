@@ -12,6 +12,8 @@ import java.util.List;
  */
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 
-    Page<Menu> findByParent(Menu parent, Pageable pageable);
+    Menu findFirstByOrderBySortDesc();
+
+    Menu findFirstByParentIsNull();
 
 }

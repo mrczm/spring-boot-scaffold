@@ -57,10 +57,11 @@ public class UserRealm extends AbstractUserRealm {
 
     private void loadPermissions(Set<String> userPermissions, Set<Menu> menuSet) {
         if (null != menuSet) {
-
             Set<String> permissionResourcesNameSet = menuSet.stream().
                     filter(menu -> null != menu.getPermission() && !(menu.getPermission().trim().equals(""))).
-                    filter(menu -> {return null !=menu.getVisible();}).
+                    filter(menu -> {
+                        return null != menu.getVisible();
+                    }).
                     filter(Menu::getVisible).
                     map(Menu::getPermission).
                     collect(Collectors.toSet());

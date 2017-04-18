@@ -1,6 +1,7 @@
 package com.sj.module.sys.web.api;
 
 import com.sj.common.Result;
+import com.sj.module.sys.constant.RequestConstant;
 import com.sj.module.sys.domain.Menu;
 import com.sj.module.sys.domain.Role;
 import com.sj.module.sys.domain.User;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
  */
 @Transactional
 @RestController
-@RequestMapping("/api/sys/role")
+@RequestMapping(RequestConstant.ROLE_API)
 public class RoleController extends BaseController<RoleRepository, Role, Long> {
 
     @Autowired
@@ -102,10 +103,8 @@ public class RoleController extends BaseController<RoleRepository, Role, Long> {
     @Transactional(readOnly = true)
     @RequiresPermissions("sys:role:view")
     @GetMapping("/{id}/user")
-    public Page<User> listUser(@PathVariable("id") Role role, @RequestParam(value = "name", defaultValue = "") String name, Pageable pageable) {
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        return userRepository.findByRoleSetAndLoginNameLike(roles, "%" + name + "%", pageable);
+    public Page<User> listUser(@PathVariable("id") Long roleId, @RequestParam(value = "name", defaultValue = "") String name, Pageable pageable) {
+        return userRepository.findByRoleSetIdAndLoginNameLike(roleId, "%" + name + "%", pageable);
     }
 
     @RequiresPermissions("sys:role:delete")

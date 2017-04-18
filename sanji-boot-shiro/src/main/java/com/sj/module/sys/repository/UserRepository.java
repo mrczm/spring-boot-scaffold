@@ -19,5 +19,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Cacheable(value = "users", key = "'demoInfo_'+#p0")
     User findByLoginName(String loginName);
 
-    Page<User> findByRoleSetAndLoginNameLike(Set<Role> roleSet,String loginName, Pageable pageable);;
+    Page<User> findByRoleSetIdAndLoginNameLike(Long roleId,String loginName, Pageable pageable);;
 }

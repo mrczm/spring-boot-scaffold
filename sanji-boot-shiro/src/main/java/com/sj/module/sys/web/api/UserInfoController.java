@@ -1,6 +1,7 @@
 package com.sj.module.sys.web.api;
 
 import com.sj.common.Result;
+import com.sj.module.sys.constant.RequestConstant;
 import com.sj.module.sys.domain.User;
 import com.sj.module.sys.domain.UserDeatil;
 import com.sj.module.sys.repository.UserRepository;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by sunxyz on 2017/3/18.
  */
 @RestController
-@RequestMapping("/api/sys/user_info")
+@RequestMapping(RequestConstant.USER_INFO_API)
 public class UserInfoController {
 
     @Autowired

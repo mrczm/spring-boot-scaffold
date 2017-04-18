@@ -33,7 +33,7 @@ public class ShiroConfiguration {
      */
     @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
-        logger.info("注入Shiro的Web过滤器-->shiroFilter", ShiroFilterFactoryBean.class);
+//        logger.info("注入Shiro的Web过滤器-->shiroFilter", ShiroFilterFactoryBean.class);
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 
         //Shiro的核心安全接口,这个属性是必须的
@@ -56,10 +56,11 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/login", "anon");//anon 可以理解为不拦截
         filterChainDefinitionMap.put("/reg", "anon");
         filterChainDefinitionMap.put("/plugins/**", "anon");
-        filterChainDefinitionMap.put("/pages/**", "anon");
-        filterChainDefinitionMap.put("/api/**", "anon");
         filterChainDefinitionMap.put("/dists/img/*", "anon");
         filterChainDefinitionMap.put("/**", "authc");
+        //测试时使用
+        filterChainDefinitionMap.put("/pages/**", "anon");
+        filterChainDefinitionMap.put("/api/**", "anon");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
@@ -68,7 +69,7 @@ public class ShiroConfiguration {
 
     @Bean
     public EhCacheManager ehCacheManager() {
-        logger.info("注入Shiro的缓存-->EhCacheManager");
+//        logger.info("注入Shiro的缓存-->EhCacheManager");
         EhCacheManager cacheManager = new EhCacheManager();
         cacheManager.setCacheManagerConfigFile("classpath:ehcache.xml");
         return cacheManager;
@@ -79,7 +80,7 @@ public class ShiroConfiguration {
      */
     @Bean
     public SecurityManager securityManager(UserRealm userRealm) {
-        logger.info("注入Shiro的Web过滤器-->securityManager", ShiroFilterFactoryBean.class);
+//        logger.info("注入Shiro的Web过滤器-->securityManager", ShiroFilterFactoryBean.class);
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(userRealm);
         //注入缓存管理器;

@@ -1,6 +1,7 @@
 package com.sj.module.sys.web.api;
 
 import com.sj.common.Result;
+import com.sj.module.sys.constant.RequestConstant;
 import com.sj.module.sys.domain.Menu;
 import com.sj.module.sys.domain.vo.MenuTreeVO;
 import com.sj.module.sys.repository.MenuRepository;
@@ -18,7 +19,7 @@ import java.util.*;
  * Created by sunxyz on 2017/3/14.
  */
 @RestController
-@RequestMapping("/api/sys/menu")
+@RequestMapping(RequestConstant.MENU_API)
 public class MenuController extends BaseController<MenuRepository, Menu, Long> {
 
     @Autowired
@@ -38,7 +39,7 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
         menu.setVisible(null != menu.getVisible() ? menu.getVisible() : false);
         if (menu.getSort() == 0L) {
             Menu brothers = menuService.findByParentTop1(parent);
-            if (null != brothers) {
+            if (Objects.nonNull(brothers)) {
                 menu.setSort(brothers.getSort() + 1);
             } else {
                 menu.setSort(parent.getSort() * 10 + 1);
@@ -83,13 +84,18 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
         return menuService.getMenuTreeByCurrentUser();
     }
 
+    @GetMapping("/home_url")
+    public String getHomeUrl() {
+        return repository.findFirstByParentIsNull().getUrl();
+    }
+
     private Menu valueUpdate(Menu old, Menu menu) {
-        old.setName(null != menu ? menu.getName() : old.getName());
-        old.setDescription(null != menu ? menu.getDescription() : old.getDescription());
-        old.setUrl(null != menu ? menu.getUrl() : old.getUrl());
-        old.setIcon(null != menu ? menu.getIcon() : old.getIcon());
-        old.setSort(null != menu ? menu.getSort() : old.getSort());
-        old.setPermission(null != menu ? menu.getPermission() : old.getPermission());
+        old.setName(null != menu.getName() ? menu.getName() : old.getName());
+        old.setDescription(null != menu.getDescription() ? menu.getDescription() : old.getDescription());
+        old.setUrl(null != menu.getUrl() ? menu.getUrl() : old.getUrl());
+        old.setIcon(null != menu.getIcon() ? menu.getIcon() : old.getIcon());
+        old.setSort(null != menu.getSort() ? menu.getSort() : old.getSort());
+        old.setPermission(null != menu.getPermission() ? menu.getPermission() : old.getPermission());
         old.setVisible(null != menu.getVisible() ? menu.getVisible() : false);
         return old;
     }

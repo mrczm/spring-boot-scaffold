@@ -37,9 +37,9 @@ public class DataInit implements CommandLineRunner {
         User user = userService.findByLoginName("admin");
         Date now = new Date();
         if (null == user || null == root) {
-            root = buildMenu("root", "", 0L, "", null);
+            root = buildMenu("root", "welcome", 0L, "", null);
             root = menuRepository.save(root);
-            Menu menu_1 = buildMenu("sys", "", 1L, "", root);
+            Menu menu_1 = buildMenu("权限管理", "", 1L, "", root);
             menu_1 = menuRepository.save(menu_1);
             Menu menu_1_1 = buildMenu("菜单管理", "page/sys/menu", 11L, "sys:menu", menu_1);
             menuRepository.save(menu_1_1);
