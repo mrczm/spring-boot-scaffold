@@ -7,11 +7,26 @@
     Vue.filter('date-formatter', function (value) {
         return moment(value).format('YYYY.MM.DD-HH:mm');
     })
+    Vue.filter('url-formatter', function (value) {
+        if(value==null){
+            return "";
+        }
+        var url = decodeURIComponent(value);
+        return url;//url.replace(/=/g,":").replace(/&/g,",");
+    })
+    var startDate = moment().subtract(29, 'days').format('YYYY/MM/DD');
+    var endDate = moment().format('YYYY/MM/DD');
     var app = new Vue({
         el: "#app",
         data: {
             results: [],
+            //查询参数
             name: "",
+            startDate: startDate,
+            endDate: endDate,
+            requestMethod:"GET",
+
+            dataShow: startDate + "-" + endDate,
             selectObj: undefined,
             pageTotal: 0,
             pageCurrent: 1,
@@ -75,7 +90,11 @@
                 var _this = this;
                 var param = {
                     page: _this.pageCurrent - 1,
-                    size: _this.pageSize
+                    size: _this.pageSize,
+                    name: _this.name,
+                    requestMethod: _this.requestMethod,
+                    startDate: _this.startDate+"/00:00:00",
+                    endDate: _this.endDate+"/24:00:00",
                 };
 
                 listData(param, function (data) {
@@ -109,6 +128,29 @@
         }
 
     });
+
+    //Date picker
+    $('.date').daterangepicker({
+            locale: {
+                applyLabel: '确定',
+                cancelLabel: '取消',
+                customRangeLabel: '自定义查询'
+            },
+            ranges: {
+                '今天': [moment(), moment()],
+                '昨天': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                '最近七天': [moment().subtract(6, 'days'), moment()],
+                '最近30天': [moment().subtract(29, 'days'), moment()],
+                '这个月': [moment().startOf('month'), moment().endOf('month')],
+                '上个月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            startDate: moment().subtract(29, 'days'), endDate: moment()
+        },
+        function (start, end) {
+            app.startDate = start.format('YYYY/MM/DD');
+            app.endDate = end.format('YYYY/MM/DD');
+            app.dataShow = app.startDate + "-" + app.endDate;
+        });
 
     function listData(param, cb) {
         $.get(api_path, param, cb);

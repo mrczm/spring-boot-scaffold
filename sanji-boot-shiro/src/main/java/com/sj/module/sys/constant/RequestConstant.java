@@ -13,8 +13,11 @@ public interface RequestConstant {
 
     String ROLE_API = "/api/sys/role";
 
-    String USER_INFO_API = "/api/sys/user_info";
+    String USER_API = "/api/sys/user";
 
     String LOG_API = "/api/sys/log";
+
+    String USER_INFO_API = "/api/sys/user_info";
+
 
 }

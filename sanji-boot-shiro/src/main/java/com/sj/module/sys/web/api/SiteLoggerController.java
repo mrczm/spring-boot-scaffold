@@ -12,7 +12,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
 
 /**
  * Created by yangrd on 2017/4/18.
@@ -28,7 +31,7 @@ public class SiteLoggerController {
     @RequiresPermissions("sys:log:view")
     @GetMapping
     @Transactional(readOnly = true)
-    public Page<SiteLogger> getAll(@PageableDefault(sort = "requestTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        return siteLoggerRepository.findAll(pageable);
+    public Page<SiteLogger> getAll(@RequestParam(defaultValue = "") String name, @RequestParam(defaultValue = "GET") String requestMethod, Date startDate, Date endDate, @PageableDefault(sort = "requestTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        return siteLoggerRepository.findByUserLoginNameLikeAndRequestMethodAndRequestTimeBetween("%" + name + "%", requestMethod, startDate, endDate, pageable);
     }
 }
