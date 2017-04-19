@@ -10,22 +10,35 @@
     <link href="/plugins/layui/css/layui.css" rel="stylesheet"/>
     <link href="/plugins/adminLTE/css/AdminLTE.css" rel="stylesheet"/>
     <link href="/plugins/adminLTE/css/skins/_all-skins.css" rel="stylesheet"/>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"/>
+
     <link href="/dists/css/default.css" rel="stylesheet"/>
 </head>
 <body>
 <div id="app" class="container-fluid">
-    <div class="btn-groups" style="margin-bottom: 10px;">
-        <button class="layui-btn layui-btn-normal layui-btn-small layui-btn-radius glyphicon glyphicon-refresh"
-                v-on:click="load">&nbsp;刷新
-        </button>
-        <button class="layui-btn layui-btn-danger  layui-btn-small layui-btn-radius glyphicon glyphicon-trash"
-                v-on:click="deleteObj">&nbsp;刪除
-        </button>
-        <form v-on:submit.prevent="search" class="form-inline pull-right">
-            <input v-model="name" :name="name" type="text" class="form-control" placeholder="请输入名称"/>
-            <button type="submit" class="btn btn-default">搜索</button>
-        </form>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="btn-groups">
+                <button class="layui-btn layui-btn-normal layui-btn-small layui-btn-radius glyphicon glyphicon-refresh"
+                        v-on:click="load">&nbsp;刷新
+                </button>
+                <button class="layui-btn layui-btn-danger  layui-btn-small layui-btn-radius glyphicon glyphicon-trash"
+                        v-on:click="deleteObj">&nbsp;刪除
+                </button>
+                <div class="box-tools pull-right">
+                    <form v-on:submit.prevent="search" class="input-group input-group-sm " style="width: 150px;">
+                        <input v-model="name" :name="name" type="text" class="form-control pull-right" placeholder="请输入名称" />
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+
 
     <div th:text="${'角色：'+role.name}" style="font-size: 15px;padding:5px;"></div>
     <div id="role_id" th:text="${role.id}" style="display: none"></div>

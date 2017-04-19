@@ -1,6 +1,7 @@
 /**
  * Created by sunxyz on 2017/3/17.
  */
+var vue_app;
 //首先使用一个闭包,防止污染全局对象
 (function () {
     var api_path = config.api.role;
@@ -176,4 +177,6 @@
             }
         });
     }
+
+    vue_app = app;
 })();

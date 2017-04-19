@@ -12,38 +12,41 @@
     <link href="/plugins/layui/css/layui.css" rel="stylesheet" />
     <link href="/plugins/adminLTE/css/AdminLTE.css" rel="stylesheet" />
     <link href="/plugins/adminLTE/css/skins/_all-skins.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"/>
     <link href="/dists/css/default.css" rel="stylesheet" />
 </head>
 <body>
 <div class="container-fluid" id="app">
-    <div class="btn-groups row">
-        <div class="col-md-8">
 
-            <button class="layui-btn layui-btn-normal layui-btn-small layui-btn-radius glyphicon glyphicon-refresh" v-on:click="load">&nbsp;刷新
-            </button>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="btn-groups">
 
-            <button class="layui-btn  layui-btn-small  layui-btn-radius glyphicon glyphicon-plus" v-on:click="add">
-                &nbsp;添加
-            </button>
+                <button class="layui-btn layui-btn-normal layui-btn-small layui-btn-radius glyphicon glyphicon-refresh" v-on:click="load">&nbsp;刷新
+                </button>
 
+                <button class="layui-btn  layui-btn-small  layui-btn-radius glyphicon glyphicon-plus" v-on:click="add">
+                    &nbsp;添加
+                </button>
 
-            <button class="layui-btn  layui-btn-small layui-btn-radius glyphicon glyphicon-edit" v-on:click="edit">
-                &nbsp;编辑
-            </button>
+                <button class="layui-btn  layui-btn-small layui-btn-radius glyphicon glyphicon-edit" v-on:click="edit">
+                    &nbsp;编辑
+                </button>
 
-
-            <button class="layui-btn layui-btn-danger  layui-btn-small layui-btn-radius glyphicon glyphicon-trash" v-on:click="deleteObj">
-                &nbsp;刪除
-            </button>
-
+                <button class="layui-btn layui-btn-danger  layui-btn-small layui-btn-radius glyphicon glyphicon-trash" v-on:click="deleteObj">
+                    &nbsp;刪除
+                </button>
+                <div class="box-tools pull-right">
+                    <form v-on:submit.prevent="search" class="input-group input-group-sm " style="width: 150px;">
+                        <input v-model="name" :name="name" type="text" class="form-control pull-right" placeholder="请输入角色名称" />
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <form class=" form-inline pull-right" v-on:submit.prevent="search">
-                <input :name="name" class="form-control" placeholder="请输入角色名称" type="text" v-model="name" />
-                <button class="btn btn-default" type="submit">搜索</button>
-            </form>
-        </div>
-
     </div>
 
     <div class="row">

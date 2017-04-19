@@ -83,14 +83,15 @@
             }
         }, watch: {
             frame_src: function (data) {
-                var login_page = "login";
+                fixContentIframe();
+            },
+            pageHeader: function (data) {
+                var login_page = "用户登录";
                 //判断是否session超时
-                if (data.lastIndexOf(login_page) == data.length - login_page.length) {
+                if (data.indexOf(login_page) > -1) {
                     var domain = window.location.host;
                     var arrUrl = document.location.toString().split("//");
                     window.location.href = arrUrl[0] + "//" + domain;
-                } else {
-                    fixContentIframe();
                 }
             }
         }

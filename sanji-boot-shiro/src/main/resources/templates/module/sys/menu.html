@@ -41,12 +41,6 @@
             background-color: #FbFBFB;
         }
 
-        .btn-groups {
-            border: 1px solid #e3e8ee;
-            height: 50px;
-            padding: 8px;
-        }
-
         tbody tr.select td {
             background-color: #f5f7f9;
         }
@@ -62,15 +56,16 @@
         <button class="layui-btn layui-btn-normal layui-btn-small layui-btn-radius glyphicon glyphicon-refresh"
                 v-on:click="reload">&nbsp;刷新结构
         </button>
-        <button class="layui-btn  layui-btn-small  layui-btn-radius glyphicon glyphicon-plus" v-on:click="add">&nbsp;添加子菜单
+        <button class="layui-btn  layui-btn-small  layui-btn-radius glyphicon glyphicon-plus" v-on:click="add">
+            &nbsp;添加子菜单
         </button>
-        <button class="layui-btn  layui-btn-small layui-btn-radius glyphicon glyphicon-edit" v-on:click="edit">&nbsp;编辑
+        <button class="layui-btn  layui-btn-small layui-btn-radius glyphicon glyphicon-edit" v-on:click="edit">
+            &nbsp;编辑
         </button>
         <button class="layui-btn layui-btn-danger  layui-btn-small layui-btn-radius glyphicon glyphicon-trash"
                 v-on:click="deleteMenu">&nbsp;刪除
         </button>
     </div>
-
     <table id="example-advanced">
         <thead>
         <tr>
