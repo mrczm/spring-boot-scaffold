@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 
-    Menu findFirstByOrderBySortDesc();
+    Menu findFirstByParentOrderBySortDesc(Menu parent);
 
     Menu findFirstByParentIsNull();
 

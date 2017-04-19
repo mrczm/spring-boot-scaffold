@@ -37,14 +37,20 @@ public class DataInit implements CommandLineRunner {
         User user = userService.findByLoginName("admin");
         Date now = new Date();
         if (null == user || null == root) {
-            root = buildMenu("root", "welcome", 0L, "", null);
+            root = buildMenu("root", "", "welcome", 0L, "", null);
             root = menuRepository.save(root);
-            Menu menu_1 = buildMenu("权限管理", "", 1L, "", root);
+            Menu menu = buildMenu("后台管理", " fa fa-desktop", "", 1L, "", root);
+            menu = menuRepository.save(menu);
+            Menu menu_1 = buildMenu("权限管理", "glyphicon glyphicon-cog", "", 11L, "", menu);
             menu_1 = menuRepository.save(menu_1);
-            Menu menu_1_1 = buildMenu("菜单管理", "page/sys/menu", 11L, "sys:menu", menu_1);
+
+            Menu menu_1_1 = buildMenu("菜单管理", "glyphicon glyphicon-list", "page/sys/menu", 111L, "sys:menu", menu_1);
             menuRepository.save(menu_1_1);
-            Menu menu_1_2 = buildMenu("角色管理", "page/sys/role", 12L, "sys:role", menu_1);
+            Menu menu_1_2 = buildMenu("角色管理", "glyphicon glyphicon-list-alt", "page/sys/role", 112L, "sys:role", menu_1);
             menuRepository.save(menu_1_2);
+
+            Menu menu_2 = buildMenu("后台日志监控", "glyphicon glyphicon-leaf", "page/sys/log", 13L, "sys:log", menu);
+            menuRepository.save(menu_2);
             user = new User();
             user.setLoginName("admin");
             user.setPassword("admin");
@@ -56,9 +62,11 @@ public class DataInit implements CommandLineRunner {
             role.setRoleType("ADMIN");
             Set<Menu> menus = new HashSet<>();
             menus.add(root);
+            menus.add(menu);
             menus.add(menu_1);
             menus.add(menu_1_1);
             menus.add(menu_1_2);
+            menus.add(menu_2);
             role.setMenuSet(menus);
             role.setCreateTime(now);
             role.setUpdateTime(now);
@@ -70,10 +78,11 @@ public class DataInit implements CommandLineRunner {
 
     }
 
-    private Menu buildMenu(String name, String url, Long sort, String per, Menu parent) {
+    private Menu buildMenu(String name, String icon, String url, Long sort, String per, Menu parent) {
         Date now = new Date();
         Menu menu = new Menu();
         menu.setName(name);
+        menu.setIcon(icon);
         menu.setUrl(url);
         menu.setPermission(per);
         if (null != parent) {

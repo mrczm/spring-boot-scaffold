@@ -48,6 +48,12 @@ public class SysTemplateController {
         return template("role_user");
     }
 
+    @RequiresPermissions("sys:log:view")
+    @GetMapping("/log")
+    public String log() {
+        return template("log");
+    }
+
     private String template(String template) {
         return TEMPLATE_PATH + template;
     }

@@ -33,7 +33,7 @@ public class MenuService {
     private MenuRepository repository;
 
     public Menu findByParentTop1(Menu parent) {
-        return repository.findFirstByOrderBySortDesc();
+        return repository.findFirstByParentOrderBySortDesc(parent);
     }
 
     /**
@@ -49,14 +49,14 @@ public class MenuService {
             if (treeSet.isEmpty()) {//顶级菜单
                 menuSet.forEach(menu -> {
                     if (null == menu.getParent()) {//如果不存在父节点也就意味着是顶级菜单
-                        MenuTreeVO menuTreeVO = new MenuTreeVO(menu.getName(), menu.getIcon(), menu.getUrl(), menu.getDescription(), null == menu.getSort() ? 0 : menu.getSort());
+                        MenuTreeVO menuTreeVO = new MenuTreeVO(menu.getId(), menu.getName(), menu.getIcon(), menu.getUrl(), menu.getDescription(), null == menu.getSort() ? 0 : menu.getSort());
                         treeSet.add(menuTreeVO);
                         menuTreeVOMap.put(menu.getId(), menuTreeVO);
                     }
                 });
             } else {//子菜单
                 menuSet.forEach(menu -> {
-                    MenuTreeVO menuTreeVO = new MenuTreeVO(menu.getName(), menu.getIcon(), menu.getUrl(), menu.getDescription(), null == menu.getSort() ? 0 : menu.getSort());
+                    MenuTreeVO menuTreeVO = new MenuTreeVO(menu.getId(), menu.getName(), menu.getIcon(), menu.getUrl(), menu.getDescription(), null == menu.getSort() ? 0 : menu.getSort());
                     menuTreeVOMap.put(menu.getId(), menuTreeVO);
                     MenuTreeVO parentMenuTree = menuTreeVOMap.get(menu.getParent().getId());
                     if (parentMenuTree != null) {//对用户可见

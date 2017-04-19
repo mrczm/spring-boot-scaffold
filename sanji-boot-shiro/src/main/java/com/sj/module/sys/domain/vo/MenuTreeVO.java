@@ -13,6 +13,8 @@ import java.util.*;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class MenuTreeVO {
 
+    private Long id;//给前台选中使用
+
     private String name;
 
     private String icon;
@@ -32,12 +34,22 @@ public class MenuTreeVO {
     public MenuTreeVO() {
     }
 
-    public MenuTreeVO(String name, String icon, String url, String description, Long sort) {
+    public MenuTreeVO(Long id,String name, String icon, String url, String description, Long sort) {
+        this.id = id;
         this.name = name;
         this.icon = icon;
         this.url = url;
         this.description = description;
         this.sort = sort;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public MenuTreeVO setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getName() {

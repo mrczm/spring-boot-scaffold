@@ -1,11 +1,12 @@
 var domain = '/api/'
 var config = {
-    api:{
-        role: domain+'sys/role/',
-        menu: domain+'sys/menu/',
+    api: {
+        role: domain + 'sys/role/',
+        menu: domain + 'sys/menu/',
+        log: domain + 'sys/log'
     },
-    frame:{
-        role:'role/frame',
-        menu:'menu/frame',
+    frame: {
+        role: 'role/frame',
+        menu: 'menu/frame',
     },
 }
