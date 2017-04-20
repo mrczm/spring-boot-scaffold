@@ -39,8 +39,8 @@
                 vue.userInfo.name = userInfo.content.loginName;
             }
         })
-    },300);
-    
+    }, 300);
+
     //用户信息 为了使用admin LTE 换肤功能
     var user = new Vue({
         el: '#user-info',
@@ -58,7 +58,7 @@
         data: {
             menus: [],
             pageHeader: "首页",
-            frame_src: "/page/sys/menu",
+            frame_src: "",
             userInfo: {
                 name: "user",
                 description: "hello world",
@@ -73,9 +73,6 @@
                 getRootMenu(function (root) {
                     _this.menus = root[0].menuTrees;
                 })
-                getHomeUrl(function (url) {
-                    _this.frame_src = url;
-                });
                 fixContentIframe();
             },
             setMenuClick: function (menu_id) {
@@ -106,11 +103,11 @@
         };
         var router = Router(routes);
         router.init();
-    }, 300);
+        getHomeUrl(function (url) {
+            if (vue.frame_src == "") {
+                vue.frame_src = url;
+            }
+        });
+    }, 200);
 
-//禁止滚动条
-//        $(document.body).css({
-//            "overflow-x": "hidden",
-//            "overflow-y": "hidden"
-//        });
 })()
