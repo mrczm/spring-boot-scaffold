@@ -17,10 +17,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"/>
     <link href="/dists/css/default.css" rel="stylesheet"/>
     <style>
-        .btn-groups{
+        .btn-groups {
             padding-bottom: 0;
         }
-
     </style>
 </head>
 <body>
@@ -63,6 +62,9 @@
                             </div>
                         </form>
                     </div>
+                    <div>
+                        <a :href="'/'+export_excel" class="btn btn-default " ><i class="fa fa-cloud-download"></i>&nbsp;excel导出</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -89,7 +91,7 @@
                             <td>{{index+1}}</td>
                             <td>{{obj.requestUri}}</td>
                             <td>{{obj.requestMethod}}</td>
-                            <td>{{obj.requestParams| url-formatter}}</td>
+                            <td>{{obj.requestParams}}</td>
                             <td>{{obj.permissions}}</td>
                             <td>{{obj.userLoginName}}</td>
                             <td>{{obj.requestTime | date-formatter }}</td>

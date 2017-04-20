@@ -7,13 +7,13 @@
     Vue.filter('date-formatter', function (value) {
         return moment(value).format('YYYY.MM.DD-HH:mm');
     })
-    Vue.filter('url-formatter', function (value) {
-        if(value==null){
+/*    Vue.filter('url-formatter', function (value) {
+        if (value == null) {
             return "";
         }
         var url = decodeURIComponent(value);
         return url;//url.replace(/=/g,":").replace(/&/g,",");
-    })
+    })*/
     //默认今天
     var startDate = moment().format('YYYY/MM/DD');
     var endDate = moment().format('YYYY/MM/DD');
@@ -26,7 +26,7 @@
             name: "",
             startDate: startDate,
             endDate: endDate,
-            requestMethod:"GET",
+            requestMethod: "GET",
 
             dataShow: startDate + "-" + endDate,
             selectObj: undefined,
@@ -70,7 +70,11 @@
                     return false;
                 }
                 return true;
-            }
+            },
+            export_excel: function () {
+                var url = ".."+api_path+"/export_excel?page=" + (this.pageCurrent - 1)+"&size="+this.pageSize+"&name="+this.name+"&requestMethod"+this.requestMethod+"&startDate="+this.startDate + "/00:00:00"+"&endDate="+ this.endDate + "/24:00:00";
+                return url;
+            },
         },
         watch: {},
         created: function () {
@@ -84,6 +88,7 @@
                 }
                 this.loadData();
             },
+
             search: function () {
                 this.pageCurrent = 1;
                 this.loadData();
@@ -95,8 +100,8 @@
                     size: _this.pageSize,
                     name: _this.name,
                     requestMethod: _this.requestMethod,
-                    startDate: _this.startDate+"/00:00:00",
-                    endDate: _this.endDate+"/24:00:00",
+                    startDate: _this.startDate + "/00:00:00",
+                    endDate: _this.endDate + "/24:00:00",
                 };
 
                 listData(param, function (data) {
@@ -128,7 +133,6 @@
                 this.loadData();
             }
         }
-
     });
 
     //Date picker
