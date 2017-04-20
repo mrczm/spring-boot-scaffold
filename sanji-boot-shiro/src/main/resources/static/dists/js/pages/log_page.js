@@ -14,8 +14,10 @@
         var url = decodeURIComponent(value);
         return url;//url.replace(/=/g,":").replace(/&/g,",");
     })
-    var startDate = moment().subtract(29, 'days').format('YYYY/MM/DD');
+    //默认今天
+    var startDate = moment().format('YYYY/MM/DD');
     var endDate = moment().format('YYYY/MM/DD');
+
     var app = new Vue({
         el: "#app",
         data: {
@@ -144,7 +146,7 @@
                 '这个月': [moment().startOf('month'), moment().endOf('month')],
                 '上个月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             },
-            startDate: moment().subtract(29, 'days'), endDate: moment()
+            startDate: moment(), endDate: moment()
         },
         function (start, end) {
             app.startDate = start.format('YYYY/MM/DD');

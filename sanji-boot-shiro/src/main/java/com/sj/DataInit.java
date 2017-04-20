@@ -49,8 +49,12 @@ public class DataInit implements CommandLineRunner {
             Menu menu_1_2 = buildMenu("角色管理", "glyphicon glyphicon-list-alt", "page/sys/role", 112L, "sys:role", menu_1);
             menuRepository.save(menu_1_2);
 
-            Menu menu_2 = buildMenu("后台日志监控", "glyphicon glyphicon-leaf", "page/sys/log", 13L, "sys:log", menu);
+            Menu menu_2 = buildMenu("日志监控", "glyphicon glyphicon-leaf", "", 12L, "", menu);
             menuRepository.save(menu_2);
+            Menu menu_2_1 = buildMenu("后台日志监控", "glyphicon glyphicon-leaf", "page/sys/log", 121L, "sys:log", menu_2);
+            menuRepository.save(menu_2_1);
+            Menu menu_2_2 = buildMenu("druid", "fa fa-database", "druid", 122L, "", menu_2);
+            menuRepository.save(menu_2_2);
             user = new User();
             user.setLoginName("admin");
             user.setPassword("admin");
@@ -67,6 +71,8 @@ public class DataInit implements CommandLineRunner {
             menus.add(menu_1_1);
             menus.add(menu_1_2);
             menus.add(menu_2);
+            menus.add(menu_2_1);
+            menus.add(menu_2_2);
             role.setMenuSet(menus);
             role.setCreateTime(now);
             role.setUpdateTime(now);

@@ -94,6 +94,12 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.23</version>
         </dependency>
+        <!--Druid数据库连接池由阿里巴巴开源，号称是java语言中最好的数据库连接池，是为监控而生的。Druid的官方地址是：https://github.com/alibaba/druid-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.0.20</version>
+        </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
