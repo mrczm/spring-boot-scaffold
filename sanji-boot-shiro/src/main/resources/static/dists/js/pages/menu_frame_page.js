@@ -1,9 +1,11 @@
 /**
  * Created by sunxyz on 2017/3/17.
  */
+var vue_app ;
 (function () {
     var id = 0;
     var path = config.api.menu;
+    var frame = config.frame.icons;
     layui.use(['form', 'layedit', 'laydate'], function () {
         var form = layui.form()
             , layer = layui.layer
@@ -19,6 +21,7 @@
 
         //监听提交
         form.on('submit(demo1)', function (data) {
+            form.render();
             if (id) {
                 edit()
             } else {
@@ -36,10 +39,16 @@
                     obj: obj,
                     icon: obj.icon,
                     isChild: obj.isParent
+                },
+                methods:{
+                    click_icon:function () {
+                        // console.log("------")
+                        open_page();
+                    }
                 }
 
-            })
-            console.log(obj)
+            });
+            vue_app = app;
             if(obj.visible){
                 $("#visible").attr("checked",true);
                 // console.log("------------------")
@@ -74,5 +83,16 @@
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
             parent.layer.close(index); //再执行关闭
         }, 3000);
+    }
+    function open_page() {
+        // 当你试图在当前页获取iframe页的DOM元素时，你可以用此方法。selector即iframe页的选择器
+        layer.open({
+            type: 2,
+            title: '选择图标',
+            shadeClose: true,
+            shade: false,
+            area: ['693px', '536px'],
+            content: frame
+        });
     }
 })();

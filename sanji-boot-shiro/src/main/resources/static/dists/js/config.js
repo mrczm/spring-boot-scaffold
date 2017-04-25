@@ -8,5 +8,6 @@ var config = {
     frame: {
         role: 'role/frame',
         menu: 'menu/frame',
+        icons: '/page/sys/icons/frame',
     },
 }

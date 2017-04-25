@@ -18,6 +18,12 @@ public class SysTemplateController {
     private static final String TEMPLATE_PATH = "/module/sys/";
 
     @RequiresPermissions("sys:menu:view")
+    @GetMapping("/icons/frame")
+    public String iconsFrame() {
+        return template("icons");
+    }
+
+    @RequiresPermissions("sys:menu:view")
     @GetMapping("/menu")
     public String menu() {
         return template("menu");

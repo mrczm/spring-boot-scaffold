@@ -36,7 +36,7 @@
                 el: '#app',
                 data: {
                     obj: obj,
-                    meunIds: []
+                    menuIds: []
                 }
             })
             var role_id = id;
@@ -79,7 +79,7 @@
     function buildZTreeMenus(role_id) {
         buildRoleMenusChecked(role_id, function (zNodes, roleMenuIds) {
             menus = roleMenuIds;
-            app.meunIds = menus;
+            app.menuIds = menus;
             function onCheck(e, treeId, treeNode) {
                 var treeObj = $.fn.zTree.getZTreeObj("treeDemo"),
                     nodes = treeObj.getCheckedNodes(true);
@@ -87,7 +87,7 @@
                 for (var i = 0; i < nodes.length; i++) {
                     menus.push(nodes[i].id); //获取选中节点的值
                 }
-                app.meunIds = menus;
+                app.menuIds = menus;
             }
 
             var setting = {
