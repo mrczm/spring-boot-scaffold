@@ -82,6 +82,8 @@ var vue_app ;
         setTimeout(function () {
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
             parent.layer.close(index); //再执行关闭
+            console.log( parent.vue_app)
+            parent.vue_app.load();
         }, 3000);
     }
     function open_page() {

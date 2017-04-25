@@ -119,6 +119,9 @@ var vue_app;
 
     });
 
+
+    vue_app = app;
+
     function getRoleData(param, cb) {
         $.get(api_path, param, cb);
     }
@@ -178,5 +181,4 @@ var vue_app;
         });
     }
 
-    vue_app = app;
 })();

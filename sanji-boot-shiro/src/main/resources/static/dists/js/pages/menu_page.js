@@ -1,6 +1,7 @@
 /**
  * Created by sunxyz on 2017/3/17.
  */
+var vue_app;
 (function () {
     var api_path = config.api.menu;
     var frame = config.frame.menu;
@@ -63,6 +64,7 @@
         }
     })
 
+    vue_app = app;
     function edit(obj) {
         if (!obj) {
             layer.msg('请选中要修改的列');
