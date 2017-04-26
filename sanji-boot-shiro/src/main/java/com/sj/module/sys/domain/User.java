@@ -10,6 +10,7 @@ import java.util.Set;
 
 /**
  * Created by sunxyz on 2017/3/13.
+ * v0.1.1 移除 角色组
  */
 @JsonIgnoreProperties({"hibernateLazyInitializer", "password", "news", "roleSet"})
 @DynamicUpdate
@@ -31,9 +32,6 @@ public class User extends BaseEntity<Long> {
     @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinTable(name = "sys_user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roleSet;
-
-    @ManyToOne
-    private Group group;
 
     public String getLoginName() {
         return loginName;
@@ -68,15 +66,6 @@ public class User extends BaseEntity<Long> {
 
     public User setRoleSet(Set<Role> roleSet) {
         this.roleSet = roleSet;
-        return this;
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public User setGroup(Group group) {
-        this.group = group;
         return this;
     }
 }

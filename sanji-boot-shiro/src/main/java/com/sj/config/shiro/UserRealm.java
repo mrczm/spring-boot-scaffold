@@ -1,6 +1,5 @@
 package com.sj.config.shiro;
 
-import com.sj.module.sys.domain.Group;
 import com.sj.module.sys.domain.Menu;
 import com.sj.module.sys.domain.Role;
 import com.sj.module.sys.domain.User;
@@ -18,26 +17,17 @@ public class UserRealm extends AbstractUserRealm {
 
     @Override
     public UserRolesAndPermissions doGetGroupAuthorizationInfo(User userInfo) {
-        Set<String> userRoles = new HashSet<>();
-        Set<String> userPermissions = new HashSet<>();
-        //获取当前用户下所有ACL权限列表
-        //获取当前用户下拥有的所有角色列表
-        Set<Role> roles = userInfo.getRoleSet();
-        loadRolesAndPermissions(userRoles, userPermissions, roles);
-        return new UserRolesAndPermissions(userRoles, userPermissions);
+        return null;
     }
 
     @Override
     public UserRolesAndPermissions doGetRoleAuthorizationInfo(User userInfo) {
         Set<String> userRoles = new HashSet<>();
         Set<String> userPermissions = new HashSet<>();
-        Group group = userInfo.getGroup();
-        if (null != group) {
-            Set<Role> roles = group.getRoleSet();
-            loadRolesAndPermissions(userRoles, userPermissions, roles);
-            Set<Menu> menuSet = group.getMenuSet();
-            loadPermissions(userPermissions, menuSet);
-        }
+        //获取当前用户下所有ACL权限列表
+        //获取当前用户下拥有的所有角色列表
+        Set<Role> roles = userInfo.getRoleSet();
+        loadRolesAndPermissions(userRoles, userPermissions, roles);
         return new UserRolesAndPermissions(userRoles, userPermissions);
     }
 
@@ -59,9 +49,7 @@ public class UserRealm extends AbstractUserRealm {
         if (null != menuSet) {
             Set<String> permissionResourcesNameSet = menuSet.stream().
                     filter(menu -> null != menu.getPermission() && !(menu.getPermission().trim().equals(""))).
-                    filter(menu -> {
-                        return null != menu.getVisible();
-                    }).
+                    filter(menu -> null != menu.getVisible()).
                     filter(Menu::getVisible).
                     map(Menu::getPermission).
                     collect(Collectors.toSet());

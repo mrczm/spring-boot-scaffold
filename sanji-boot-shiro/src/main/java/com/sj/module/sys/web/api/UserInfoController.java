@@ -3,7 +3,6 @@ package com.sj.module.sys.web.api;
 import com.sj.common.Result;
 import com.sj.module.sys.constant.RequestConstant;
 import com.sj.module.sys.domain.User;
-import com.sj.module.sys.domain.UserDeatil;
 import com.sj.module.sys.repository.UserRepository;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.PrincipalCollection;

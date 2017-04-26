@@ -1,5 +1,6 @@
 package com.sj;
 
+import com.sj.module.sys.domain.User;
 import com.sj.module.sys.repository.UserRepository;
 import com.sj.module.sys.service.UserService;
 import org.junit.Test;
@@ -30,6 +31,12 @@ public class SanjiBootShiroApplicationTests {
         userRepository.findByLoginName("admin");
         userRepository.findByLoginName("admin");
         userRepository.findByLoginName("admin");
+        User user = new User();
+        user.setLoginName("abc").setPassword("abc");
+        User user1 = new User();
+        user1.setLoginName("abcd").setLoginName("abcd");
+
+        userRepository.save(Arrays.asList(user, user1));
 
         userRepository.findAll(Arrays.asList(1L, 2L));
     }

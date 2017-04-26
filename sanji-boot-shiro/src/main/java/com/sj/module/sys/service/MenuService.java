@@ -1,6 +1,5 @@
 package com.sj.module.sys.service;
 
-import com.sj.module.sys.domain.Group;
 import com.sj.module.sys.domain.Menu;
 import com.sj.module.sys.domain.Role;
 import com.sj.module.sys.domain.User;
@@ -8,14 +7,9 @@ import com.sj.module.sys.domain.vo.MenuTreeVO;
 import com.sj.module.sys.repository.MenuRepository;
 import com.sj.module.sys.repository.UserRepository;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

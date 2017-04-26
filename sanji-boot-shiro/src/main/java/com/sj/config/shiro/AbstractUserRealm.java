@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -41,13 +42,18 @@ public abstract class AbstractUserRealm extends AuthorizingRealm {
         Set<String> userPermissions = new HashSet<>();
         //从数据库中获取当前登录用户的详细信息
         User userInfo = userRepository.findByLoginName(currentLoginName);
-        if (null != userInfo) {
+        if (Objects.nonNull(userInfo)) {
             UserRolesAndPermissions groupContainer = doGetGroupAuthorizationInfo(userInfo);
-            UserRolesAndPermissions roleContainer = doGetGroupAuthorizationInfo(userInfo);
-            userRoles.addAll(groupContainer.getUserRoles());
-            userRoles.addAll(roleContainer.getUserRoles());
-            userPermissions.addAll(groupContainer.getUserPermissions());
-            userPermissions.addAll(roleContainer.getUserPermissions());
+            UserRolesAndPermissions roleContainer = doGetRoleAuthorizationInfo(userInfo);
+            if (Objects.nonNull(groupContainer)) {
+                userRoles.addAll(groupContainer.getUserRoles());
+                userPermissions.addAll(groupContainer.getUserPermissions());
+            }
+            if (Objects.nonNull(roleContainer)) {
+                userRoles.addAll(roleContainer.getUserRoles());
+                userPermissions.addAll(roleContainer.getUserPermissions());
+            }
+
         } else {
             throw new AuthorizationException();
         }
@@ -69,7 +75,7 @@ public abstract class AbstractUserRealm extends AuthorizingRealm {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         //查出是否有此用户
         User user = userRepository.findByLoginName(token.getUsername());
-        if (user != null) {
+        if (Objects.nonNull(user)) {
             // 若存在，将此用户存放到登录认证info中，无需自己做密码对比，Shiro会为我们进行密码对比校验
             return new SimpleAuthenticationInfo(user.getLoginName(), user.getPassword(), getName());
         }
