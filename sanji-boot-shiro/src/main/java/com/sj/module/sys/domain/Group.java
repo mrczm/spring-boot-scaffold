@@ -2,16 +2,14 @@ package com.sj.module.sys.domain;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.Set;
 
 /**
  * Created by sunxyz on 2017/3/13.
  */
-@Entity(name = "sys_group")
+@Entity
+@Table(name = "sys_group")
 public class Group extends BaseEntity<Long> {
 
     private String name;//给用户看

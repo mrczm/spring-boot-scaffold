@@ -10,9 +10,10 @@ import java.util.Set;
 /**
  * Created by sunxyz on 2017/3/13.
  */
-@JsonIgnoreProperties({"menuSet", "userSet","news"})
+@JsonIgnoreProperties({"menuSet", "userSet", "news"})
 @DynamicUpdate
-@Entity(name = "sys_role")
+@Entity
+@Table(name = "sys_role")
 public class Role extends BaseEntity<Long> {
 
     private String name;//给用户看

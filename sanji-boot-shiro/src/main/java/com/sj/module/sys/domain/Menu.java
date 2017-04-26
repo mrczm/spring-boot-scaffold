@@ -9,7 +9,8 @@ import javax.persistence.*;
  * Created by sunxyz on 2017/3/14.
  */
 @JsonIgnoreProperties({"new", "level", "parent"})
-@Entity(name = "sys_menu")
+@Entity
+@Table(name = "sys_menu")
 public class Menu extends BaseEntity<Long> {
 
     @ManyToOne

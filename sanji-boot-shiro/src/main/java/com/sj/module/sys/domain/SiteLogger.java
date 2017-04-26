@@ -4,6 +4,7 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 import org.jeecgframework.poi.excel.annotation.ExcelTarget;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
@@ -19,7 +20,8 @@ import java.util.Date;
  * Created by yangrd on 2017/4/5.
  */
 @ExcelTarget("SiteLogger")
-@Entity(name = "sys_logger")
+@Entity
+@Table(name = "sys_logger")
 public class SiteLogger extends BaseEntity<Long> {
 
     @Excel(name = "请求用户", orderNum = "5", needMerge = true)

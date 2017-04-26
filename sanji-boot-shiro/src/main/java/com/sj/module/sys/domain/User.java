@@ -13,7 +13,8 @@ import java.util.Set;
  */
 @JsonIgnoreProperties({"hibernateLazyInitializer", "password", "news", "roleSet"})
 @DynamicUpdate
-@Entity(name = "sys_user")
+@Entity
+@Table(name = "sys_user")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseEntity<Long> {
 
@@ -38,39 +39,44 @@ public class User extends BaseEntity<Long> {
         return loginName;
     }
 
-    public void setLoginName(String loginName) {
+    public User setLoginName(String loginName) {
         this.loginName = loginName;
+        return this;
     }
 
     public String getNickname() {
         return nickname;
     }
 
-    public void setNickname(String nickname) {
+    public User setNickname(String nickname) {
         this.nickname = nickname;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public User setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public Set<Role> getRoleSet() {
         return roleSet;
     }
 
-    public void setRoleSet(Set<Role> roleSet) {
+    public User setRoleSet(Set<Role> roleSet) {
         this.roleSet = roleSet;
+        return this;
     }
 
     public Group getGroup() {
         return group;
     }
 
-    public void setGroup(Group group) {
+    public User setGroup(Group group) {
         this.group = group;
+        return this;
     }
 }

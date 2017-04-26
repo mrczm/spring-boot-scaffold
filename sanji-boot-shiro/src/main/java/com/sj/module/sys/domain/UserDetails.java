@@ -5,6 +5,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
 /**
  * 添加用户详细信息 用户表尽量不要修改
@@ -12,9 +13,10 @@ import javax.persistence.PrimaryKeyJoinColumn;
  */
 @JsonIgnoreProperties({"hibernateLazyInitializer", "password", "news"})
 @DynamicUpdate
-@Entity(name = "sys_userdeatil")
+@Entity
+@Table(name = "sys_user_deatils")
 @PrimaryKeyJoinColumn(name = "user_id")
-public class UserDeatil extends User {
+public class UserDetails extends User {
 
     private String description;
 
