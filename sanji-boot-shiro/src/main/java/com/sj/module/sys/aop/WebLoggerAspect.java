@@ -51,6 +51,7 @@ public class WebLoggerAspect {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
 
+        String remoteAddr = request.getRemoteAddr();
         String method = request.getMethod();
         String uri = request.getRequestURI();
         String queryString = request.getQueryString();
@@ -59,7 +60,7 @@ public class WebLoggerAspect {
         String classMethod = joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName();
         String permissions = Arrays.toString(requiresPermissions.value());
 
-        SiteLogger siteLogger = new SiteLogger(currentLoginName, uri, queryString, method, userAgent, classMethod, permissions, new Date());
+        SiteLogger siteLogger = new SiteLogger(currentLoginName, remoteAddr, uri, queryString, method, userAgent, classMethod, permissions, new Date());
         siteLoggerEventPublisher.publish(siteLogger);
     }
 

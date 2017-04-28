@@ -87,28 +87,31 @@ public class Result<T> {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public Result setStatus(Status status) {
         this.status = status;
+        return this;
     }
 
     public String getMsg() {
         return msg;
     }
 
-    public void setMsg(String msg) {
+    public Result setMsg(String msg) {
         this.msg = msg;
+        return this;
     }
 
     public T getContent() {
         return content;
     }
 
-    public void setContent(T content) {
+    public Result setContent(T content) {
         this.content = content;
+        return this;
     }
 
-    public static enum Status {
-        SUCCESS, ERROR
+    public  enum Status {
+        SUCCESS, ERROR ,KICKOUT
     }
 
 }

@@ -37,39 +37,44 @@ public class Role extends BaseEntity<Long> {
         return name;
     }
 
-    public void setName(String name) {
+    public Role setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public Role setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public String getRoleType() {
         return roleType;
     }
 
-    public void setRoleType(String roleType) {
+    public Role setRoleType(String roleType) {
         this.roleType = roleType;
+        return this;
     }
 
     public Set<User> getUserSet() {
         return userSet;
     }
 
-    public void setUserSet(Set<User> userSet) {
+    public Role setUserSet(Set<User> userSet) {
         this.userSet = userSet;
+        return this;
     }
 
     public Set<Menu> getMenuSet() {
         return menuSet;
     }
 
-    public void setMenuSet(Set<Menu> menuSet) {
+    public Role setMenuSet(Set<Menu> menuSet) {
         this.menuSet = menuSet;
+        return this;
     }
 }

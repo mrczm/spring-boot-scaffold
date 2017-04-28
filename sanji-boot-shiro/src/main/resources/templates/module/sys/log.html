@@ -85,6 +85,7 @@
                             <th>请求参数</th>
                             <th>请求权限验证</th>
                             <th>请求用户</th>
+                            <th>请求ip</th>
                             <th>请求发生时间</th>
                         </tr>
                         </thead>
@@ -96,6 +97,7 @@
                             <td>{{obj.requestParams}}</td>
                             <td>{{obj.permissions}}</td>
                             <td>{{obj.userLoginName}}</td>
+                            <td>{{obj.remoteAddr}}</td>
                             <td>{{obj.requestTime | date-formatter }}</td>
                         </tr>
                         </tbody>

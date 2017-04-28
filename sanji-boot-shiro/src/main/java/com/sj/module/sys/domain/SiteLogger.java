@@ -27,6 +27,8 @@ public class SiteLogger extends BaseEntity<Long> {
     @Excel(name = "请求用户", orderNum = "5", needMerge = true)
     private String userLoginName;//用户的登录名
 
+    private String remoteAddr; 	// 操作用户的IP地址
+
     @Excel(name = "类别", orderNum = "1", needMerge = true)
     private String requestUri;//请求路径
 
@@ -52,8 +54,9 @@ public class SiteLogger extends BaseEntity<Long> {
     public SiteLogger() {
     }
 
-    public SiteLogger(String userLoginName, String requestUri, String requestParams, String requestMethod, String requestUserAgent, String classMethod, String permissions, Date requestTime) {
+    public SiteLogger(String userLoginName, String remoteAddr, String requestUri, String requestParams, String requestMethod, String requestUserAgent, String classMethod, String permissions, Date requestTime) {
         this.userLoginName = userLoginName;
+        this.remoteAddr = remoteAddr;
         this.requestUri = requestUri;
         this.requestParams = requestParams;
         this.requestMethod = requestMethod;
@@ -69,6 +72,15 @@ public class SiteLogger extends BaseEntity<Long> {
 
     public SiteLogger setUserLoginName(String userLoginName) {
         this.userLoginName = userLoginName;
+        return this;
+    }
+
+    public String getRemoteAddr() {
+        return remoteAddr;
+    }
+
+    public SiteLogger setRemoteAddr(String remoteAddr) {
+        this.remoteAddr = remoteAddr;
         return this;
     }
 

@@ -7,6 +7,7 @@ import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -28,6 +30,13 @@ public class ShiroConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(ShiroConfiguration.class);
 
+
+    @Bean
+    public DefaultWebSessionManager sessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        return sessionManager;
+    }
+
     /**
      * Shiro的Web过滤器Factory 命名:shiroFilter<br /> * * @param securityManager * @return
      */
@@ -35,6 +44,13 @@ public class ShiroConfiguration {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
 //        logger.info("注入Shiro的Web过滤器-->shiroFilter", ShiroFilterFactoryBean.class);
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+
+        Map<String, Filter> filterChainMap = new LinkedHashMap<>();
+        KickoutSessionControlFilter filter = new KickoutSessionControlFilter();
+        filter.setSessionManager(sessionManager());
+        filter.setCacheManager(ehCacheManager());
+        filterChainMap.put("kickout", filter);
+        shiroFilterFactoryBean.setFilters(filterChainMap);
 
         //Shiro的核心安全接口,这个属性是必须的
         shiroFilterFactoryBean.setSecurityManager(securityManager);
@@ -57,12 +73,13 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/reg", "anon");
         filterChainDefinitionMap.put("/plugins/**", "anon");
         filterChainDefinitionMap.put("/dists/img/*", "anon");
-        filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/**", "kickout,authc");
         //测试时使用
         filterChainDefinitionMap.put("/pages/**", "anon");
         filterChainDefinitionMap.put("/api/**", "anon");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+
 
         return shiroFilterFactoryBean;
     }
@@ -85,6 +102,7 @@ public class ShiroConfiguration {
         securityManager.setRealm(userRealm);
         //注入缓存管理器;
         securityManager.setCacheManager(ehCacheManager());//这个如果执行多次，也是同样的一个对象;
+        securityManager.setSessionManager(sessionManager());
         return securityManager;
     }
 

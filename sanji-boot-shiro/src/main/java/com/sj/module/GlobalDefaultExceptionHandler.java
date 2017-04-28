@@ -3,6 +3,7 @@ package com.sj.module;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.sj.common.Result;
 import com.sj.exception.SanJiException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -24,6 +25,8 @@ public class GlobalDefaultExceptionHandler {
 
     private static final Result<String> RESULT = Result.error("操作异常");
 
+    private static final Result<String> UNAUTHORIZED = Result.error("未授权");
+
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public Result<String> defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
@@ -31,6 +34,8 @@ public class GlobalDefaultExceptionHandler {
             throw e;
         if (e instanceof SanJiException) {
             return Result.error(e.getMessage());
+        } else if (e instanceof UnauthorizedException) {
+            return UNAUTHORIZED;
         } else {
             logger.error("Request path : [url:{}, method:{}] 发生异常 => [异常类：{}, 异常信息:{}]", req.getRequestURI(), req.getMethod(), e.getClass(), e.getMessage());
             return RESULT;

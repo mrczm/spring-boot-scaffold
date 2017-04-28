@@ -1,6 +1,8 @@
 package com.sj.module.sys.web.api;
 
 import com.sj.common.Result;
+import com.sj.common.Tuple;
+import com.sj.config.shiro.UserRealm;
 import com.sj.module.sys.constant.RequestConstant;
 import com.sj.module.sys.domain.Menu;
 import com.sj.module.sys.domain.Role;
@@ -9,21 +11,20 @@ import com.sj.module.sys.repository.MenuRepository;
 import com.sj.module.sys.repository.RoleRepository;
 import com.sj.module.sys.repository.UserRepository;
 import com.sj.module.sys.web.BaseController;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +35,10 @@ import java.util.stream.Collectors;
 @RequestMapping(RequestConstant.ROLE_API)
 public class RoleController extends BaseController<RoleRepository, Role, Long> {
 
+
+    @Autowired
+    private UserRealm userRealm;
+
     @Autowired
     private MenuRepository menuRepository;
 
@@ -43,15 +48,8 @@ public class RoleController extends BaseController<RoleRepository, Role, Long> {
     @RequiresPermissions("sys:role:add")
     @PostMapping
     public Result<String> add(Role role, @RequestParam(value = "menuIds[]", required = false) String[] menus) {
-        Set<Long> menuIdSet;
-        try {
-            menuIdSet = Arrays.stream(menus).map(id -> (Long.valueOf(id))).collect(Collectors.toSet());
-        } catch (Exception e) {
-            return Result.error();
-        }
-        Set<Menu> menuSet = menuRepository.findAll(menuIdSet).stream().collect(Collectors.toSet());
-        role.setMenuSet(menuSet);
-        return super.save(role);
+        Optional<Set<Menu>> optional = getMenuSet(menus);
+        return optional.isPresent() ? super.save(role.setMenuSet(optional.get())) : Result.error();
     }
 
     @RequiresPermissions("sys:role:delete")
@@ -60,18 +58,12 @@ public class RoleController extends BaseController<RoleRepository, Role, Long> {
         return super.delete(id);
     }
 
-    @RequiresPermissions("sys:role:update")
+    @RequiresPermissions("sys:role:edit")
     @PutMapping("/{id}")
     public Result<String> update(@PathVariable("id") Role old, Role role, @RequestParam(value = "menuIds[]", required = false) String[] menus) {
-        Set<Long> menuIds = Arrays.stream(menus).map(id -> (Long.valueOf(id))).collect(Collectors.toSet());
-        old.setName(null != role.getName() ? role.getName() : old.getName());
-        old.setRoleType(null != role.getRoleType() ? role.getRoleType() : old.getRoleType());
-        old.setDescription(null != role.getDescription() ? role.getDescription() : old.getDescription());
-        if (null != menuIds) {
-            Set<Menu> menuSet = menuRepository.findAll(menuIds).stream().collect(Collectors.toSet());
-            old.setMenuSet(menuSet);
-        }
-        return super.update(old);
+        old.setName(role.getName()).setRoleType(role.getRoleType()).setDescription(role.getDescription());
+        Optional<Set<Menu>> optional = getMenuSet(menus);
+        return optional.isPresent() ? super.update(old.setMenuSet(optional.get())) : Result.error();
     }
 
     @RequiresPermissions("sys:role:view")
@@ -108,4 +100,23 @@ public class RoleController extends BaseController<RoleRepository, Role, Long> {
         roleSet.remove(role);
         return Result.ok();
     }
+
+    private static class SingletonHolder {
+        private static final Optional<Set<Menu>> INSTANCE = Optional.of(new HashSet<>());
+    }
+
+    private Optional<Set<Menu>> getMenuSet(String[] menus) {
+        if (Objects.isNull(menus)) {
+            return SingletonHolder.INSTANCE;
+        }
+        Set<Long> menuIdSet;
+        try {
+            menuIdSet = Arrays.stream(menus).map(id -> (Long.valueOf(id))).collect(Collectors.toSet());
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+        Set<Menu> menuSet = menuRepository.findAll(menuIdSet).stream().collect(Collectors.toSet());
+        return Optional.of(menuSet);
+    }
+
 }

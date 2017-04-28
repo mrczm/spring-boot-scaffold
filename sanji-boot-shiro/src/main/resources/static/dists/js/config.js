@@ -10,4 +10,5 @@ var config = {
         menu: 'menu/frame',
         icons: '/page/sys/icons/frame',
     },
+    site: location.href,
 }
