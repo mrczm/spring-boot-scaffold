@@ -1,4 +1,4 @@
-package com.sj.config.shiro;
+package com.sj.config.shiro.realm;
 
 import com.sj.module.sys.domain.Menu;
 import com.sj.module.sys.domain.Role;

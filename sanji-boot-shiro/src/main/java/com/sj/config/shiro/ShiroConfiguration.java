@@ -1,6 +1,9 @@
 package com.sj.config.shiro;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import com.sj.config.shiro.filter.KickoutSessionControlFilter;
+import com.sj.config.shiro.filter.MyAuthenticationFilter;
+import com.sj.config.shiro.realm.UserRealm;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -24,6 +27,7 @@ import java.util.Map;
  * ("http://www.infocool.net/kb/Apache/201609/190994.html")
  * (http://blog.csdn.net/catoop/article/details/50520958)
  * Created by sunxyz on 2017/3/13.
+ * 提供踢出用户功能
  */
 @Configuration
 public class ShiroConfiguration {
@@ -47,9 +51,11 @@ public class ShiroConfiguration {
 
         Map<String, Filter> filterChainMap = new LinkedHashMap<>();
         KickoutSessionControlFilter filter = new KickoutSessionControlFilter();
+        MyAuthenticationFilter myAuthenticationFilter = new MyAuthenticationFilter();
         filter.setSessionManager(sessionManager());
         filter.setCacheManager(ehCacheManager());
         filterChainMap.put("kickout", filter);
+        filterChainMap.put("myauthc", myAuthenticationFilter);
         shiroFilterFactoryBean.setFilters(filterChainMap);
 
         //Shiro的核心安全接口,这个属性是必须的
@@ -73,7 +79,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/reg", "anon");
         filterChainDefinitionMap.put("/plugins/**", "anon");
         filterChainDefinitionMap.put("/dists/img/*", "anon");
-        filterChainDefinitionMap.put("/**", "kickout,authc");
+        filterChainDefinitionMap.put("/**", "kickout,myauthc");
         //测试时使用
         filterChainDefinitionMap.put("/pages/**", "anon");
         filterChainDefinitionMap.put("/api/**", "anon");

@@ -1,8 +1,7 @@
 package com.sj.module.sys.web.api;
 
 import com.sj.common.Result;
-import com.sj.common.Tuple;
-import com.sj.config.shiro.UserRealm;
+import com.sj.config.shiro.realm.UserRealm;
 import com.sj.module.sys.constant.RequestConstant;
 import com.sj.module.sys.domain.Menu;
 import com.sj.module.sys.domain.Role;
@@ -11,14 +10,8 @@ import com.sj.module.sys.repository.MenuRepository;
 import com.sj.module.sys.repository.RoleRepository;
 import com.sj.module.sys.repository.UserRepository;
 import com.sj.module.sys.web.BaseController;
-import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;

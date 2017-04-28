@@ -1,7 +1,7 @@
-package com.sj.config.shiro;
+package com.sj.config.shiro.filter;
 
-import com.alibaba.fastjson.JSON;
 import com.sj.common.Result;
+import com.sj.config.shiro.util.ResponseUtil;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;
@@ -15,8 +15,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -128,7 +126,7 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
             //判断是不是Ajax请求
             if ("XMLHttpRequest".equalsIgnoreCase(((HttpServletRequest) request).getHeader("X-Requested-With"))) {
                 //输出json串
-                out((HttpServletResponse) response, Result.error("您已经在其他地方登录，请刷新页面重新登录！").setStatus(Result.Status.KICKOUT));
+                ResponseUtil.out((HttpServletResponse) response, Result.error("您已经在其他地方登录，请刷新页面重新登录！").setStatus(Result.Status.KICKOUT));
             } else {
                 //重定向
                 WebUtils.issueRedirect(request, response, kickoutUrl);
@@ -138,18 +136,4 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
         return true;
     }
 
-    private void out(HttpServletResponse response, Object object)
-            throws IOException {
-        try {
-            response.setHeader("Cache-Control", "no-cache");
-            response.setContentType("text/json;charset=UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            PrintWriter out = response.getWriter();
-            out.println(JSON.toJSONString(object));
-            out.println();
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-        }
-    }
 }

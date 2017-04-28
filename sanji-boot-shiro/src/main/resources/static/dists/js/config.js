@@ -12,3 +12,14 @@ var config = {
     },
     site: location.href,
 }
+
+var common_function = {
+    reload: function (data) {
+        console.log(data)
+        if (data.status == "KICKOUT") {
+            if (window.top) {//第一级iframe的父窗口
+                window.top.location.reload();
+            }
+        }
+    }
+}

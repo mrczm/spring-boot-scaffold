@@ -21,6 +21,7 @@ var vue_app;
             load: function () {
                 var _this = this;
                 $.get(api_path, function (data) {
+                    common_function.reload(data);
                     for (var i in data) {
                         var d = data[i];
                         d.select = false;

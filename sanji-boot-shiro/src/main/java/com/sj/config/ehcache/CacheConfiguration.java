@@ -1,7 +1,5 @@
 package com.sj.config.ehcache;
 
-import com.sj.config.shiro.AbstractUserRealm;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.EnableCaching;

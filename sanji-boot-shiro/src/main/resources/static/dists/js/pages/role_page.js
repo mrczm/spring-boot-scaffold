@@ -82,6 +82,7 @@ var vue_app;
                 };
 
                 getRoleData(param, function (data) {
+                    common_function.reload(data);
                     var ds = data.content;
                     for (var i in ds) {
                         var d = ds[i];
