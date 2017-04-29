@@ -39,7 +39,10 @@ public class WebLoggerAspect {
     public void webLog() {
     }
 
-    // 在一个方法执行之前，执行通知。
+    /**
+     * 记录后台权限接口操作的相关记录。
+     * @see SiteLogger
+     */ 
     @Before("@annotation(requiresPermissions)&&webLog()")
     public void doBeforeTask(JoinPoint joinPoint, RequiresPermissions requiresPermissions) {
         //获取shiro登录用户
