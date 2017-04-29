@@ -43,72 +43,81 @@ public class Menu extends BaseEntity<Long> {
         return parent;
     }
 
-    public void setParent(Menu parent) {
+    public Menu setParent(Menu parent) {
         this.parent = parent;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Menu setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public Menu setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public Menu setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     public String getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public Menu setIcon(String icon) {
         this.icon = icon;
+        return this;
     }
 
     public Long getSort() {
         return sort;
     }
 
-    public void setSort(Long sort) {
+    public Menu setSort(Long sort) {
         this.sort = sort;
+        return this;
     }
 
     public Long getLevel() {
         return level;
     }
 
-    public void setLevel(Long level) {
+    public Menu setLevel(Long level) {
         this.level = level;
+        return this;
     }
 
     public String getPermission() {
         return permission;
     }
 
-    public void setPermission(String permission) {
+    public Menu setPermission(String permission) {
         this.permission = permission;
+        return this;
     }
 
     public Boolean getVisible() {
         return visible;
     }
 
-    public void setVisible(Boolean visible) {
+    public Menu setVisible(Boolean visible) {
         this.visible = visible;
+        return this;
     }
 
     public Long getParentId() {

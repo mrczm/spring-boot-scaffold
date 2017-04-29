@@ -6,6 +6,7 @@ import com.sj.module.sys.constant.RequestConstant;
 import com.sj.module.sys.domain.Menu;
 import com.sj.module.sys.domain.Role;
 import com.sj.module.sys.domain.User;
+import com.sj.module.sys.manager.CacheManager;
 import com.sj.module.sys.repository.MenuRepository;
 import com.sj.module.sys.repository.RoleRepository;
 import com.sj.module.sys.repository.UserRepository;
@@ -56,6 +57,9 @@ public class RoleController extends BaseController<RoleRepository, Role, Long> {
     public Result<String> update(@PathVariable("id") Role old, Role role, @RequestParam(value = "menuIds[]", required = false) String[] menus) {
         old.setName(role.getName()).setRoleType(role.getRoleType()).setDescription(role.getDescription());
         Optional<Set<Menu>> optional = getMenuSet(menus);
+        if(!old.getMenuSet().equals(role.getMenuSet())){//更新角色之后清空缓存
+            CacheManager.clearAllUserLoginInfo();
+        }
         return optional.isPresent() ? super.update(old.setMenuSet(optional.get())) : Result.error();
     }
 

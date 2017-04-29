@@ -56,15 +56,21 @@
         <button class="layui-btn layui-btn-normal layui-btn-small layui-btn-radius glyphicon glyphicon-refresh"
                 v-on:click="reload">&nbsp;刷新结构
         </button>
+        <shiro:hasPermission name="sys:menu:add">
         <button class="layui-btn  layui-btn-small  layui-btn-radius glyphicon glyphicon-plus" v-on:click="add">
             &nbsp;添加子菜单
         </button>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="sys:menu:edit">
         <button class="layui-btn  layui-btn-small layui-btn-radius glyphicon glyphicon-edit" v-on:click="edit">
             &nbsp;编辑
         </button>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="sys:menu:delete">
         <button class="layui-btn layui-btn-danger  layui-btn-small layui-btn-radius glyphicon glyphicon-trash"
                 v-on:click="deleteMenu">&nbsp;刪除
         </button>
+        </shiro:hasPermission>
     </div>
     <table id="example-advanced">
         <thead>

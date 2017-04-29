@@ -29,8 +29,9 @@
             timeToLiveSeconds="120"
             overflowToDisk="false"
             diskPersistent="false"
-            diskExpiryThreadIntervalSeconds="120"
-    />
+            diskExpiryThreadIntervalSeconds="120">
+
+    </defaultCache>
 
     <cache
             name="users"
@@ -40,7 +41,6 @@
             timeToLiveSeconds="0"
             overflowToDisk="false"
             statistics="true">
-    >
     </cache>
 
     <!-- 登录记录缓存锁定10分钟 -->
@@ -53,6 +53,7 @@
            statistics="true">
     </cache>
 
+    <!--授权，即权限验证-->
     <cache name="authorizationCache"
            maxEntriesLocalHeap="2000"
            eternal="false"
@@ -62,6 +63,7 @@
            statistics="true">
     </cache>
 
+    <!--身份认证 / 登录-->
     <cache name="authenticationCache"
            maxEntriesLocalHeap="2000"
            eternal="false"
@@ -71,6 +73,7 @@
            statistics="true">
     </cache>
 
+    <!--session-->
     <cache name="shiro-activeSessionCache"
            maxEntriesLocalHeap="2000"
            eternal="false"
@@ -80,6 +83,7 @@
            statistics="true">
     </cache>
 
+    <!--踢出用户-->
     <cache name="shiro-kickout-session"
            maxEntriesLocalHeap="2000"
            eternal="false"
@@ -88,5 +92,15 @@
            overflowToDisk="false"
            statistics="true">
     </cache>
+
+<!--    &lt;!&ndash;系统菜单&ndash;&gt;
+    <cache name="sys_menu"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>-->
 
 </ehcache>

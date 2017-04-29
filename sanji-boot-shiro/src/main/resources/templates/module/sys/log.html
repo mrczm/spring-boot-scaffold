@@ -62,11 +62,13 @@
                             </div>
                         </form>
                     </div>
+                    <shiro:hasPermission name="sys:log:export">
                     <div class="col-md-2">
                         <div class="form-group">
                             <a :href="'/'+export_excel" class="btn btn-default " ><i class="fa fa-cloud-download"></i>&nbsp;excel导出</a>
                         </div>
                     </div>
+                    </shiro:hasPermission>
                 </div>
             </div>
         </div>

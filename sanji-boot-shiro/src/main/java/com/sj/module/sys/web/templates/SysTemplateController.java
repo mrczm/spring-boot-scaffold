@@ -17,7 +17,7 @@ public class SysTemplateController {
 
     private static final String TEMPLATE_PATH = "/module/sys/";
 
-    @RequiresPermissions("sys:menu:view")
+    @RequiresPermissions("sys:menu:edit")
     @GetMapping("/icons/frame")
     public String iconsFrame() {
         return template("icons");
@@ -29,7 +29,7 @@ public class SysTemplateController {
         return template("menu");
     }
 
-    @RequiresPermissions("sys:menu:view")
+    @RequiresPermissions("sys:menu:edit")
     @GetMapping("/menu/frame")
     public String menuFrame() {
         return template("menu_frame");
@@ -41,7 +41,7 @@ public class SysTemplateController {
         return template("role");
     }
 
-    @RequiresPermissions("sys:role:view")
+    @RequiresPermissions("sys:role:edit")
     @GetMapping("/role/frame")
     public String roleFrame() {
         return template("role_frame");

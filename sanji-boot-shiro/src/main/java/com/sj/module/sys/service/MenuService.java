@@ -11,6 +11,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -26,8 +27,29 @@ public class MenuService {
     @Autowired
     private MenuRepository repository;
 
-    public Menu findByParentTop1(Menu parent) {
-        return repository.findFirstByParentOrderBySortDesc(parent);
+    /**
+     * 层级添加+排序添加
+     * Created by yangrd on 2017/4/29 16:04.
+     */
+    @Transactional
+    public Menu save(Menu menu) {
+        Menu parent = menu.getParent();
+        //层级添加+排序添加
+        menu.setLevel(parent.getLevel() + 1);
+        menu.setSort(null != menu.getSort() ? menu.getSort() : 0L);
+        menu.setVisible(null != menu.getVisible() ? menu.getVisible() : false);
+        Date now = new Date();
+        menu.setCreateTime(now);
+        menu.setUpdateTime(now);
+        if (menu.getSort() == 0L) {
+            Menu brothers = repository.findFirstByParentOrderBySortDesc(parent);
+            if (Objects.nonNull(brothers)) {
+                menu.setSort(brothers.getSort() + 1);
+            } else {
+                menu.setSort(parent.getSort() * 10 + 1);
+            }
+        }
+        return repository.save(menu);
     }
 
     /**
@@ -63,8 +85,7 @@ public class MenuService {
     }
 
     /**
-     * TODO 暂时没有组的概念
-     * Created by sunxyz on 2017/3/14.
+     * Created by sunxyz on 2017/4/29.
      */
     private Map<Long, Set<Menu>> getMenuLevelByCurrentUser() {
         User userInfo = userRepository.findByLoginName(getCurrentLoginName());

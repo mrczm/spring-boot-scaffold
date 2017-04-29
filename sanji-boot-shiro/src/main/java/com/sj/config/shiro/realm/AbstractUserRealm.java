@@ -31,6 +31,11 @@ public abstract class AbstractUserRealm extends AuthorizingRealm {
 
     public abstract UserRolesAndPermissions doGetRoleAuthorizationInfo(User userInfo);
 
+    public AbstractUserRealm(){
+        this.setAuthorizationCacheName("authorizationCache");
+        this.setAuthenticationCacheName("authenticationCache");
+    }
+
     /**
      * 获取授权信息
      * Created by sunxyz on 2017/3/27.

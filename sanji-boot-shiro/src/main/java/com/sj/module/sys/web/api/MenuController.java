@@ -4,6 +4,7 @@ import com.sj.common.Result;
 import com.sj.module.sys.constant.RequestConstant;
 import com.sj.module.sys.domain.Menu;
 import com.sj.module.sys.domain.vo.MenuTreeVO;
+import com.sj.module.sys.manager.CacheManager;
 import com.sj.module.sys.repository.MenuRepository;
 import com.sj.module.sys.service.MenuService;
 import com.sj.module.sys.service.TreeTableService;
@@ -32,20 +33,8 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
     @Transactional
     @PostMapping
     public Result<String> add(@RequestParam(name = "pid", defaultValue = "1") Menu parent, Menu menu) {
-        menu.setParent(parent);
-        //层级添加+排序添加
-        menu.setLevel(parent.getLevel() + 1);
-        menu.setSort(null != menu.getSort() ? menu.getSort() : 0L);
-        menu.setVisible(null != menu.getVisible() ? menu.getVisible() : false);
-        if (menu.getSort() == 0L) {
-            Menu brothers = menuService.findByParentTop1(parent);
-            if (Objects.nonNull(brothers)) {
-                menu.setSort(brothers.getSort() + 1);
-            } else {
-                menu.setSort(parent.getSort() * 10 + 1);
-            }
-        }
-        return super.save(menu);
+        menuService.save(menu.setParent(parent));
+        return Result.ok();
     }
 
     @RequiresPermissions("sys:menu:delete")
@@ -59,6 +48,9 @@ public class MenuController extends BaseController<MenuRepository, Menu, Long> {
     @Transactional
     @PutMapping("/{id}")
     public Result<String> update(@PathVariable("id") Menu old, Menu menu) {
+        if (!old.getPermission().equals(menu.getPermission())) {//更新菜单权限标识之后清空缓存
+            CacheManager.clearAllUserLoginInfo();
+        }
         Menu news = valueUpdate(old, menu);
         return super.update(news);
     }
