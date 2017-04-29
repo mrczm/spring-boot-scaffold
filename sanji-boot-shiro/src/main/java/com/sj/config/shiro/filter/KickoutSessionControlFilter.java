@@ -1,15 +1,19 @@
 package com.sj.config.shiro.filter;
 
 import com.sj.common.Result;
+import com.sj.config.shiro.util.RequestUtil;
 import com.sj.config.shiro.util.ResponseUtil;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.session.SessionException;
 import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.WebUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -28,6 +32,9 @@ import java.util.LinkedList;
  * 想将其做退出登录处理，然后再重定向到踢出登录提示页面
  */
 public class KickoutSessionControlFilter extends AccessControlFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(KickoutSessionControlFilter.class);
+
     private String kickoutUrl = "/login"; //踢出后到的地址
     private boolean kickoutAfter = false; //踢出之前登录的/之后登录的用户 //默认踢出之前登录的用户
     private int maxSession = 1; //同一个帐号最大会话数 默认1
@@ -108,8 +115,8 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
                     //设置会话的kickout属性表示踢出了
                     kickoutSession.setAttribute("kickout", true);
                 }
-            } catch (Exception e) {//ignore exception
-                e.printStackTrace();
+            } catch (SessionException e) {//ignore exception
+                logger.error(e.getMessage());
             }
         }
 
@@ -121,10 +128,11 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
                 //退出登录
                 subject.logout();
             } catch (Exception e) { //ignore
+                logger.error(e.getMessage());
             }
             saveRequest(request);
             //判断是不是Ajax请求
-            if ("XMLHttpRequest".equalsIgnoreCase(((HttpServletRequest) request).getHeader("X-Requested-With"))) {
+            if (RequestUtil.isAjax((HttpServletRequest) request)) {
                 //输出json串
                 ResponseUtil.out((HttpServletResponse) response, Result.error("您已经在其他地方登录，请刷新页面重新登录！").setStatus(Result.Status.KICKOUT));
             } else {

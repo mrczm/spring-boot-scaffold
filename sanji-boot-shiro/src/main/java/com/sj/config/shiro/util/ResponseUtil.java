@@ -12,17 +12,13 @@ import java.io.PrintWriter;
 public class ResponseUtil {
 
     public static void out(HttpServletResponse response, Object object) throws IOException {
-        try {
-            response.setHeader("Cache-Control", "no-cache");
-            response.setContentType("text/json;charset=UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            PrintWriter out = response.getWriter();
-            out.println(JSON.toJSONString(object));
-            out.println();
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
+        response.setHeader("Cache-Control", "no-cache");
+        response.setContentType("text/json;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println(JSON.toJSONString(object));
+        out.println();
+        out.flush();
+        out.close();
     }
 }

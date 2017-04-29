@@ -81,15 +81,6 @@ public class SecurityController {
         }
     }
 
-    @GetMapping("/user_logout")
-    public String logout(Model model) {
-        //使用权限管理工具进行用户的退出，跳出登录，给出提示信息
-        SecurityUtils.getSubject().logout();
-        model.addAttribute("message", "您已安全退出");
-        return "login";
-    }
-
-
     @GetMapping("/reg")
     @ResponseBody
     public Result<String> reg(@Valid User user, BindingResult bindingResult) {
