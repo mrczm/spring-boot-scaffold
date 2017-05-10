@@ -37,6 +37,7 @@ public class Menu extends BaseEntity<Long> {
 
     {
         sort = 0L;
+        parentId = 0L;
     }
 
     public Menu getParent() {

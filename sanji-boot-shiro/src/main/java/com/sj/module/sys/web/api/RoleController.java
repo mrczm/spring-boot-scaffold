@@ -29,10 +29,6 @@ import java.util.stream.Collectors;
 @RequestMapping(RequestConstant.ROLE_API)
 public class RoleController extends BaseController<RoleRepository, Role, Long> {
 
-
-    @Autowired
-    private UserRealm userRealm;
-
     @Autowired
     private MenuRepository menuRepository;
 
