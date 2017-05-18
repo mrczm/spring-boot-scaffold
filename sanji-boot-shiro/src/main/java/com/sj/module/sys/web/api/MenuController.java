@@ -3,7 +3,7 @@ package com.sj.module.sys.web.api;
 import com.sj.common.Result;
 import com.sj.module.sys.constant.RequestConstant;
 import com.sj.module.sys.domain.Menu;
-import com.sj.module.sys.domain.vo.MenuTreeVO;
+import com.sj.module.sys.view.MenuTreeVO;
 import com.sj.module.sys.manager.CacheManager;
 import com.sj.module.sys.repository.MenuRepository;
 import com.sj.module.sys.service.MenuService;

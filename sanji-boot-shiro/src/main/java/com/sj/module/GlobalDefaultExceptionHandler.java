@@ -6,17 +6,14 @@ import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by sunxyz on 2017/3/13.
  */
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalDefaultExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
@@ -26,7 +23,6 @@ public class GlobalDefaultExceptionHandler {
     private static final Result<String> UNAUTHORIZED = Result.error("未授权");
 
     @ExceptionHandler(value = Exception.class)
-    @ResponseBody
     public Result<String> defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
         if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null)
             throw e;

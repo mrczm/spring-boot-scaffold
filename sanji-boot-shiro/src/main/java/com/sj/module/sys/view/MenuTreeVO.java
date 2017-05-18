@@ -1,8 +1,7 @@
-package com.sj.module.sys.domain.vo;
+package com.sj.module.sys.view;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import javafx.collections.transformation.SortedList;
 
 import java.util.*;
 

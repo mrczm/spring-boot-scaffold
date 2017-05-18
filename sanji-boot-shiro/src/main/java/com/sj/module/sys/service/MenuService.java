@@ -3,7 +3,7 @@ package com.sj.module.sys.service;
 import com.sj.module.sys.domain.Menu;
 import com.sj.module.sys.domain.Role;
 import com.sj.module.sys.domain.User;
-import com.sj.module.sys.domain.vo.MenuTreeVO;
+import com.sj.module.sys.view.MenuTreeVO;
 import com.sj.module.sys.repository.MenuRepository;
 import com.sj.module.sys.repository.UserRepository;
 import org.apache.shiro.SecurityUtils;
