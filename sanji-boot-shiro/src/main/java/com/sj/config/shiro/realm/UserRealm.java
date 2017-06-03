@@ -16,11 +16,6 @@ import java.util.stream.Collectors;
 public class UserRealm extends AbstractUserRealm {
 
     @Override
-    public UserRolesAndPermissions doGetGroupAuthorizationInfo(User userInfo) {
-        return null;
-    }
-
-    @Override
     public UserRolesAndPermissions doGetRoleAuthorizationInfo(User userInfo) {
         Set<String> userRoles = new HashSet<>();
         Set<String> userPermissions = new HashSet<>();
