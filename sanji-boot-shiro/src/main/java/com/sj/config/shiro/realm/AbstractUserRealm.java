@@ -27,11 +27,9 @@ public abstract class AbstractUserRealm extends AuthorizingRealm {
     @Autowired
     private UserRepository userRepository;
 
-    public abstract UserRolesAndPermissions doGetGroupAuthorizationInfo(User userInfo);
-
     public abstract UserRolesAndPermissions doGetRoleAuthorizationInfo(User userInfo);
 
-    public AbstractUserRealm(){
+    public AbstractUserRealm() {
         this.setAuthorizationCacheName("authorizationCache");
         this.setAuthenticationCacheName("authenticationCache");
     }
@@ -48,12 +46,7 @@ public abstract class AbstractUserRealm extends AuthorizingRealm {
         //从数据库中获取当前登录用户的详细信息
         User userInfo = userRepository.findByLoginName(currentLoginName);
         if (Objects.nonNull(userInfo)) {
-            UserRolesAndPermissions groupContainer = doGetGroupAuthorizationInfo(userInfo);
             UserRolesAndPermissions roleContainer = doGetRoleAuthorizationInfo(userInfo);
-            if (Objects.nonNull(groupContainer)) {
-                userRoles.addAll(groupContainer.getUserRoles());
-                userPermissions.addAll(groupContainer.getUserPermissions());
-            }
             if (Objects.nonNull(roleContainer)) {
                 userRoles.addAll(roleContainer.getUserRoles());
                 userPermissions.addAll(roleContainer.getUserPermissions());
