@@ -17,18 +17,16 @@ public final class FileOperateUtil {
     }
 
     public static void download(HttpServletRequest request, HttpServletResponse response, String storeName, Workbook book) throws Exception {
-
-        response.setContentType("application/ms-excel");
-        String agent = request.getHeader("USER-AGENT");//用户代理
-
-        // 防止中文文件名乱码
-        String codedFileName = storeName;
-        if (null != agent && -1 != agent.indexOf("MSIE")) {
-            codedFileName = URLEncoder.encode(storeName, "UTF-8").replaceAll("+", "%20");
-        } else if (null != agent && -1 != agent.indexOf("Mozilla")) {
-            codedFileName = MimeUtility.encodeText(storeName, "UTF-8", "B");
+        String agent = request.getHeader("USER-AGENT").toLowerCase();
+        response.setContentType("application/vnd.ms-excel");
+        String fileName = storeName;
+        String codedFileName = URLEncoder.encode(fileName, "UTF-8");
+        if (agent.contains("firefox")) {
+            response.setCharacterEncoding("utf-8");
+            response.setHeader("content-disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
+        } else {
+            response.setHeader("content-disposition", "attachment;filename=" + codedFileName);
         }
-        response.setHeader("Content-Disposition", "attachment;filename=" + codedFileName);
         book.write(response.getOutputStream());
     }
 
