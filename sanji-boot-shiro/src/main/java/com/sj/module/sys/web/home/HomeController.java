@@ -1,4 +1,4 @@
-package com.sj.module.sys.web;
+package com.sj.module.sys.web.home;
 
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.stereotype.Controller;

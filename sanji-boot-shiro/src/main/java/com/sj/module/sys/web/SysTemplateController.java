@@ -1,4 +1,4 @@
-package com.sj.module.sys.web.templates;
+package com.sj.module.sys.web;
 
 import com.sj.module.sys.domain.Role;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
