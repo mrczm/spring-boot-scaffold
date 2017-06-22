@@ -49,7 +49,7 @@ spring:
 # Template encoding.
     encoding: UTF-8
 # Comma-separated list of view names that should be excluded from resolution.
-    mode: HTML5
+    mode: LEGACYHTML5
 # Prefix that gets prepended to view names when building a URL.
     prefix: classpath:/templates/
 # Suffix that gets appended to view names when building a URL.
