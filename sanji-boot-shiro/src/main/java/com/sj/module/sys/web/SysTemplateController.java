@@ -16,7 +16,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SysTemplateController {
 
     private static final String TEMPLATE_PATH = "/module/sys/";
+    @GetMapping("/editPassword")
+    public String editPassword() {
+        return "user/editPassword";
+    }
 
+    @GetMapping("/user/edit")
+    public String userEdit() {
+        return "user/edit";
+    }
+
+    @GetMapping("/user/add")
+    public String userAdd() {
+        return "user/add";
+    }
+
+    @GetMapping("/user/index")
+    public String userManage() {
+        return "user/index";
+    }
     @RequiresPermissions("sys:menu:edit")
     @GetMapping("/icons/frame")
     public String iconsFrame() {
