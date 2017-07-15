@@ -3,9 +3,8 @@ package com.sj.modules.sys.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sj.common.base.domain.BaseEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * //前台菜单 最好做缓存处理
@@ -26,8 +25,8 @@ public class Menu extends BaseEntity<Long> {
 
     private Long sort;
 
-    @ManyToOne
-    private Menu parent;
+    @OneToMany
+    private List<Menu> subMenus;
 
     public String getName() {
         return name;
@@ -69,11 +68,11 @@ public class Menu extends BaseEntity<Long> {
         this.sort = sort;
     }
 
-    public Menu getParent() {
-        return parent;
+    public List<Menu> getSubMenus() {
+        return subMenus;
     }
 
-    public void setParent(Menu parent) {
-        this.parent = parent;
+    public void setSubMenus(List<Menu> subMenus) {
+        this.subMenus = subMenus;
     }
 }
