@@ -1,0 +1,169 @@
+<div id="createDialog" class="crudDialog">
+    <form id="createForm" method="post">
+        <div class="form-group">
+            <label for="loginName">帐号</label>
+            <input id="loginName" type="text" class="form-control" name="loginName"
+                   maxlength="20" v-model="user.loginName">
+        </div>
+        <div class="form-group">
+            <label for="password">密码</label>
+            <input id="password" type="text" class="form-control" name="password" maxlength="32">
+        </div>
+        <div class="form-group">
+            <label for="nickname">昵称</label>
+            <input id="nickname" type="text" class="form-control" name="nickname" maxlength="20"
+                   v-model="user.nickname">
+        </div>
+        <div class="form-group">
+            <label for="avatar">头像</label>
+            <input id="avatar" type="text" class="form-control" name="avatar" maxlength="50" v-model="user.avatar">
+        </div>
+        <div class="form-group">
+            <label for="phone">电话</label>
+            <input id="phone" type="text" class="form-control" name="phone" maxlength="20" v-model="user.phone">
+        </div>
+        <div class="form-group">
+            <label for="email">邮箱</label>
+            <input id="email" type="text" class="form-control" name="email" maxlength="50" v-model="user.email">
+        </div>
+        <div>
+            <label style="color:#999">性别: &nbsp;</label>
+            <div class="radio radio-inline radio-info">
+                <input id="sex_1" type="radio" name="sex" value="MAN" v-model="user.sex">
+                <label for="sex_1">男 </label>
+            </div>
+            <div class="radio radio-inline radio-danger">
+                <input id="sex_0" type="radio" name="sex" value="WO_MAN" v-model="user.sex">
+                <label for="sex_0">女 </label>
+            </div>
+        </div>
+        <br/>
+        <div>
+            <label style="color:#999">状态: &nbsp;</label>
+            <div class="radio radio-inline radio-success">
+                <input id="status_0" type="radio" name="status" value="NORMAL" v-model="user.status">
+                <label for="status_0">正常 </label>
+            </div>
+            <div class="radio radio-inline radio-danger">
+                <input id="status_1" type="radio" name="status" value="ABNORMAL" v-model="user.status">
+                <label for="status_1">异常 </label>
+            </div>
+            <div class="radio radio-inline">
+                <input id="status_2" type="radio" name="status" value="FROZEN" v-model="user.status">
+                <label for="status_2">冻结 </label>
+            </div>
+        </div>
+        <div class="form-group text-right dialog-buttons">
+            <a class="waves-effect waves-button" href="javascript:;" onclick="createSubmit();">保存</a>
+            <a class="waves-effect waves-button" href="javascript:;" onclick="createDialog.close();">取消</a>
+        </div>
+
+    </form>
+</div>
+<script>
+
+    function getUser(id, fc) {
+        iGet('/api/user/' + id, fc)
+    }
+
+    var id = 0;
+
+    setTimeout(function () {
+        var v = new Vue({
+            el: "#createForm",
+            data: {
+                user: {
+                    loginName: "",
+                    avatar: "",
+                    nickname: "",
+                    phone: "",
+                    email: "",
+                    sex: "MAN",
+                    status: 'NORMAL'
+                }
+
+            }, created: function () {
+                var self = this;
+                if (location.href.indexOf('#') > 0) {
+                    id = location.href.split("#")[1];
+                }
+                if (id != 0) {
+                    console.log('-------', id)
+                    getUser(id, function (data) {
+
+                        console.log(self.user)
+                        console.log(data);
+                        self.user = data.content;
+                    });
+                }
+            }
+        })
+        //去掉有值的input标题效果
+        var inputs = $("#createForm input[type=text]");
+        for (var i = 0; i < inputs.length; i++) {
+            if ($(inputs[i]).val() != '') {
+                $(inputs[i]).parent().find('label').addClass('active');
+            }
+        }
+//
+    }, 300)
+
+
+    function createSubmit() {
+        var data = {};
+        $('#createForm').serializeArray().map(function (x) {
+            data[x.name] = x.value;
+        });
+        var beforeSend = function () {
+            if ($('#loginName').val() == '') {
+                $('#loginName').focus();
+                return false;
+            }
+            if ($('#password').val() == '' || $('#password').val().length < 5) {
+                $('#password').focus();
+                return false;
+            }
+        }
+        var success = function (result) {
+            if (result.status != 'SUCCESS') {
+                $.confirm({
+                    theme: result.status == 'SUCCESS' ? 'light' : 'dark',
+                    animation: 'rotateX',
+                    closeAnimation: 'rotateX',
+                    title: false,
+                    content: result.msg.indexOf('constraint') > 0 ? '请尝试换一个新的用户名' : result.msg,
+                    buttons: {
+                        confirm: {
+                            text: '确认',
+                            btnClass: 'waves-effect waves-button waves-light',
+                        }
+                    }
+                });
+            } else {
+                createDialog.close();
+                $table.bootstrapTable('refresh');
+            }
+        }
+        var error = function (jqXHR, textStatus) {
+            $.confirm({
+                theme: 'dark',
+                animation: 'rotateX',
+                closeAnimation: 'rotateX',
+                title: false,
+                content: textStatus != 'canceled' ? '系统异常' : '请检查密码与用户名',
+                buttons: {
+                    confirm: {
+                        text: '确认',
+                        btnClass: 'waves-effect waves-button waves-light'
+                    }
+                }
+            });
+        }
+        if (id == 0) {
+            iPost('/api/user', data, beforeSend, success, error);
+        } else {
+            iPut('/api/user/' + id, data, beforeSend, success, error);
+        }
+
+    }
+</script>

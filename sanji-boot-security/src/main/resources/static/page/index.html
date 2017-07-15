@@ -44,7 +44,7 @@
     <div :id="server_name">
         <admin-header v-on:click_sys_switch="sys_switch" v-on:click_search="search" :title="system_title"
                       :system_list="system_list" :user_menus="user_menus"></admin-header>
-        <admin-main v-on:click_open_tab="open_talb" :user="user" :user_menus="user_menus" :menus="menus"></admin-main>
+        <admin-main v-on:click_open_tab="open_tab" :user="user" :user_menus="user_menus" :menus="menus"></admin-main>
     </div>
 </div>
 <template id="admin-header">

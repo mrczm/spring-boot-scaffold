@@ -83,6 +83,11 @@ var data = {
         ]
         },
         {
+            title: ' 角色用户管理', icon: 'zmdi-accounts', childer: [
+            {title: '用户管理', icon: '', url: 'page/sys/user-crud.html', isOpenTab: true}
+        ]
+        },
+        {
             title: '其他数据管理', icon: 'zmdi-more', childer: [
             {title: '百度', icon: 'zmdi-lock-outline', url: 'https://www.baidu.com/', isOpenTab: true},
         ]
@@ -106,7 +111,7 @@ var vue = new Vue({
         search: function (q) {
             console.log(q);
         },
-        open_talb: function (title, url) {
+        open_tab: function (title, url) {
             console.log(title, url)
             Tab.addTab(title, url)
         }

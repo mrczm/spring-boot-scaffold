@@ -47,6 +47,6 @@ public class ResultGenerator {
     }
 
     public static <T> Result<T> error(String msg) {
-        return genResult(Result.Status.ERROR, null, ERROR_MSG);
+        return genResult(Result.Status.ERROR, null, msg);
     }
 }

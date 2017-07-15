@@ -10,7 +10,7 @@ import java.util.Set;
 
 /**
  * Created by sunxyz on 2017/3/13.
- * v0.1.1 移除 角色组
+ * 只提供登录功能
  */
 @JsonIgnoreProperties({"hibernateLazyInitializer", "password", "news", "roleSet"})
 @DynamicUpdate
@@ -23,15 +23,20 @@ public class User extends BaseEntity<Long> {
     @Column(unique = true, updatable = false)
     private String loginName;
 
-    private String nickname;//昵称
-
     @NotEmpty(message = "密码不能为空")
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
+    @Enumerated
+    private UserStatus status;
+
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(name = "sys_user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roleSet;
+
+    {
+        status = UserStatus.NORMAL;
+    }
 
     public String getLoginName() {
         return loginName;
@@ -39,15 +44,6 @@ public class User extends BaseEntity<Long> {
 
     public User setLoginName(String loginName) {
         this.loginName = loginName;
-        return this;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public User setNickname(String nickname) {
-        this.nickname = nickname;
         return this;
     }
 
@@ -60,6 +56,15 @@ public class User extends BaseEntity<Long> {
         return this;
     }
 
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public User setStatus(UserStatus status) {
+        this.status = status;
+        return this;
+    }
+
     public Set<Role> getRoleSet() {
         return roleSet;
     }
@@ -67,5 +72,11 @@ public class User extends BaseEntity<Long> {
     public User setRoleSet(Set<Role> roleSet) {
         this.roleSet = roleSet;
         return this;
+    }
+
+    public static enum UserStatus {
+        NORMAL,//正常
+        ABNORMAL,//异常
+        FROZEN//冻结
     }
 }
