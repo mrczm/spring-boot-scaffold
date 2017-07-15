@@ -29,10 +29,17 @@ function login() {
         data: {
             username: $('#username').val(),
             password: $('#password').val(),
-            rememberMe: $('#rememberMe').is(':checked'),
+            'remember-me': $('#rememberMe').is(':checked'),
         },
         beforeSend: function () {
-
+            if ($('#username').val() == '') {
+                $('#username').focus();
+                return false;
+            }
+            if ($('#password').val() == '') {
+                $('#password').focus();
+                return false;
+            }
         },
         success: function (json) {
             console.log(json);

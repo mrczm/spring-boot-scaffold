@@ -72,7 +72,7 @@ var data = {
         {title: '退出登录', icon: 'zmdi-run', url: 'logout', isOpenTab: false}
     ],
     user: {
-        avater: 'dist/img/avatar.jpg',
+        avater: 'app/img/avatar.jpg',
         name: 'bloom'
     },
     menus: [
