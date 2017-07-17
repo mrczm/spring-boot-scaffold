@@ -22,7 +22,6 @@ public class BaseEntity<T> extends AbstractPersistable<Long> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifiedTime;
 
-    @JsonIgnore
     private String remark;
 
     public Date getCreatedTime() {

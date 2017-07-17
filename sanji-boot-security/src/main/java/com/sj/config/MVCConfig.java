@@ -13,6 +13,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     //快速解决页面转向问题
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("/login");
+        registry.addViewController("/login").setViewName("/page/login.html");
+        registry.addViewController("/").setViewName("/page/index.html");
     }
 }
