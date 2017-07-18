@@ -80,7 +80,6 @@
             display: block;
             margin: 0;
             padding: 0;
-            max-width: 600px;
             list-style: none;
             font-size: 13px;
             line-height: 20px;
@@ -261,7 +260,7 @@
         @media only screen and (min-width: 700px) {
             .dd {
                 float: left;
-                width: 48%;
+                width: 100%;
             }
 
             .dd + .dd {
@@ -345,75 +344,210 @@
         .dd3-handle:hover {
             background: #ddd;
         }
+
+        table tr td {
+            min-width: 260px;
+        }
     </style>
 </head>
-<body>
-<h1>菜单管理</h1>
-<p>&nbsp;</p>
-<menu id="nestable-menu">
-    <button type="button" data-action="expand-all">展开</button>
-    <button type="button" data-action="collapse-all">关闭</button>
-</menu>
-<div class="dd" id="nestable3">
-    <ol class="dd-list">
-        <li class="dd-item dd3-item" data-id="13">
-            <div class="dd-handle dd3-handle">Drag</div>
-            <div class="dd3-content">Item 13</div>
-        </li>
-        <li class="dd-item dd3-item" data-id="14">
-            <div class="dd-handle dd3-handle">Drag</div>
-            <div class="dd3-content">Item 14</div>
-        </li>
-        <li class="dd-item dd3-item" data-id="15">
-            <div class="dd-handle dd3-handle">Drag</div>
-            <div class="dd3-content">Item 15</div>
+<div>
+    <h1>菜单管理</h1>
+    <p>&nbsp;</p>
+    <menu id="nestable-menu">
+        <button type="button" data-action="expand-all">展开</button>
+        <button type="button" data-action="collapse-all">关闭</button>
+    </menu>
+    <div id="menu">
+        <div class="dd" id="nestable3">
             <ol class="dd-list">
-                <li class="dd-item dd3-item" data-id="16">
+                <!--<li class="dd-item dd3-item" data-id="14">-->
+                <!--<div class="dd-handle dd3-handle">Drag</div>-->
+                <!--<div class="dd3-content">Item 14</div>-->
+                <!--</li>-->
+                <li class="dd-item dd3-item" v-for="(menu,index) in list" :data-id="menu.id">
                     <div class="dd-handle dd3-handle">Drag</div>
-                    <div class="dd3-content">Item 16</div>
-                </li>
-                <li class="dd-item dd3-item" data-id="17">
-                    <div class="dd-handle dd3-handle">Drag</div>
-                    <div class="dd3-content">Item 17</div>
-                </li>
-                <li class="dd-item dd3-item" data-id="18">
-                    <div class="dd-handle dd3-handle">Drag</div>
-                    <div class="dd3-content">Item 18</div>
+                    <div class="dd3-content">
+                        <table>
+                            <tr>
+                                <td v-text="index"></td>
+                                <td v-text="menu.name"></td>
+                                <td v-text="menu.icon"></td>
+                                <td v-text="menu.description"></td>
+                                <td>
+                                    <a href="javascript:void(0);" @click.stop="add(menu.id)">添加</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <ol class="dd-list" v-if="null!=menu.subMenus&&menu.subMenus.length>0">
+                        <li class="dd-item dd3-item" v-for="(subMenu,index) in menu.subMenus" :data-id="subMenu.id">
+                            <div class="dd-handle dd3-handle">Drag</div>
+                            <div class="dd3-content">
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td v-text="index"></td>
+                                        <td v-text="subMenu.name"></td>
+                                        <td v-text="subMenu.icon"></td>
+                                        <td v-text="subMenu.description"></td>
+                                        <td>
+                                            <a href="javascript:void(0);" @click.stop="add(subMenu.id)">添加</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <ol class="dd-list" v-if="null!=subMenu.subMenus&&subMenu.subMenus.length>0">
+                                <li class="dd-item dd3-item" v-for="(subSubMenu,index) in subMenu.subMenus"
+                                    :data-id="subSubMenu.id">
+                                    <div class="dd-handle dd3-handle">Drag</div>
+                                    <div class="dd3-content">
+                                        <table>
+                                            <tr>
+                                                <td v-text="index"></td>
+                                                <td v-text="subSubMenu.name"></td>
+                                                <td v-text="subSubMenu.icon"></td>
+                                                <td v-text="subSubMenu.description"></td>
+                                                <td>
+                                                    <a href="javascript:void(0);"
+                                                       @click.stop="add(subSubMenu.id)">添加</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
                 </li>
             </ol>
-        </li>
-    </ol>
-</div>
-<textarea id="nestable-output"></textarea>
-<script src="http://www.jq22.com/jquery/1.11.1/jquery.min.js"></script>
-<script src="/js/jquery.nestable.js"></script>
-<script>
-    $(document).ready(function () {
-        var updateOutput = function (e) {
-            var list = e.length ? e : $(e.target),
-                output = list.data('output');
-            if (window.JSON) {
-                output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
-            } else {
-                output.val('JSON browser support required for this demo.');
-            }
-        };
-        $('#nestable3').nestable({
-            group: 1
-        }).on('change', updateOutput);
-        updateOutput($('#nestable3').data('output', $('#nestable-output')));
-        $('#nestable-menu').on('click', function (e) {
-            var target = $(e.target),
-                action = target.data('action');
-            if (action === 'expand-all') {
-                $('.dd').nestable('expandAll');
-            }
-            if (action === 'collapse-all') {
-                $('.dd').nestable('collapseAll');
+        </div>
+        <textarea id="nestable-output"></textarea>
+
+        <form role="form" id="form" style="display: none;">
+            <input type="text" id="id"/>
+            <input type="text" id="parentId"/>
+            <div class="form-group">
+                <label>名称</label>
+                <input type="text" class="form-control" placeholder="名称" id="name">
+            </div>
+            <div class="form-group">
+                <label>图标</label>
+                <input type="text" class="form-control" placeholder="图标" id="icon">
+            </div>
+            <div class="form-group">
+                <label>描述</label>
+                <textarea class="form-control" rows="3" id="description"></textarea>
+            </div>
+            <div class="form-group">
+                <label>链接</label>
+                <input type="text" class="form-control" placeholder="链接" id="url">
+            </div>
+        </form>
+    </div>
+
+    <script src="http://www.jq22.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/js/jquery.nestable.js"></script>
+    <script src="/js/vue.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.3/jquery-confirm.min.js"></script>
+    <script>
+        var menu = new Vue({
+            el: "#menu",
+            data: {
+                list: {},
+                menus: []
+            },
+            created: function () {
+                var _this = this;
+                _this.loadData();
+            },
+            methods: {
+                loadData: function () {
+                    var _this = this;
+                    $.get("/menu", function (data) {
+                        _this.list = data;
+                    });
+                },
+                add: function (parentId) {
+                    var _this = this;
+                    $.get("/menu/" + parentId, function (data) {
+                        $.confirm({
+                            title: "添加菜单",
+                            draggable: true,
+                            content: $("#form").html(),
+                            onContentReady: function () {
+//                                this.$content.find('#name').val(data.name);
+//                                this.$content.find('#icon').val(data.icon);
+//                                this.$content.find('#description').val(data.description);
+//                                this.$content.find('#url').val(data.url);
+                                this.$content.find('#id').val(0);
+                                this.$content.find('#parentId').val(data.id);
+                            },
+                            buttons: {
+                                formSubmit: {
+                                    text: '提交',
+                                    btnClass: 'btn-blue',
+                                    action: function () {
+                                        var id = this.$content.find('#id').val();
+                                        id = id ? id : 0;
+                                        var name = this.$content.find('#name').val();
+                                        var icon = this.$content.find('#icon').val();
+                                        var description = this.$content.find('#description').val();
+                                        var url = this.$content.find('#url').val();
+                                        var parentId = this.$content.find('#parentId').val();
+                                        if (!name) {
+                                            $.alert('请输入菜单名称');
+                                            return false;
+                                        }
+                                        $.post("/menu/add/" + id, {
+                                            "name": name,
+                                            "icon": icon,
+                                            "description": description,
+                                            "url": url,
+                                            "parent": parentId
+                                        }, function (data) {
+                                            console.log("commitdata " + JSON.stringify(data));
+                                            _this.loadData();
+                                        })
+                                    }
+                                },
+                                cancel: function () {
+                                }
+                            }
+                        });
+                    });
+
+                }
             }
         });
-    });
-</script>
-</body>
+
+        $(document).ready(function () {
+            var updateOutput = function (e) {
+                var list = e.length ? e : $(e.target),
+                    output = list.data('output');
+                if (window.JSON) {
+                    output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                } else {
+                    output.val('JSON browser support required for this demo.');
+                }
+            };
+            $('#nestable3').nestable({
+                group: 1
+            }).on('change', updateOutput);
+            updateOutput($('#nestable3').data('output', $('#nestable-output')));
+            $('#nestable-menu').on('click', function (e) {
+                var target = $(e.target),
+                    action = target.data('action');
+                if (action === 'expand-all') {
+                    $('.dd').nestable('expandAll');
+                }
+                if (action === 'collapse-all') {
+                    $('.dd').nestable('collapseAll');
+                }
+            });
+        });
+    </script>
+    </body>
 </html>
 
