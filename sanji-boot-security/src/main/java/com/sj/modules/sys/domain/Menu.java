@@ -25,7 +25,9 @@ public class Menu extends BaseEntity<Long> {
 
     private Long sort;
 
-    @OneToMany
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    private Menu parent;
+    @Transient
     private List<Menu> subMenus;
 
     public String getName() {
@@ -66,6 +68,14 @@ public class Menu extends BaseEntity<Long> {
 
     public void setSort(Long sort) {
         this.sort = sort;
+    }
+
+    public Menu getParent() {
+        return parent;
+    }
+
+    public void setParent(Menu parent) {
+        this.parent = parent;
     }
 
     public List<Menu> getSubMenus() {
