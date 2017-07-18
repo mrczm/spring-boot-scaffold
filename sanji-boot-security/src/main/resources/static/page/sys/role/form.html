@@ -17,7 +17,7 @@
             <ul id="treeDemo" class="ztree"></ul>
         </div>
         <div class="form-group text-right dialog-buttons">
-            <a class="waves-effect waves-button" href="javascript:;" onclick="createSubmit();">保存</a>
+            <a class="waves-effect waves-button" href="javascript:;" onclick="dataSubmit();">保存</a>
             <a class="waves-effect waves-button" href="javascript:;" onclick="createDialog.close();">取消</a>
         </div>
     </form>
@@ -25,6 +25,8 @@
 </div>
 
 <script>
+
+    setTimeout(initData, 300);
 
     //设置滚动条
     $('#treeDemo').mCustomScrollbar({
@@ -38,32 +40,72 @@
         }
     });
 
-    function getMenus(cb) {
-        iGet('/api/menu', cb);
+    function getRole(id, fc) {
+        iGet('/api/role/' + id, fc)
     }
 
-    var zNodes = [
-        {id: 1, pId: 0, name: "随意勾选 1", open: true},
-        {id: 11, pId: 1, name: "随意勾选 1-1", open: true},
-        {id: 111, pId: 11, name: "随意勾选 1-1-1"},
-        {id: 112, pId: 11, name: "随意勾选 1-1-2"},
-        {id: 12, pId: 1, name: "随意勾选 1-2", open: true},
-        {id: 121, pId: 12, name: "随意勾选 1-2-1"},
-        {id: 122, pId: 12, name: "随意勾选 1-2-2"},
-        {id: 2, pId: 0, name: "随意勾选 2", checked: true, open: true},
-        {id: 21, pId: 2, name: "随意勾选 2-1"},
-        {id: 22, pId: 2, name: "随意勾选 2-2", open: true},
-        {id: 221, pId: 22, name: "随意勾选 2-2-1", checked: true},
-        {id: 222, pId: 22, name: "随意勾选 2-2-2"},
-        {id: 23, pId: 2, name: "随意勾选 2-3"},
-        {id: 24, pId: 2, name: "随意勾选 2-3"},
-        {id: 25, pId: 2, name: "随意勾选 2-3"},
-        {id: 26, pId: 2, name: "随意勾选 2-3"},
-        {id: 27, pId: 2, name: "随意勾选 2-3"},
-        {id: 28, pId: 2, name: "随意勾选 2-3"},
-        {id: 29, pId: 2, name: "随意勾选 2-3"},
-    ];
+    function getMenus(cb) {
+        iGet('/api/menu', function (data) {
+            if (data.status == "SUCCESS") {
+                var menus = data.content;
+                var zNodes = [];
+                menus.forEach(function (menu) {
+                    zNodes.push({id: menu.id, pId: menu.parentId, name: menu.name})
+                })
+                cb(zNodes);
+            } else {
+                console.log("menu data error")
+            }
+        });
+    }
 
+
+    var id = 0;
+
+    var zMenus = [];
+
+    function initData() {
+        if (location.href.indexOf('#') > 0) {
+            id = location.href.split("#")[1];
+        }
+        //更新获取用户数据
+        if (id != 0) {
+            getRole(id, function (data) {
+                console.log(data);
+                var role = data.content;
+                //设置input 此处没有用vue copy的代码>_<
+                for (var p in role) {
+                    $("input[name=" + p + "]").val(role[p]);
+                }
+                //获取菜单
+                getMenus(function (menus) {
+                    //选中菜单
+                    var menuMap = new Map();
+                    menus.forEach(function (menu) {
+                        menuMap.set(menu.id, menu);
+                    })
+                    role.menuSet.forEach(function (menu) {
+                        menuMap.get(menu.id).checked = true;
+                        menuMap.get(menu.id).open = true;
+                    })
+                    zMenus = BuildZTreeMenus(menus);
+                })
+
+            });
+        } else {
+            //获取菜单
+            getMenus(function (menus) {
+                zMenus = BuildZTreeMenus(menus);
+            })
+        }
+        //去掉有值的input标题效果
+        var inputs = $("#createForm input[type=text]");
+        for (var i = 0; i < inputs.length; i++) {
+            if ($(inputs[i]).val() != '') {
+                $(inputs[i]).parent().find('label').addClass('active');
+            }
+        }
+    }
 
     <!--z_tree-->
     function BuildZTreeMenus(zNodes) {
@@ -96,46 +138,14 @@
         return menus;
     }
 
-    var menus = BuildZTreeMenus(zNodes);
 
-
-    function getRole(id, fc) {
-        iGet('/api/role/' + id, fc)
-    }
-
-
-    var id = 0;
-
-    setTimeout(function () {
-        if (location.href.indexOf('#') > 0) {
-            id = location.href.split("#")[1];
-        }
-        //更新获取用户数据
-        if (id != 0) {
-            getRole(id, function (data) {
-                console.log(data);
-                var role = data.content;
-                //设置input 此处没有用vue vue与inputmask有兼容性问题
-                for (var p in role) {
-                    $("input[name=" + p + "]").val(role[p]);
-                }
-                role.menuSet.forEach(function (menu) {
-
-                })
-            });
-        }
-        //去掉有值的input标题效果
-        var inputs = $("#createForm input[type=text]");
-        for (var i = 0; i < inputs.length; i++) {
-            if ($(inputs[i]).val() != '') {
-                $(inputs[i]).parent().find('label').addClass('active');
-            }
-        }
-    }, 300)
-
-
-    function createSubmit() {
+    function dataSubmit() {
         var data = {};
+        var menuSet = [];
+        zMenus.forEach(function (menuId) {
+            menuSet.push({id: menuId});
+        })
+        data.menuSet = menuSet;
         $('#createForm').serializeArray().map(function (x) {
             data[x.name] = x.value;
         });

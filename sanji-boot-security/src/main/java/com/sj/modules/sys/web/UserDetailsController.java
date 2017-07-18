@@ -49,7 +49,6 @@ public class UserDetailsController {
         userDetails.setCreatedTime(now);
         userDetails.setModifiedTime(now);
         userDetails.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
-        userDetails.setRoleSet(roleRepository.findAll(userDetails.getRoleSet().stream().map(Role::getId).collect(Collectors.toList())).stream().collect(Collectors.toSet()));
         repository.save(userDetails);
         return ok();
     }
@@ -67,7 +66,7 @@ public class UserDetailsController {
         if (Objects.isNull(old)) {
             return error();
         }
-        old.setRoleSet(roleRepository.findAll(userDetails.getRoleSet().stream().map(Role::getId).collect(Collectors.toList())).stream().collect(Collectors.toSet()));
+        old.setRoleSet(userDetails.getRoleSet());
         updateVal(old, userDetails);
         repository.save(old);
         return ok();
