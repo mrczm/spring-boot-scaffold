@@ -374,7 +374,9 @@
                                 <td v-text="menu.icon"></td>
                                 <td v-text="menu.description"></td>
                                 <td>
-                                    <a href="javascript:void(0);" @click.stop="add(menu.id)">添加</a>
+                                    <a href="javascript:void(0);" @click.stop="_do(menu.id,0)">添加</a>
+                                    <a href="javascript:void(0);" @click.stop="_do(menu.id,1)">修改</a>
+                                    <a href="javascript:void(0);" @click.stop="del(menu.id)">删除</a>
                                 </td>
                             </tr>
                         </table>
@@ -391,7 +393,9 @@
                                         <td v-text="subMenu.icon"></td>
                                         <td v-text="subMenu.description"></td>
                                         <td>
-                                            <a href="javascript:void(0);" @click.stop="add(subMenu.id)">添加</a>
+                                            <a href="javascript:void(0);" @click.stop="_do(subMenu.id,0)">添加</a>
+                                            <a href="javascript:void(0);" @click.stop="_do(subMenu.id,1)">修改</a>
+                                            <a href="javascript:void(0);" @click.stop="del(subMenu.id)">删除</a>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -410,7 +414,11 @@
                                                 <td v-text="subSubMenu.description"></td>
                                                 <td>
                                                     <a href="javascript:void(0);"
-                                                       @click.stop="add(subSubMenu.id)">添加</a>
+                                                       @click.stop="_do(subSubMenu.id,0)">添加</a>
+                                                    <a href="javascript:void(0);"
+                                                       @click.stop="_do(subSubMenu.id,1)">修改</a>
+                                                    <a href="javascript:void(0);"
+                                                       @click.stop="del(subSubMenu.id)">删除</a>
                                                 </td>
                                             </tr>
                                         </table>
@@ -469,20 +477,26 @@
                         _this.list = data;
                     });
                 },
-                add: function (parentId) {
+                _do: function (parentId, sid) {
                     var _this = this;
                     $.get("/menu/" + parentId, function (data) {
                         $.confirm({
-                            title: "添加菜单",
+                            title: "菜单维护",
                             draggable: true,
                             content: $("#form").html(),
                             onContentReady: function () {
-//                                this.$content.find('#name').val(data.name);
-//                                this.$content.find('#icon').val(data.icon);
-//                                this.$content.find('#description').val(data.description);
-//                                this.$content.find('#url').val(data.url);
-                                this.$content.find('#id').val(0);
-                                this.$content.find('#parentId').val(data.id);
+                                console.log("data.id " + data.id)
+                                if (0 == sid) {
+                                    this.$content.find('#id').val(0);
+                                    this.$content.find('#parentId').val(data.id);
+                                } else {
+                                    this.$content.find('#id').val(data.id);
+                                    this.$content.find('#parentId').val(null != data.parent ? data.parent.id : "1");
+                                    this.$content.find('#name').val(data.name);
+                                    this.$content.find('#icon').val(data.icon);
+                                    this.$content.find('#description').val(data.description);
+                                    this.$content.find('#url').val(data.url);
+                                }
                             },
                             buttons: {
                                 formSubmit: {
@@ -500,7 +514,7 @@
                                             $.alert('请输入菜单名称');
                                             return false;
                                         }
-                                        $.post("/menu/add/" + id, {
+                                        $.post("/menu/do/" + id, {
                                             "name": name,
                                             "icon": icon,
                                             "description": description,
@@ -518,6 +532,29 @@
                         });
                     });
 
+                },
+                del: function (id) {
+                    console.log("id "+id)
+                    var _this = this;
+                    $.confirm({
+                        title: '确认删除？',
+                        closeAnimation: 'scale',
+                        opacity: 0.5,
+                        buttons: {
+                            'confirm': {
+                                text: '确认',
+                                btnClass: 'btn-blue',
+                                action: function () {
+                                    $.post("/menu/delete/" + id, function (data) {
+                                        _this.loadData();
+                                    });
+                                }
+                            },
+                            cancel: function () {
+                                text: '取消'
+                            }
+                        }
+                    });
                 }
             }
         });

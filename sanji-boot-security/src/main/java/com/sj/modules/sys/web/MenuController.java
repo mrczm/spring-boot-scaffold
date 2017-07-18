@@ -1,6 +1,5 @@
 package com.sj.modules.sys.web;
 
-import com.alibaba.fastjson.JSON;
 import com.sj.modules.sys.domain.Menu;
 import com.sj.modules.sys.repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,6 @@ public class MenuController {
                 menu1.setSubMenus(menus2);
             });
         });
-        System.out.println("menus " + JSON.toJSONString(menus));
         return ResponseEntity.ok(menus);
     }
 
@@ -39,9 +37,28 @@ public class MenuController {
         return ResponseEntity.ok(menuRepository.findOne(id));
     }
 
-    @PostMapping("/add/{id}")
-    public ResponseEntity add(@PathVariable Long id, Menu menu) {
-        menu = menuRepository.saveAndFlush(menu);
+    @PostMapping("/do/{id}")
+    public ResponseEntity addOrUpdate(@PathVariable Long id, Menu menu) {
+        if (id != 0) {
+            Menu tempMenu = menuRepository.findOne(id);
+            tempMenu.setName(menu.getName());
+            tempMenu.setIcon(menu.getIcon());
+            tempMenu.setDescription(menu.getDescription());
+            tempMenu.setUrl(menu.getUrl());
+            tempMenu.setParent(menu.getParent());
+            menu = menuRepository.save(tempMenu);
+        } else {
+            menu = menuRepository.save(menu);
+        }
+        return ResponseEntity.ok(menu);
+    }
+
+    @PostMapping("/delete/{id}")
+    public ResponseEntity delete(@PathVariable Long id) {
+        System.out.println("id " + id);
+        Menu menu = menuRepository.findOne(id);
+        menu.setParent(null);
+        menuRepository.delete(menu);
         return ResponseEntity.ok(menu);
     }
 }

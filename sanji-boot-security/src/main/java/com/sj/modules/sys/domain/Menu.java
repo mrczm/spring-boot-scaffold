@@ -25,7 +25,7 @@ public class Menu extends BaseEntity<Long> {
 
     private Long sort;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Menu parent;
     @Transient
     private List<Menu> subMenus;
