@@ -587,7 +587,7 @@
                 output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
                 //获取并存到数据库
                 $.post("/menu/synchronize", {"json": window.JSON.stringify(list.nestable('serialize'))}, function (data) {
-                    vm.loadData();
+//                    vm.loadData();
                 });
             } else {
                 output.val('JSON browser support required for this demo.');
