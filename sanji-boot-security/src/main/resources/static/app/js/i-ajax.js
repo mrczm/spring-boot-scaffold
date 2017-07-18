@@ -3,19 +3,35 @@
  */
 // jQuery 3.0
 var iAjax = function (url, data, methodType, beforeSend, cb, ecb) {
-    return $.ajax({
-        url: url,
-        data: JSON.stringify(data),
-        type: methodType,
-        async: false,
-        dataType: "json",
-        contentType: "application/json;charset=utf-8", //设置请求头信息
-        beforeSend: beforeSend,
-    }).done(function (data) {
-        cb(data)
-    }).fail(function (jqXHR, textStatus) {
-        ecb(jqXHR, textStatus);
-    })
+    if (data == null) {
+        return $.ajax({
+            url: url,
+            type: methodType,
+            async: false,
+            dataType: "json",
+            contentType: "application/json;charset=utf-8", //设置请求头信息
+            beforeSend: beforeSend,
+        }).done(function (data) {
+            cb(data)
+        }).fail(function (jqXHR, textStatus) {
+            ecb(jqXHR, textStatus);
+        })
+    } else {
+        return $.ajax({
+            url: url,
+            data: JSON.stringify(data),
+            type: methodType,
+            async: false,
+            dataType: "json",
+            contentType: "application/json;charset=utf-8", //设置请求头信息
+            beforeSend: beforeSend,
+        }).done(function (data) {
+            cb(data)
+        }).fail(function (jqXHR, textStatus) {
+            ecb(jqXHR, textStatus);
+        })
+    }
+
 }
 
 var iPost = function (url, data, beforeSend, cb, ecb) {

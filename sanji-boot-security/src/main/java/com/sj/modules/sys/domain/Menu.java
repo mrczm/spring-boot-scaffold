@@ -30,6 +30,9 @@ public class Menu extends BaseEntity<Long> {
     @Transient
     private List<Menu> subMenus;
 
+    @Transient
+    private Long parentId;
+
     public String getName() {
         return name;
     }
@@ -84,5 +87,14 @@ public class Menu extends BaseEntity<Long> {
 
     public void setSubMenus(List<Menu> subMenus) {
         this.subMenus = subMenus;
+    }
+
+    public Long getParentId() {
+        return parent != null ? parent.getId() : 0L;
+    }
+
+    public Menu setParentId(Long parentId) {
+        this.parentId = parentId;
+        return this;
     }
 }

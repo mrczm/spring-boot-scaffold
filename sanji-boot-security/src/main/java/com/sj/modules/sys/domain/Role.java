@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Created by sunxyz on 2017/3/13.
  */
-@JsonIgnoreProperties({"menuSet", "news"})
+@JsonIgnoreProperties({"news"})
 @DynamicUpdate
 @Entity
 @Table(name = "sys_role")
