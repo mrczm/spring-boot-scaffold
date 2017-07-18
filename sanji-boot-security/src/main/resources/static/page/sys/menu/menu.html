@@ -477,8 +477,8 @@
 </div>
 
 <script src="http://www.jq22.com/jquery/1.11.1/jquery.min.js"></script>
-<script src="/js/jquery.nestable.js"></script>
-<script src="/js/vue.min.js"></script>
+<script src="/plugins/jquery.nestable.js"></script>
+<script src="/plugins/vue/2.3.4/vue.min.js"></script>
 <script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.3/jquery-confirm.min.js"></script>
 <script>
@@ -543,7 +543,6 @@
                                         "url": url,
                                         "parent": parentId
                                     }, function (data) {
-                                        console.log("commitdata " + JSON.stringify(data));
                                         _this.loadData();
                                     })
                                 }
@@ -588,7 +587,7 @@
                 output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
                 //获取并存到数据库
                 $.post("/menu/synchronize", {"json": window.JSON.stringify(list.nestable('serialize'))}, function (data) {
-//                    vm.loadData();
+                    vm.loadData();
                 });
             } else {
                 output.val('JSON browser support required for this demo.');
