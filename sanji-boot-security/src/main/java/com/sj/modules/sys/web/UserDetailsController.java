@@ -1,8 +1,9 @@
 package com.sj.modules.sys.web;
 
-import com.alibaba.fastjson.JSON;
 import com.sj.common.Result;
+import com.sj.modules.sys.domain.Role;
 import com.sj.modules.sys.domain.UserDetails;
+import com.sj.modules.sys.repository.RoleRepository;
 import com.sj.modules.sys.repository.UserDetailsRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.Predicate;
-import javax.validation.Valid;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static com.sj.common.ResultGenerator.error;
 import static com.sj.common.ResultGenerator.ok;
@@ -34,21 +35,23 @@ public class UserDetailsController {
     private UserDetailsRepository repository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
     @PostMapping
-    public Result<String> add(@RequestBody @Valid UserDetails userDetails, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return error(bindingResult.getAllErrors().get(0).getDefaultMessage());
-        } else {
-            Date now = new Date();
-            userDetails.setCreatedTime(now);
-            userDetails.setModifiedTime(now);
-            userDetails.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
-            repository.save(userDetails);
-            return ok();
-        }
+    public Result<String> add(@RequestBody UserDetails userDetails) {
+        userDetails.setNickname(userDetails.getLoginName());
+        userDetails.setPassword(bCryptPasswordEncoder.encode("123456"));
+        Date now = new Date();
+        userDetails.setCreatedTime(now);
+        userDetails.setModifiedTime(now);
+        userDetails.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
+        userDetails.setRoleSet(roleRepository.findAll(userDetails.getRoleSet().stream().map(Role::getId).collect(Collectors.toList())).stream().collect(Collectors.toSet()));
+        repository.save(userDetails);
+        return ok();
     }
 
     @Transactional
@@ -64,7 +67,18 @@ public class UserDetailsController {
         if (Objects.isNull(old)) {
             return error();
         }
+        old.setRoleSet(roleRepository.findAll(userDetails.getRoleSet().stream().map(Role::getId).collect(Collectors.toList())).stream().collect(Collectors.toSet()));
         updateVal(old, userDetails);
+        repository.save(old);
+        return ok();
+    }
+
+    @Transactional
+    @PutMapping(value = "/{id}/password", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Result<String> changPsw(@PathVariable("id") UserDetails old, String password) {
+        if (Objects.nonNull(password)) {
+            old.setPassword(bCryptPasswordEncoder.encode(password));
+        }
         return ok();
     }
 
@@ -91,14 +105,11 @@ public class UserDetailsController {
     public void updateVal(UserDetails old, UserDetails userDetails) {
         Date now = new Date();
         old.setModifiedTime(now);
-        if (Objects.nonNull(userDetails.getPassword())) {
-            userDetails.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
-            old.setPassword(val(old::getPassword, userDetails::getPassword));
-        }
         old.setDescription(val(old::getDescription, userDetails::getDescription));
         old.setNickname(val(old::getNickname, userDetails::getNickname));
         old.setAvatar(val(old::getAvatar, userDetails::getAvatar));
         old.setSex(val(old::getSex, userDetails::getSex));
+        old.setBirthday(val(old::getBirthday, userDetails::getBirthday));
         old.setPhone(val(old::getPhone, userDetails::getPhone));
         old.setEmail(val(old::getEmail, userDetails::getEmail));
         old.setRoleSet(val(old::getRoleSet, userDetails::getRoleSet));
