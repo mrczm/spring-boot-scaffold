@@ -84,7 +84,8 @@ var data = {
         },
         {
             title: ' 角色用户管理', icon: 'zmdi-accounts', childer: [
-            {title: '用户管理', icon: '', url: 'page/sys/user-crud.html', isOpenTab: true}
+            {title: '用户管理', icon: '', url: 'page/sys/user/table.html', isOpenTab: true},
+            {title: '角色管理', icon: '', url: 'page/sys/role/table.html', isOpenTab: true}
         ]
         },
         {
@@ -106,6 +107,7 @@ var vue = new Vue({
         sys_switch: function (sys) {// 切换系统
             $.cookie('bloom-skin-name', sys.name)
             $.cookie('bloom-system-title', sys.title);
+            this.system_title = sys.title;
             this.server_name = sys.name;
         },
         search: function (q) {

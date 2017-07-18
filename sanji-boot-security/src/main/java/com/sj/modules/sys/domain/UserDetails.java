@@ -32,7 +32,7 @@ public class UserDetails extends User {
 
     private String phone;//手机
 
-    @Email
+    //    @Email
     private String email;//邮箱
 
     public String getAvatar() {
