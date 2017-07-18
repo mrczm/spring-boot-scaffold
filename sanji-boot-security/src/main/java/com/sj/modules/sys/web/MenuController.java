@@ -1,12 +1,17 @@
 package com.sj.modules.sys.web;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.sj.modules.sys.domain.Menu;
 import com.sj.modules.sys.repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -20,16 +25,24 @@ public class MenuController {
 
     @RequestMapping
     public ResponseEntity list() {
-        List<Menu> menus = menuRepository.findByName("ROOT");
-        menus.forEach(menu -> {
-            List<Menu> menus1 = menuRepository.findByParent(menu).stream().filter(menu1 -> !menu1.getName().equals("ROOT")).collect(Collectors.toList());
-            menu.setSubMenus(menus1);
-            menus1.forEach(menu1 -> {
-                List<Menu> menus2 = menuRepository.findByParent(menu1);
-                menu1.setSubMenus(menus2);
+        List<Menu> rootMenus = new ArrayList<>();
+        Menu menu = menuRepository.findByName("ROOT");
+        rootMenus.add(menu);
+        List<Menu> firstMenus = menuRepository.findByParentOrderBySortAsc(menu).stream().filter(menu1 -> !menu1.getName().equals("ROOT")).collect(Collectors.toList());
+        menu.setSubMenus(firstMenus);
+        firstMenus.forEach(firstMenu -> {
+            List<Menu> secondMenus = menuRepository.findByParentOrderBySortAsc(firstMenu);
+            firstMenu.setSubMenus(secondMenus);
+            secondMenus.forEach(secondMenu -> {
+                List<Menu> thirdMenus = menuRepository.findByParentOrderBySortAsc(secondMenu);
+                secondMenu.setSubMenus(thirdMenus);
+                thirdMenus.forEach(thirdMenu -> {
+                    List<Menu> forthMenus = menuRepository.findByParentOrderBySortAsc(thirdMenu);
+                    thirdMenu.setSubMenus(forthMenus);
+                });
             });
         });
-        return ResponseEntity.ok(menus);
+        return ResponseEntity.ok(rootMenus);
     }
 
     @GetMapping("{id}")
@@ -55,10 +68,29 @@ public class MenuController {
 
     @PostMapping("/delete/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
-        System.out.println("id " + id);
         Menu menu = menuRepository.findOne(id);
         menu.setParent(null);
         menuRepository.delete(menu);
         return ResponseEntity.ok(menu);
+    }
+
+    @PostMapping("/synchronize")
+    public ResponseEntity synchronize(String json) {
+        JSONArray array = JSON.parseArray(json);
+        updateSort(array, menuRepository.findByName("ROOT"));
+        return ResponseEntity.ok(json);
+    }
+
+    public void updateSort(JSONArray array, Menu parent) {
+        for (int i = 0; i < array.size(); i++) {
+            JSONObject object = (JSONObject) array.get(i);
+            Menu menu = menuRepository.findOne(object.getLong("id"));
+            menu.setParent(parent);
+            menu.setSort((long) i);
+            menuRepository.save(menu);
+            JSONArray subArray = object.getJSONArray("children");
+            if (!Objects.isNull(subArray))
+                updateSort(subArray, menu);
+        }
     }
 }

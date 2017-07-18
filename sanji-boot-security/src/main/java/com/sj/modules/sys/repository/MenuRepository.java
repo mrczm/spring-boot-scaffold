@@ -10,8 +10,8 @@ import java.util.List;
  */
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 
-    List<Menu> findByName(String name);
+    Menu findByName(String name);
 
-    List<Menu> findByParent(Menu menu);
+    List<Menu> findByParentOrderBySortAsc(Menu menu);
 
 }
