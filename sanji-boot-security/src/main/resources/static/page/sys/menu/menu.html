@@ -507,13 +507,12 @@
                         draggable: true,
                         content: $("#form").html(),
                         onContentReady: function () {
-                            console.log("data.id " + data.id)
                             if (0 == sid) {
                                 this.$content.find('#id').val(0);
                                 this.$content.find('#parentId').val(data.id);
                             } else {
                                 this.$content.find('#id').val(data.id);
-                                this.$content.find('#parentId').val(null != data.parent ? data.parent.id : "1");
+                                this.$content.find('#parentId').val(data.parentId);
                                 this.$content.find('#name').val(data.name);
                                 this.$content.find('#icon').val(data.icon);
                                 this.$content.find('#description').val(data.description);
