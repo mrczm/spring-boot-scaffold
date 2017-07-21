@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Created by lhw on 2017/7/15.
@@ -28,21 +27,16 @@ public class MenuController {
         List<Menu> rootMenus = new ArrayList<>();
         Menu menu = menuRepository.findByName("ROOT");
         rootMenus.add(menu);
-        List<Menu> firstMenus = menuRepository.findByParentOrderBySortAsc(menu).stream().filter(menu1 -> !menu1.getName().equals("ROOT")).collect(Collectors.toList());
-        menu.setSubMenus(firstMenus);
-        firstMenus.forEach(firstMenu -> {
-            List<Menu> secondMenus = menuRepository.findByParentOrderBySortAsc(firstMenu);
-            firstMenu.setSubMenus(secondMenus);
-            secondMenus.forEach(secondMenu -> {
-                List<Menu> thirdMenus = menuRepository.findByParentOrderBySortAsc(secondMenu);
-                secondMenu.setSubMenus(thirdMenus);
-                thirdMenus.forEach(thirdMenu -> {
-                    List<Menu> forthMenus = menuRepository.findByParentOrderBySortAsc(thirdMenu);
-                    thirdMenu.setSubMenus(forthMenus);
-                });
-            });
-        });
+        setSubMenus(menu);
         return ResponseEntity.ok(rootMenus);
+    }
+
+    private void setSubMenus(Menu menu) {
+        List<Menu> subMenus = menuRepository.findByParentOrderBySortAsc(menu);
+        menu.setSubMenus(subMenus);
+        subMenus.forEach(subMenu -> {
+            setSubMenus(subMenu);
+        });
     }
 
     @GetMapping("{id}")
@@ -81,11 +75,14 @@ public class MenuController {
         return ResponseEntity.ok(json);
     }
 
-    public void updateSort(JSONArray array, Menu parent) {
+    private void updateSort(JSONArray array, Menu parent) {
         for (int i = 0; i < array.size(); i++) {
             JSONObject object = (JSONObject) array.get(i);
             Menu menu = menuRepository.findOne(object.getLong("id"));
-            menu.setParent(parent);
+            if ("ROOT".equals(menu.getName()))
+                menu.setParent(null);
+            else
+                menu.setParent(parent);
             menu.setSort((long) i);
             menuRepository.save(menu);
             JSONArray subArray = object.getJSONArray("children");
