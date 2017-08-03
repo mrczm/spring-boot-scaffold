@@ -11,7 +11,7 @@ import java.util.List;
  * //前台菜单 最好做缓存处理
  * Created by sunxyz on 2017/3/14.
  */
-@JsonIgnoreProperties({"new", "parent"})
+@JsonIgnoreProperties({"new"})
 @Entity
 @Table(name = "sys_menu")
 public class Menu extends BaseEntity<Long> {
@@ -26,7 +26,7 @@ public class Menu extends BaseEntity<Long> {
 
     private Long sort;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     private Menu parent;
 
     @JsonFormat(shape = JsonFormat.Shape.NUMBER_INT)

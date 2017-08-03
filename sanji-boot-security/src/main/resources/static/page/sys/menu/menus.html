@@ -88,8 +88,15 @@
     <div class="btn-group">
         <a class="waves-effect waves-button" href="javascript:;" onclick="createAction()"><i class="zmdi zmdi-plus"></i>
             新增权限</a>
+        <span class="pull-right">
+            <a class="waves-effect waves-button" href="javascript:;" onclick="collapseAll()"><i class="zmdi zmdi-chevron-up"></i>
+            折叠</a>
+            <a class="waves-effect waves-button" href="javascript:;" onclick="expandAll()"><i class="zmdi zmdi-chevron-down"></i>
+            展开</a>
+        </span>
+
     </div>
-    <div class="dd" id="nestable3">
+    <div class="dd" id="nestable">
         <ol id="dd-empty-ol" class='dd-list dd3-list'>
         </ol>
     </div>
@@ -116,7 +123,21 @@
             fc(data.content);
         })
     }
+    function updateMenu(data) {
+        iPut('/api/menu/' + data.id, data, null, function (data) {
+            console.log("update Menu success!");
+        });
+    }
+    var $nestable = $('#nestable');
     Waves.displayEffect();
+
+    function collapseAll() {
+        $nestable.nestable('collapseAll');
+    }
+
+    function expandAll() {
+        $nestable.nestable('expandAll');
+    }
     //    https://github.com/RamonSmit/Nestable2
     var obj = '[{"id":1,"name":"name","depth":1,"icon":"zmdi zmdi-book","href":"href","permission":"permission"},{"id":2,"name":"name","depth":1,"icon":"zmdi zmdi-plus","href":"href","permission":"permission"},{"id":3,"name":"name","depth":1,"icon":"zmdi zmdi-plus","href":"href","permission":"permission","children":[{"id":4,"name":"name","depth":2,"icon":"zmdi zmdi-plus","href":"href","permission":"permission"},{"id":5,"name":"name","depth":2,"icon":"zmdi zmdi-plus","href":"href","permission":"permission"}]}]';
     var output = '';
@@ -157,9 +178,25 @@
     })
 
     $('#dd-empty-ol').append(output);
-    $('#nestable3').nestable({maxDepth: 3});
+    $nestable.nestable({
+        callback: function () {
+            function buildMenu(obj) {
+                return {
+                    id: obj.id,
+                    depth: obj.depth,
+                    sort: obj.left,
+                    parent: {
+                        id: obj.parent_id ? obj.parent_id : 1
+                    }
+                }
+            }
+            $nestable.nestable('toArray').forEach(function (obj) {
+                updateMenu(buildMenu(obj));
+            });
+        }, maxDepth: 3
+    });
     //折叠
-    $('#nestable3').nestable('collapseAll');
+    $nestable.nestable('collapseAll');
     //node: {"id":1,"name":"name","icon":"zmdi zmdi-book","href":"href","permission":"permission"}
     function updateNestableNode(node) {
         $('li[data-id=' + node.id + '] .dd-handle').html('<span class="' + node.icon + '">&nbsp;&nbsp;&nbsp;' + node.name + '</span></span>');

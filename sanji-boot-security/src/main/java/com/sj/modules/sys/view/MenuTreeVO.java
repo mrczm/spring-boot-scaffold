@@ -153,7 +153,6 @@ public class MenuTreeVO implements Comparable<MenuTreeVO> {
 
     @Override
     public int compareTo(MenuTreeVO o) {
-        //TODO 使用 getSort()
-        return (int) (getId() - o.getId());
+        return (int) (Objects.nonNull(getSort()) ? getSort() - o.getSort() : getId() - o.getId());
     }
 }
