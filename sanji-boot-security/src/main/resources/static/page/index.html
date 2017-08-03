@@ -12,7 +12,8 @@
     <link href="plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
     <link href="plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet"/>
     <link href="app/css/admin.css" rel="stylesheet"/>
-    <style>
+    <link href="app/css/skins.css" rel="stylesheet"/>
+<!--    <style>
         /** skins **/
         #bloom-upms-server #header {background: #29A176;}
         #bloom-upms-server .content_tab{background: #29A176;}
@@ -37,11 +38,11 @@
         #test #header {background: test;}
         #test .content_tab{background: test;}
         #test .s-profile>a{background: url(test) left top no-repeat;}
-    </style>
+    </style>-->
 </head>
 <body>
 <div id="app">
-    <div :id="server_name">
+    <div :id="system_skin">
         <admin-header v-on:click_sys_switch="sys_switch" v-on:click_search="search" :title="system_title"
                       :system_list="system_list" :user_menus="user_menus"></admin-header>
         <admin-main v-on:click_open_tab="open_tab" :user="user" :user_menus="user_menus" :menus="menus"></admin-main>
@@ -182,7 +183,7 @@
         <!-- 菜单区 -->
         <ul class="main-menu">
             <template v-for="menu in menus">
-                <li v-if="menu.childer==null">
+                <li v-if="menu.children==null">
                     <a v-if='menu.isOpenTab' class="waves-effect" href="javascript:;" v-on:click="open_tab(menu)"><i
                             class="zmdi" :class="menu.icon"></i> {{menu.title}}</a>
                     <a v-else='' class="waves-effect" :href="menu.url"><i class="zmdi" :class="menu.icon"></i>
@@ -193,7 +194,7 @@
                         {{menu.title}}</a>
                     <!--菜单-->
                     <ul>
-                        <li v-for="m in menu.childer">
+                        <li v-for="m in menu.children">
                             <a v-if='m.isOpenTab' class="waves-effect" href="javascript:;" v-on:click="open_tab(m)"><i
                                     class="zmdi" :class="m.icon"></i> {{m.title}}</a>
                             <a v-else='' class="waves-effect" :href="m.url"><i class="zmdi" :class="m.icon"></i>
@@ -225,6 +226,7 @@
 <script src="plugins/jquery.cookie.js"></script>
 <script src="plugins/vue/2.3.4/vue.min.js"></script>
 <script src="app/js/admin.js"></script>
+<script src="app/js/i-ajax.js"></script>
 <script src="app/js/admin-vue.js">
 </script>
 </body>
