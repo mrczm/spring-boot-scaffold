@@ -58,6 +58,7 @@ var data = {
     server_name: 'bloom-upms-server',
     //header
     system_title: '权限管理系统',
+    //system_list.name对应主题名称
     system_list: [
         {id: '1', name: 'bloom-upms-server', title: '权限管理系统', icon: 'zmdi-shield-security'},
         {id: '2', name: 'bloom-cms-admin', title: '内容管理系统', icon: 'zmdi-wikipedia'},
@@ -89,6 +90,11 @@ var data = {
         ]
         },
         {
+            title: ' 权限资源管理', icon: 'zmdi-lock-outline', childer: [
+            {title: '权限管理', icon: '', url: 'page/sys/menu/menus.html', isOpenTab: true},
+        ]
+        },
+        {
             title: '其他数据管理', icon: 'zmdi-more', childer: [
             {title: '百度', icon: 'zmdi-lock-outline', url: 'https://www.baidu.com/', isOpenTab: true},
         ]
@@ -100,15 +106,17 @@ var vue = new Vue({
     el: '#app',
     data: data,
     created: function () {
-        this.server_name = $.cookie('bloom-skin-name') || this.system_list[0].name
-        this.system_title = $.cookie('bloom-system-title') || this.system_list[0].title
+        this.server_name = $.cookie('bloom-skin-name') || this.system_list[0].name;
+        this.system_title = $.cookie('bloom-system-title') || this.system_list[0].title;
+        $('title').text(this.system_title);
     },
     methods: {
         sys_switch: function (sys) {// 切换系统
-            $.cookie('bloom-skin-name', sys.name)
+            $.cookie('bloom-skin-name', sys.name);
             $.cookie('bloom-system-title', sys.title);
             this.system_title = sys.title;
             this.server_name = sys.name;
+            $('title').text(sys.title);
         },
         search: function (q) {
             console.log(q);

@@ -1,5 +1,6 @@
 package com.sj.modules.sys.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sj.common.base.domain.BaseEntity;
 
@@ -27,11 +28,14 @@ public class Menu extends BaseEntity<Long> {
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     private Menu parent;
-    @Transient
-    private List<Menu> subMenus;
 
-    @Transient
-    private Long parentId;
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER_INT)
+    @Enumerated
+    private Type depth;//菜单类别对应的深度
+
+    private String permission;//许可用于认证标识
+
+    private String skin;//皮肤 查看skins.css对应的样式
 
     public String getName() {
         return name;
@@ -81,20 +85,35 @@ public class Menu extends BaseEntity<Long> {
         this.parent = parent;
     }
 
-    public List<Menu> getSubMenus() {
-        return subMenus;
+    public Type getDepth() {
+        return depth;
     }
 
-    public void setSubMenus(List<Menu> subMenus) {
-        this.subMenus = subMenus;
-    }
-
-    public Long getParentId() {
-        return parent != null ? parent.getId() : 0L;
-    }
-
-    public Menu setParentId(Long parentId) {
-        this.parentId = parentId;
+    public Menu setDepth(Type depth) {
+        this.depth = depth;
         return this;
     }
+
+    public String getPermission() {
+        return permission;
+    }
+
+    public Menu setPermission(String permission) {
+        this.permission = permission;
+        return this;
+    }
+
+    public String getSkin() {
+        return skin;
+    }
+
+    public Menu setSkin(String skin) {
+        this.skin = skin;
+        return this;
+    }
+
+    public enum Type {
+        ROOT, SYSTEM, DIRECTORY, MENU
+    }
+
 }

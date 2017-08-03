@@ -2,11 +2,16 @@ $(function() {
 	// Waves初始化
 	Waves.displayEffect();
 	// 数据表格动态高度
-	$(window).resize(function () {
-		$('#table').bootstrapTable('resetView', {
-			height: getHeight()
-		});
-	});
+    $(window).resize(function () {
+        try {
+            $('#table').bootstrapTable('resetView', {
+                height: getHeight()
+            });
+        } catch (err) {
+            console.log('not found bootstrapTable');
+        }
+    });
+
 	// 设置input特效
 	$(document).on('focus', 'input[type="text"]', function() {
 		$(this).parent().find('label').addClass('active');
@@ -16,7 +21,7 @@ $(function() {
 		}
 	});
 	// select2初始化
-	
+
 	try{$('select').select2();}catch(err){console.log('not found select');}
 });
 // 动态高度
