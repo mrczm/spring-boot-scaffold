@@ -1,10 +1,10 @@
 package com.sj.modules.sys.web;
 
 import com.sj.common.Result;
-import com.sj.modules.sys.domain.Role;
 import com.sj.modules.sys.domain.UserDetails;
-import com.sj.modules.sys.repository.RoleRepository;
 import com.sj.modules.sys.repository.UserDetailsRepository;
+import com.sj.modules.sys.service.MenuTreeService;
+import com.sj.modules.sys.view.MenuTreeVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,10 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.Predicate;
+import java.security.Principal;
 import java.util.*;
 import java.util.function.Supplier;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import static com.sj.common.ResultGenerator.error;
 import static com.sj.common.ResultGenerator.ok;
@@ -35,10 +34,10 @@ public class UserDetailsController {
     private UserDetailsRepository repository;
 
     @Autowired
-    private RoleRepository roleRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private MenuTreeService menuTreeService;
 
     @Transactional
     @PostMapping
@@ -89,6 +88,16 @@ public class UserDetailsController {
     @GetMapping
     public Result<Page<UserDetails>> getAll(UserDetails userDetails, Pageable pageable) {
         return ok(repository.findAll(whereSpec(userDetails), pageable));
+    }
+
+    @GetMapping("/current")
+    public Result<String> getCurrentUser(Principal principal) {
+        return ok(principal.getName());
+    }
+
+    @GetMapping("/current/menu")
+    public Result<Collection<MenuTreeVO>> listCurrentUserMenu() {
+        return ok(menuTreeService.listCurrentUserSystem());
     }
 
     private Specification<UserDetails> whereSpec(final UserDetails userDetails) {

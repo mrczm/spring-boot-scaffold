@@ -105,7 +105,7 @@ var data = {
 var util = {
     //获取菜单列表
     getMenus: function (id, fc) {
-        iGet('/api/menu', function (data) {
+        iGet('/api/user/current/menu', function (data) {
             var datas = data.content;
             var result = [];
             datas.forEach(function (obj) {
@@ -136,7 +136,7 @@ var util = {
     },
     //获取系统列表
     getSystemList: function (fc) {
-        iGet('/api/menu', function (data) {
+        iGet('/api/user/current/menu', function (data) {
             var datas = data.content;
             datas.forEach(function (obj) {
                 obj.title = obj.name;
@@ -145,16 +145,25 @@ var util = {
             fc(datas);
         })
     },
+    getCurrentUser: function (fc) {
+        iGet('/api/user/current', function (data) {
+            var userName = data.content;
+            fc(userName);
+        })
+    },
     initData: function (that) {
         that.system_skin = $.cookie('bloom-skin-name') || that.system_list[0].skin;
         that.system_title = $.cookie('bloom-system-title') || that.system_list[0].title;
         $('title').text(that.system_title);
-        util.getSystemList(function (data) {
+        this.getSystemList(function (data) {
             that.system_list = data;
         })
         var system_id = $.cookie('bloom-system-id') || that.system_list[0].id;
-        util.getMenus(system_id, function (data) {
+        this.getMenus(system_id, function (data) {
             that.menus = data;
+        })
+        this.getCurrentUser(function (userName) {
+            that.user.name = userName;
         })
     }
 }

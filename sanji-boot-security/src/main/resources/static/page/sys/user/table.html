@@ -6,19 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>通用增删改查</title>
 
-    <link href="../../../../plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="../../../../plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
+    <link href="/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
           rel="stylesheet"/>
-    <link href="../../../../plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet"/>
+    <link href="/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet"/>
 
-    <link href="../../../../plugins/bootstrap-table-1.11.0/bootstrap-table.min.css" rel="stylesheet"/>
-    <link href="../../../../plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
-    <link href="../../../../plugins/jquery-confirm/jquery-confirm.min.css" rel="stylesheet"/>
+    <link href="/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css" rel="stylesheet"/>
+    <link href="/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
+    <link href="/plugins/jquery-confirm/jquery-confirm.min.css" rel="stylesheet"/>
 
     <!--select2-->
     <link href="https://cdn.bootcss.com/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
 
-    <link href="../../../../app/css/common.css" rel="stylesheet"/>
+    <link href="/app/css/common.css" rel="stylesheet"/>
 </head>
 <body>
 <div id="main">
@@ -32,12 +32,12 @@
     <table id="table"></table>
 </div>
 
-<script src="../../../../plugins/jquery.1.12.4.min.js"></script>
-<script src="../../../../plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
-<script src="../../../../plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
-<script src="../../../../plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
-<script src="../../../../plugins/waves-0.7.5/waves.min.js"></script>
-<script src="../../../../plugins/jquery-confirm/jquery-confirm.min.js"></script>
+<script src="/plugins/jquery.1.12.4.min.js"></script>
+<script src="/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+<script src="/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
+<script src="/plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/plugins/waves-0.7.5/waves.min.js"></script>
+<script src="/plugins/jquery-confirm/jquery-confirm.min.js"></script>
 <script src="https://cdn.bootcss.com/moment.js/2.18.1/moment.min.js"></script>
 
 <!--给form使用-->
@@ -46,12 +46,12 @@
 <script src="https://cdn.bootcss.com/select2/4.0.3/js/i18n/zh-CN.js"></script>
 
 <!-- InputMask -->
-<script src="../../../../plugins/input-mask/jquery.inputmask.js"></script>
-<script src="../../../../plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script src="../../../../plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<script src="/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 
-<script src="../../../../app/js/common.js"></script>
-<script src="../../../../app/js/i-ajax.js"></script>
+<script src="/app/js/common.js"></script>
+<script src="/app/js/i-ajax.js"></script>
 <script>
     var $table = $('#table');
     $(function () {
@@ -97,7 +97,7 @@
                 {field: 'birthday', title: '年龄', sortable: true, formatter: 'ageFormatter', align: 'center'},
                 {field: 'phone', title: '手机', sortable: true, align: 'center'},
                 {field: 'email', title: '邮箱', sortable: true, align: 'center'},
-                {field: 'roleSet', title: '角色', sortable: true, formatter: 'roleFormatter', align: 'center'},
+                {field: 'roleSet', title: '角色', sortable: false, formatter: 'roleFormatter', align: 'center'},
                 {field: 'remark', title: '备注', sortable: true, align: 'center'},
                 {field: 'createdTime', title: '注册时间', sortable: true, formatter: 'dateFormatter', align: 'center'},
                 {field: 'status', title: '状态', sortable: true, formatter: 'statusFormatter', align: 'center'},

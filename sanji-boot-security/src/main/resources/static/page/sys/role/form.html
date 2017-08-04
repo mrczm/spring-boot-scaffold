@@ -45,13 +45,22 @@
     }
 
     function getMenus(cb) {
+        var zNodes = [];
+
+        function addMenus(menus) {
+            menus.forEach(function (menu) {
+                zNodes.push({id: menu.id, pId: menu.parentId, name: menu.name})
+                if (menu.children) {
+                    addMenus(menu.children);
+                }
+            })
+        }
+
         iGet('/api/menu', function (data) {
             if (data.status == "SUCCESS") {
                 var menus = data.content;
-                var zNodes = [];
-                menus.forEach(function (menu) {
-                    zNodes.push({id: menu.id, pId: menu.parentId, name: menu.name})
-                })
+                zNodes = [];
+                addMenus(menus);
                 cb(zNodes);
             } else {
                 console.log("menu data error")
@@ -62,7 +71,6 @@
 
     var id = 0;
 
-    var zMenus = [];
 
     function initData() {
         if (location.href.indexOf('#') > 0) {
@@ -85,17 +93,19 @@
                         menuMap.set(menu.id, menu);
                     })
                     role.menuSet.forEach(function (menu) {
-                        menuMap.get(menu.id).checked = true;
-                        menuMap.get(menu.id).open = true;
+                        if (menuMap.get(menu.id)) {
+                            menuMap.get(menu.id).checked = true;
+                            menuMap.get(menu.id).open = true;
+                        }
                     })
-                    zMenus = BuildZTreeMenus(menus);
+                    BuildZTreeMenus(menus);
                 })
 
             });
         } else {
             //获取菜单
             getMenus(function (menus) {
-                zMenus = BuildZTreeMenus(menus);
+                BuildZTreeMenus(menus);
             })
         }
         //去掉有值的input标题效果
@@ -107,19 +117,20 @@
         }
     }
 
+    //获取选中的菜单
+    function listCheckMenu() {
+        var menus = [];
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        var nodes = treeObj.getCheckedNodes(true);
+        menus.splice(0, menus.length);
+        for (var i = 0; i < nodes.length; i++) {
+            menus.push(nodes[i].id); //获取选中节点的值
+        }
+        return menus;
+    }
+
     <!--z_tree-->
     function BuildZTreeMenus(zNodes) {
-        var menus = [];
-
-        function onCheck(e, treeId, treeNode) {
-            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-            var nodes = treeObj.getCheckedNodes(true);
-            menus.splice(0, menus.length);
-            for (var i = 0; i < nodes.length; i++) {
-                menus.push(nodes[i].id); //获取选中节点的值
-            }
-        }
-
         var setting = {
             check: {
                 enable: true,
@@ -130,18 +141,18 @@
                     enable: true
                 }
             },
-            callback: {
-                onCheck: onCheck
-            }
         };
         $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-        return menus;
     }
 
 
     function dataSubmit() {
+
+        var zMenus = listCheckMenu();
         var data = {};
         var menuSet = [];
+        menuSet.push({id: 1});//root
+        console.log(zMenus)
         zMenus.forEach(function (menuId) {
             menuSet.push({id: menuId});
         })
