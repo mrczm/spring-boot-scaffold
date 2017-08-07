@@ -202,7 +202,10 @@
     $nestable.nestable('collapseAll');
     //node: {"id":1,"name":"name","icon":"zmdi zmdi-book","href":"href","permission":"permission"}
     function updateNestableNode(node) {
-        $('li[data-id=' + node.id + '] .dd-handle').html('<span class="' + node.icon + '">&nbsp;&nbsp;&nbsp;' + node.name + '</span></span>');
+        var depthName = node.depth == 1 ? '系统' : item.depth == 2 ? '目录' : '菜单';
+        var depthLable = node.depth == 1 ? node.skin : item.depth == 2 ? 'label-success' : 'label-info';
+        var span = "<span class='dd-handle dd3-handle'><span class=' " + node.icon + "'>&nbsp;&nbsp;&nbsp;" + node.name + "</span>&nbsp;&nbsp;<span class='label " + depthLable + "'>" + depthName + "</span></span>";
+        $('li[data-id=' + node.id + ']>div>.dd-handle').html(span);
         if (node.depth == 1) $('li[data-id=' + node.id + '] .col-skin').text('skin :' + node.skin);
         if (node.depth == 3) $('li[data-id=' + node.id + '] .col-text').text('地址链接 :' + node.url + ' permission ' + node.permission);
     }

@@ -51,6 +51,7 @@ public class MenuController {
         return ok();
     }
 
+    @Transactional
     @PutMapping("{id}")
     public Result<Menu> update(@PathVariable("id") Menu old, @RequestBody Menu self) {
         if (Objects.isNull(self)) {
@@ -86,6 +87,7 @@ public class MenuController {
         old.setParent(val(old::getParent, self::getParent));
         old.setSort(val(old::getSort, self::getSort));
         old.setDepth(val(old::getDepth, self::getDepth));
+        old.setSkin(val(old::getSkin, self::getSkin));
         old.setPermission(val(old::getPermission, self::getPermission));
     }
 

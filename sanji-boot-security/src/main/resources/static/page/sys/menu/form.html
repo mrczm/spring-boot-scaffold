@@ -78,7 +78,7 @@
     var selfId = 0;
     var type = 1;
     var id = updateId;
-//    console.log('update:=>',id);
+    console.log('update:=>',id);
 
     function getMenu(id,cb) {
         iGet('/api/menu/'+id,cb,function () {
@@ -185,20 +185,16 @@
         console.log(data);
         var path_id = 0;
         data.depth = type;
-        if (type == 1) {
+        if(id!=0){
+            path_id = id;
+        }else if (type == 1) {
             path_id = 1;
         } else if (type == 2) {
             delete data.skin;
             path_id = data.systemId;
-            if(id!=0){
-                path_id = id;
-            }
         } else if (type == 3) {
             delete data.skin;
             path_id = data.directoryId;
-            if(id!=0){
-                path_id = id;
-            }
         }
         //数据提交
         var beforeSend = function () {
