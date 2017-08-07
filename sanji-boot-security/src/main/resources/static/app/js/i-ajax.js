@@ -46,6 +46,6 @@ var iPut = function (url, data, beforeSend, cb, ecb) {
     return iAjax(url, data, "PUT", beforeSend, cb, ecb)
 }
 
-var iGet = function (url, cb, efc) {
-    return iAjax(url, null, "GET", null, cb, efc)
+var iGet = function (url, cb, ecb) {
+    return iAjax(url, null, "GET", null, cb, ecb)
 }

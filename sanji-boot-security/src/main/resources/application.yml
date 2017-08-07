@@ -35,3 +35,8 @@ spring:
     show-sql: true
 server:
   port: 8081
+
+sanji:
+  config:
+#  显示异常
+    show-exception: true

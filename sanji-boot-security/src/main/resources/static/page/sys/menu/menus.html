@@ -128,6 +128,9 @@
             console.log("update Menu success!");
         });
     }
+    function deleteMenu(ids,cb,ecb) {
+        iDelete('/api/menu', ids, null, cb, ecb);
+    }
     var $nestable = $('#nestable');
     Waves.displayEffect();
 
@@ -222,6 +225,10 @@
     }
 
     var createOrUpdateDialog;
+
+    var updateId = 0;
+
+
     function createAction() {
         createOrUpdateDialog = $.dialog({
             animationSpeed: 300,
@@ -234,6 +241,7 @@
     }
     function updateAction(id) {
         console.log(id);
+        updateId = id;
         createOrUpdateDialog = $.dialog({
             animationSpeed: 300,
             title: '編輯权限',
@@ -255,7 +263,23 @@
                     btnClass: 'waves-effect waves-button',
                     action: function () {
                         console.log(id);
-                        $('.dd').nestable('remove', id);
+                        var ids = [id];
+                        deleteMenu(ids, function (data) {
+                            if(data.status == 'SUCCESS'){
+                                $('.dd').nestable('remove', id);
+                            }else{
+                                $.confirm({
+                                    theme: 'dark',
+                                    animation: 'rotateX',
+                                    closeAnimation: 'rotateX',
+                                    title: false,
+                                    content: data.status == 'SUCCESS' ? data.msg : "有用户正在使用当前权限"
+                                });
+                            }
+
+                        }, function (data) {
+                            console.log(data)
+                        })
                     }
                 },
                 cancel: {
