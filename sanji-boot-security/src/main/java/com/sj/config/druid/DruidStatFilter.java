@@ -1,4 +1,4 @@
-package com.sj.modules.sys.web.druid;
+package com.sj.config.druid;
 
 
 import com.alibaba.druid.support.http.WebStatFilter;

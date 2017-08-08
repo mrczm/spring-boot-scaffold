@@ -1,614 +1,304 @@
 <!DOCTYPE html>
-
-<!--[if lt IE 7]>
-<html lang="en" class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>
-<html lang="en" class="lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>
-<html lang="en" class="lt-ie9"> <![endif]-->
-<!--[if IE 9]>
-<html lang="en" class="ie9"> <![endif]-->
-<!--[if gt IE 9]><!-->
-<html lang="en"> <!--<![endif]-->
+<html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-    <title>菜单管理</title>
-    <link href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.3/jquery-confirm.min.css">
-    <style type="text/css">
-        .cf:after {
-            visibility: hidden;
-            display: block;
-            font-size: 0;
-            content: " ";
-            clear: both;
-            height: 0;
-        }
-
-        * html .cf {
-            zoom: 1;
-        }
-
-        *:first-child + html .cf {
-            zoom: 1;
-        }
-
-        html {
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-size: 100%;
-            margin: 0;
-            padding: 1.75em;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-        }
-
-        h1 {
-            font-size: 1.75em;
-            margin: 0 0 0.6em 0;
-        }
-
-        a {
-            color: #2996cc;
-        }
-
-        a:hover {
-            text-decoration: none;
-        }
-
-        p {
-            line-height: 1.5em;
-        }
-
-        .small {
-            color: #666;
-            font-size: 0.875em;
-        }
-
-        .large {
-            font-size: 1.25em;
-        }
-
-        /**
-         * Nestable
-         */
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>权限管理</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/nestable2/1.5.0/jquery.nestable.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
+          rel="stylesheet"/>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
+    <link href="/plugins/jquery-confirm/jquery-confirm.min.css" rel="stylesheet"/>
+    <link href="/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet"/>
+    <!--select2-->
+    <link href="https://cdn.bootcss.com/select2/4.0.3/css/select2.min.css" rel="stylesheet"/>
+    <link href="/app/css/common.css" rel="stylesheet"/>
+    <link href="/app/css/skins.css" rel="stylesheet"/>
+    <style>
         .dd {
-            position: relative;
-            display: block;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            font-size: 13px;
-            line-height: 20px;
-        }
 
-        .dd-list {
-            display: block;
-            position: relative;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .dd-list .dd-list {
-            padding-left: 30px;
-        }
-
-        .dd-collapsed .dd-list {
-            display: none;
-        }
-
-        .dd-item,
-        .dd-empty,
-        .dd-placeholder {
-            display: block;
-            position: relative;
-            margin: 0;
-            padding: 0;
-            min-height: 20px;
-            font-size: 13px;
-            line-height: 20px;
+            max-width: 100%;
         }
 
         .dd-handle {
-            display: block;
-            height: 30px;
-            margin: 5px 0;
-            padding: 5px 10px;
-            color: #333;
-            text-decoration: none;
-            font-weight: bold;
-            border: 1px solid #ccc;
-            background: #fafafa;
-            background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
-            background: -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
-            background: linear-gradient(top, #fafafa 0%, #eee 100%);
-            -webkit-border-radius: 3px;
-            border-radius: 3px;
-            box-sizing: border-box;
-            -moz-box-sizing: border-box;
+            display: inline-block;
+            margin: 0px;
+            border: 0px solid #ccc;
+            background: rgba(0, 0, 0, 0);
         }
 
         .dd-handle:hover {
-            color: #2ea8e5;
-            background: #fff;
-        }
-
-        .dd-item > button {
-            display: block;
-            position: relative;
+            background: rgba(0, 0, 0, 0);
             cursor: pointer;
-            float: left;
-            width: 25px;
-            height: 20px;
-            margin: 5px 0;
-            padding: 0;
-            text-indent: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            border: 0;
-            background: transparent;
-            font-size: 12px;
-            line-height: 1;
-            text-align: center;
-            font-weight: bold;
         }
 
-        .dd-item > button:before {
-            content: '+';
-            display: block;
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            text-indent: 0;
-        }
-
-        .dd-item > button[data-action="collapse"]:before {
-            content: '-';
-        }
-
-        .dd-placeholder,
-        .dd-empty {
-            margin: 5px 0;
-            padding: 0;
-            min-height: 30px;
-            background: #f2fbff;
-            border: 1px dashed #b6bcbf;
-            box-sizing: border-box;
-            -moz-box-sizing: border-box;
-        }
-
-        .dd-empty {
-            border: 1px dashed #bbb;
-            min-height: 100px;
-            background-color: #e5e5e5;
-            background-image: -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
-            -webkit-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
-            background-image: -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
-            -moz-linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
-            background-image: linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff),
-            linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff);
-            background-size: 60px 60px;
-            background-position: 0 0, 30px 30px;
-        }
-
-        .dd-dragel {
-            position: absolute;
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        .dd-dragel > .dd-item .dd-handle {
-            margin-top: 0;
-        }
-
-        .dd-dragel .dd-handle {
-            -webkit-box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, .1);
-            box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, .1);
-        }
-
-        /**
-         * Nestable Extras
-         */
-        .nestable-lists {
-            display: block;
-            clear: both;
-            padding: 30px 0;
-            width: 100%;
-            border: 0;
-            border-top: 2px solid #ddd;
-            border-bottom: 2px solid #ddd;
-        }
-
-        #nestable-menu {
-            padding: 0;
-            margin: 20px 0;
-        }
-
-        #nestable-output,
-        #nestable2-output {
-            width: 100%;
-            height: 7em;
-            font-size: 0.75em;
-            line-height: 1.333333em;
-            font-family: Consolas, monospace;
+        .dd3-h {
+            color: inherit;
+            border: 1px dashed #e7eaec;
+            background: #f0f3f4;
             padding: 5px;
-            box-sizing: border-box;
-            -moz-box-sizing: border-box;
-        }
-
-        #nestable2 .dd-handle {
-            color: #fff;
-            border: 1px solid #999;
-            background: #bbb;
-            background: -webkit-linear-gradient(top, #bbb 0%, #999 100%);
-            background: -moz-linear-gradient(top, #bbb 0%, #999 100%);
-            background: linear-gradient(top, #bbb 0%, #999 100%);
-        }
-
-        #nestable2 .dd-handle:hover {
-            background: #bbb;
-        }
-
-        #nestable2 .dd-item > button:before {
-            color: #fff;
-        }
-
-        @media only screen and (min-width: 700px) {
-            .dd {
-                float: left;
-                width: 100%;
-            }
-
-            .dd + .dd {
-                margin-left: 2%;
-            }
-        }
-
-        .dd-hover > .dd-handle {
-            background: #2ea8e5 !important;
-        }
-
-        /**
-         * Nestable Draggable Handles
-         */
-
-        .dd3-content {
+            padding-top: 10px;
             display: block;
-            height: 30px;
             margin: 5px 0;
-            padding: 5px 10px 5px 40px;
             color: #333;
             text-decoration: none;
-            font-weight: bold;
-            border: 1px solid #ccc;
-            background: #fafafa;
-            background: -webkit-linear-gradient(top, #fafafa 0%, #eee 100%);
-            background: -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
-            background: linear-gradient(top, #fafafa 0%, #eee 100%);
-            -webkit-border-radius: 3px;
+            border: 1px solid #e7eaec;
+            background: #f5f5f5;
             border-radius: 3px;
             box-sizing: border-box;
             -moz-box-sizing: border-box;
         }
 
-        .dd3-content:hover {
-            color: #2ea8e5;
-            background: #fff;
+        .col {
+            padding-left: 30px;
+
         }
 
-        .dd-dragel > .dd3-item > .dd3-content {
-            margin: 0;
+        .i-btn {
+            margin-top: -3px;
+            padding: 3px 10px;
         }
 
-        .dd3-item > button {
-            margin-left: 30px;
+        .dd-item > button {
+
+            margin-top: 15px;
         }
 
-        .dd3-handle {
-            position: absolute;
-            margin: 0;
-            left: 0;
-            top: 0;
-            cursor: pointer;
-            width: 30px;
-            text-indent: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            border: 1px solid #aaa;
-            background: #ddd;
-            background: -webkit-linear-gradient(top, #ddd 0%, #bbb 100%);
-            background: -moz-linear-gradient(top, #ddd 0%, #bbb 100%);
-            background: linear-gradient(top, #ddd 0%, #bbb 100%);
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
+        .ml10 {
+            color: #000;
+            margin: 0 5px;
         }
 
-        .dd3-handle:before {
-            content: '≡';
-            display: block;
-            position: absolute;
-            left: 0;
-            top: 3px;
+        .btn-group {
             width: 100%;
-            text-align: center;
-            text-indent: 0;
-            color: #fff;
-            font-size: 20px;
-            font-weight: normal;
+            height: 50px;
         }
 
-        .dd3-handle:hover {
-            background: #ddd;
-        }
-
-        table tr td {
-            min-width: 260px;
+        .radio-group {
+            margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
-<h1>菜单管理</h1>
-<p>&nbsp;</p>
-<menu id="nestable-menu">
-    <button type="button" data-action="expand-all">展开</button>
-    <button type="button" data-action="collapse-all">关闭</button>
-</menu>
-<div id="menu">
-    <div class="dd" id="nestable3">
-        <ol class="dd-list">
-            <!--<li class="dd-item dd3-item" data-id="14">-->
-            <!--<div class="dd-handle dd3-handle">Drag</div>-->
-            <!--<div class="dd3-content">Item 14</div>-->
-            <!--</li>-->
-            <li class="dd-item dd3-item" v-for="(menu,index) in list" :data-id="menu.id">
-                <div class="dd-handle dd3-handle">Drag</div>
-                <div class="dd3-content">
-                    <table>
-                        <tr>
-                            <td v-text="menu.id"></td>
-                            <td v-text="menu.name"></td>
-                            <td v-text="menu.icon"></td>
-                            <td v-text="menu.description"></td>
-                            <td>
-                                <a href="javascript:void(0);" @click.stop="_do(menu.id,0)">添加</a>
-                                <a href="javascript:void(0);" @click.stop="_do(menu.id,1)">修改</a>
-                                <a href="javascript:void(0);" @click.stop="del(menu.id)">删除</a>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <ol class="dd-list" v-if="null!=menu.subMenus&&menu.subMenus.length>0">
-                    <li class="dd-item dd3-item" v-for="(subMenu,index) in menu.subMenus" :data-id="subMenu.id">
-                        <div class="dd-handle dd3-handle">Drag</div>
-                        <div class="dd3-content">
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td v-text="subMenu.id"></td>
-                                    <td v-text="subMenu.name"></td>
-                                    <td v-text="subMenu.icon"></td>
-                                    <td v-text="subMenu.description"></td>
-                                    <td>
-                                        <a href="javascript:void(0);" @click.stop="_do(subMenu.id,0)">添加</a>
-                                        <a href="javascript:void(0);" @click.stop="_do(subMenu.id,1)">修改</a>
-                                        <a href="javascript:void(0);" @click.stop="del(subMenu.id)">删除</a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <ol class="dd-list" v-if="null!=subMenu.subMenus&&subMenu.subMenus.length>0">
-                            <li class="dd-item dd3-item" v-for="(subSubMenu,index) in subMenu.subMenus"
-                                :data-id="subSubMenu.id">
-                                <div class="dd-handle dd3-handle">Drag</div>
-                                <div class="dd3-content">
-                                    <table>
-                                        <tr>
-                                            <td v-text="subSubMenu.id"></td>
-                                            <td v-text="subSubMenu.name"></td>
-                                            <td v-text="subSubMenu.icon"></td>
-                                            <td v-text="subSubMenu.description"></td>
-                                            <td>
-                                                <a href="javascript:void(0);"
-                                                   @click.stop="_do(subSubMenu.id,0)">添加</a>
-                                                <a href="javascript:void(0);"
-                                                   @click.stop="_do(subSubMenu.id,1)">修改</a>
-                                                <a href="javascript:void(0);"
-                                                   @click.stop="del(subSubMenu.id)">删除</a>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <ol class="dd-list" v-if="null!=subSubMenu.subMenus&&subSubMenu.subMenus.length>0">
-                                    <li class="dd-item dd3-item" v-for="(subSubSubMenu,index) in subSubMenu.subMenus"
-                                        :data-id="subSubSubMenu.id">
-                                        <div class="dd-handle dd3-handle">Drag</div>
-                                        <div class="dd3-content">
-                                            <table>
-                                                <tr>
-                                                    <td v-text="subSubSubMenu.id"></td>
-                                                    <td v-text="subSubSubMenu.name"></td>
-                                                    <td v-text="subSubSubMenu.icon"></td>
-                                                    <td v-text="subSubSubMenu.description"></td>
-                                                    <td>
-                                                        <a href="javascript:void(0);"
-                                                           @click.stop="_do(subSubSubMenu.id,1)">修改</a>
-                                                        <a href="javascript:void(0);"
-                                                           @click.stop="del(subSubSubMenu.id)">删除</a>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </li>
-                                </ol>
-                            </li>
-                        </ol>
-                    </li>
-                </ol>
-            </li>
+<div id="main">
+    <div class="btn-group">
+        <a class="waves-effect waves-button" href="javascript:;" onclick="createAction()"><i class="zmdi zmdi-plus"></i>
+            新增权限</a>
+        <span class="pull-right">
+            <a class="waves-effect waves-button" href="javascript:;" onclick="collapseAll()"><i class="zmdi zmdi-chevron-up"></i>
+            折叠</a>
+            <a class="waves-effect waves-button" href="javascript:;" onclick="expandAll()"><i class="zmdi zmdi-chevron-down"></i>
+            展开</a>
+        </span>
+
+    </div>
+    <div class="dd" id="nestable">
+        <ol id="dd-empty-ol" class='dd-list dd3-list'>
         </ol>
     </div>
-    <textarea id="nestable-output" hidden></textarea>
-
-    <form role="form" id="form" style="display: none;">
-        <input type="hidden" id="id"/>
-        <input type="hidden" id="parentId"/>
-        <div class="form-group">
-            <label>名称</label>
-            <input type="text" class="form-control" placeholder="名称" id="name">
-        </div>
-        <div class="form-group">
-            <label>图标</label>
-            <input type="text" class="form-control" placeholder="图标" id="icon">
-        </div>
-        <div class="form-group">
-            <label>描述</label>
-            <textarea class="form-control" rows="3" id="description"></textarea>
-        </div>
-        <div class="form-group">
-            <label>链接</label>
-            <input type="text" class="form-control" placeholder="链接" id="url">
-        </div>
-    </form>
 </div>
 
-<script src="http://www.jq22.com/jquery/1.11.1/jquery.min.js"></script>
-<script src="/plugins/jquery.nestable.js"></script>
-<script src="/plugins/vue/2.3.4/vue.min.js"></script>
-<script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.3/jquery-confirm.min.js"></script>
+<script src="/plugins/jquery.1.12.4.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/nestable2/1.5.0/jquery.nestable.min.js"></script>
+<script src="/plugins/waves-0.7.5/waves.min.js"></script>
+<script src="/plugins/jquery-confirm/jquery-confirm.min.js"></script>
+
+<!--给form使用-->
+<!-- select2 -->
+<script src="https://cdn.bootcss.com/select2/4.0.3/js/select2.min.js"></script>
+<script src="https://cdn.bootcss.com/select2/4.0.3/js/i18n/zh-CN.js"></script>
+
+<script src="/app/js/common.js"></script>
+<script src="/app/js/i-ajax.js"></script>
 <script>
-    var vm = new Vue({
-        el: "#menu",
-        data: {
-            list: {},
-            menus: []
-        },
-        created: function () {
-            var _this = this;
-            _this.loadData();
-        },
-        methods: {
-            loadData: function () {
-                var _this = this;
-                $.get("/menu", function (data) {
-                    _this.list = data;
-                });
-            },
-            _do: function (parentId, sid) {
-                var _this = this;
-                $.get("/menu/" + parentId, function (data) {
-                    $.confirm({
-                        title: "菜单维护",
-                        draggable: true,
-                        content: $("#form").html(),
-                        onContentReady: function () {
-                            if (0 == sid) {
-                                this.$content.find('#id').val(0);
-                                this.$content.find('#parentId').val(data.id);
-                            } else {
-                                this.$content.find('#id').val(data.id);
-                                this.$content.find('#parentId').val(data.parentId);
-                                this.$content.find('#name').val(data.name);
-                                this.$content.find('#icon').val(data.icon);
-                                this.$content.find('#description').val(data.description);
-                                this.$content.find('#url').val(data.url);
-                            }
-                        },
-                        buttons: {
-                            formSubmit: {
-                                text: '提交',
-                                btnClass: 'btn-blue',
-                                action: function () {
-                                    var id = this.$content.find('#id').val();
-                                    id = id ? id : 0;
-                                    var name = this.$content.find('#name').val();
-                                    var icon = this.$content.find('#icon').val();
-                                    var description = this.$content.find('#description').val();
-                                    var url = this.$content.find('#url').val();
-                                    var parentId = this.$content.find('#parentId').val();
-                                    if (!name) {
-                                        $.alert('请输入菜单名称');
-                                        return false;
-                                    }
-                                    $.post("/menu/do/" + id, {
-                                        "name": name,
-                                        "icon": icon,
-                                        "description": description,
-                                        "url": url,
-                                        "parent": parentId
-                                    }, function (data) {
-                                        _this.loadData();
-                                    })
-                                }
-                            },
-                            cancel: function () {
-                            }
-                        }
-                    });
-                });
+    jconfirm.defaults = {
+        theme: 'material',
+    };
+    function getMenuTree(fc) {
+        iGet('/api/menu', function (data) {
+            fc(data.content);
+        })
+    }
+    function updateMenu(data) {
+        iPut('/api/menu/' + data.id, data, null, function (data) {
+            console.log("update Menu success!");
+        });
+    }
+    function deleteMenu(ids,cb,ecb) {
+        iDelete('/api/menu', ids, null, cb, ecb);
+    }
+    var $nestable = $('#nestable');
+    Waves.displayEffect();
 
-            },
-            del: function (id) {
-                var _this = this;
-                $.confirm({
-                    title: '确认删除？',
-                    closeAnimation: 'scale',
-                    opacity: 0.5,
-                    buttons: {
-                        'confirm': {
-                            text: '确认',
-                            btnClass: 'btn-blue',
-                            action: function () {
-                                $.post("/menu/delete/" + id, function (data) {
-                                    _this.loadData();
-                                });
-                            }
-                        },
-                        cancel: function () {
-                            text: '取消'
-                        }
-                    }
-                });
-            }
+    function collapseAll() {
+        $nestable.nestable('collapseAll');
+    }
+
+    function expandAll() {
+        $nestable.nestable('expandAll');
+    }
+    //    https://github.com/RamonSmit/Nestable2
+    var obj = '[{"id":1,"name":"name","depth":1,"icon":"zmdi zmdi-book","href":"href","permission":"permission"},{"id":2,"name":"name","depth":1,"icon":"zmdi zmdi-plus","href":"href","permission":"permission"},{"id":3,"name":"name","depth":1,"icon":"zmdi zmdi-plus","href":"href","permission":"permission","children":[{"id":4,"name":"name","depth":2,"icon":"zmdi zmdi-plus","href":"href","permission":"permission"},{"id":5,"name":"name","depth":2,"icon":"zmdi zmdi-plus","href":"href","permission":"permission"}]}]';
+    var output = '';
+    function buildItem(item) {
+        var depthName = item.depth == 1 ? '系统' : item.depth == 2 ? '目录' : '菜单';
+        var depthLable = item.depth == 1 ? 'label-primary' : item.depth == 2 ? 'label-success' : 'label-info';
+        var html = "<li class='dd-item ' data-id='" + item.id + "'>";
+        var span = "";
+        if (item.depth == 1) {
+            span = "<span class='dd-handle dd3-handle'><span class=' " + item.icon + "'>&nbsp;&nbsp;&nbsp;" + item.name + "</span>&nbsp;&nbsp;<span class='label " + item.skin + "'>" + depthName + "</span></span>";
+        } else {
+            span = "<span class='dd-handle dd3-handle'><span class=' " + item.icon + "'>&nbsp;&nbsp;&nbsp;" + item.name + "</span>&nbsp;&nbsp;<span class='label " + depthLable + "'>" + depthName + "</span></span>";
         }
-    });
+        if (item.depth == 3) span += "<span class='col col-text'> 地址链接 :" + item.url + " permission " + item.permission + "</span>";
+        span += "<span class='pull-right col'>"
+        span += '<a class="edit ml10" href="javascript:updateAction(' + item.id + ')" data-toggle="tooltip" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>'
+        span += '<a class="remove ml10" href="javascript:deleteAction(' + item.id + ')" data-toggle="tooltip" title="Remove"><i class="glyphicon glyphicon-remove"></i></a>'
+        span += "</span>"
+        html += "<div class='dd3-h'>" + span + "</div>";
 
-    $(document).ready(function () {
-        var updateOutput = function (e) {
-            var list = e.length ? e : $(e.target),
-                output = list.data('output');
-            if (window.JSON) {
-                output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
-                //获取并存到数据库
-                $.post("/menu/synchronize", {"json": window.JSON.stringify(list.nestable('serialize'))}, function (data) {
-//                    vm.loadData();
-                });
-            } else {
-                output.val('JSON browser support required for this demo.');
+        if (item.children) {
+            html += "<ol class='dd-list' data-pid =" + item.id + ">";
+            $.each(item.children, function (index, sub) {
+                html += buildItem(sub);
+            });
+            html += "</ol>";
+
+        }
+        html += "</li>";
+
+        return html;
+    }
+
+    getMenuTree(function (data) {
+        $.each(data, function (index, item) {
+            output += buildItem(item);
+        });
+    })
+
+    $('#dd-empty-ol').append(output);
+    $nestable.nestable({
+        callback: function () {
+            function buildMenu(obj) {
+                return {
+                    id: obj.id,
+                    depth: obj.depth,
+                    sort: obj.left,
+                    parent: {
+                        id: obj.parent_id ? obj.parent_id : 1
+                    }
+                }
             }
-        };
-        $('#nestable3').nestable({
-            group: 1,
-            maxDepth: 4
-        }).on('change', updateOutput);
-        updateOutput($('#nestable3').data('output', $('#nestable-output')));
-        $('#nestable-menu').on('click', function (e) {
-            var target = $(e.target),
-                action = target.data('action');
-            if (action === 'expand-all') {
-                $('.dd').nestable('expandAll');
+            $nestable.nestable('toArray').forEach(function (obj) {
+                updateMenu(buildMenu(obj));
+            });
+        }, maxDepth: 3
+    });
+    //折叠
+    $nestable.nestable('collapseAll');
+    //node: {"id":1,"name":"name","icon":"zmdi zmdi-book","href":"href","permission":"permission"}
+    function updateNestableNode(node) {
+        var depthName = node.depth == 1 ? '系统' : node.depth == 2 ? '目录' : '菜单';
+        var depthLable = node.depth == 1 ? node.skin : node.depth == 2 ? 'label-success' : 'label-info';
+        var span = "<span class=' " + node.icon + "'>&nbsp;&nbsp;&nbsp;" + node.name + "</span>&nbsp;&nbsp;<span class='label " + depthLable + "'>" + depthName + "</span>";
+        $('li[data-id=' + node.id + ']>div>.dd-handle').html(span);
+        if (node.depth == 1) $('li[data-id=' + node.id + '] .col-skin').text('skin :' + node.skin);
+        if (node.depth == 3) $('li[data-id=' + node.id + '] .col-text').text('地址链接 :' + node.url + ' permission ' + node.permission);
+    }
+    function addNestableNode(pid, node) {
+        console.log(pid);
+        if (pid) {
+            //添加子节点
+            var $children_ol = $('ol[data-pid=' + pid + ']');
+            if ($children_ol.length == 0) {
+                $('li[data-id=' + pid + ']').prepend('<button class="dd-expand" data-action="expand" type="button">Expand</button><button class="dd-collapse" data-action="collapse" type="button">Collapse</button>');
+                $('li[data-id=' + pid + ']').append('<ol class="dd-list" data-pid="' + pid + '"></ol>');
+                $children_ol = $('ol[data-pid=' + pid + ']');
+//                console.log('添加子节点');
             }
-            if (action === 'collapse-all') {
-                $('.dd').nestable('collapseAll');
+            $children_ol.append(buildItem(node));
+        } else {
+            //添加根节点
+            $('#dd-empty-ol').append(buildItem(node));
+        }
+    }
+
+    var createOrUpdateDialog;
+
+    var updateId = 0;
+
+
+    function createAction() {
+        updateId = 0;
+        createOrUpdateDialog = $.dialog({
+            animationSpeed: 300,
+            title: '新增权限',
+            content: 'url:/page/sys/menu/form.html',
+            onContentReady: function () {
+                initMaterialInput();
             }
         });
-    });
+    }
+    function updateAction(id) {
+//        console.log(id);
+        updateId = id;
+        createOrUpdateDialog = $.dialog({
+            animationSpeed: 300,
+            title: '編輯权限',
+            content: 'url:/page/sys/menu/form.html',
+            onContentReady: function () {
+                initMaterialInput();
+            }
+        });
+    }
+    function deleteAction(id) {
+        $.confirm({
+            type: 'red',
+            animationSpeed: 300,
+            title: false,
+            content: '确认删除？',
+            buttons: {
+                confirm: {
+                    text: '确认',
+                    btnClass: 'waves-effect waves-button',
+                    action: function () {
+                        console.log(id);
+                        var ids = [id];
+                        deleteMenu(ids, function (data) {
+                            if(data.status == 'SUCCESS'){
+                                $('.dd').nestable('remove', id);
+                            }else{
+                                $.confirm({
+                                    theme: 'dark',
+                                    animation: 'rotateX',
+                                    closeAnimation: 'rotateX',
+                                    title: false,
+                                    content: data.status == 'SUCCESS' ? data.msg : "有用户正在使用当前权限或尝试先删除子级权限",
+                                    buttons: {
+                                        confirm: {
+                                            text: '确认',
+                                            btnClass: 'waves-effect waves-button waves-light'
+                                        }
+                                    }
+                                });
+                            }
+
+                        }, function (data) {
+                            console.log(data)
+                        })
+                    }
+                },
+                cancel: {
+                    text: '取消',
+                    btnClass: 'waves-effect waves-button'
+                }
+            }
+        });
+    }
 </script>
 </body>
 </html>
-
