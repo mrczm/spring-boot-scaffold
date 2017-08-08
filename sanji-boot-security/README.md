@@ -1,2 +1,2 @@
 ##注意事项
-运行项目之前先将 [persistent_logins.sql](persistent_logins.sql)导入
+运行项目之前先将 [sanji-boot-security.sql](sanji-boot-security.sql)导入
