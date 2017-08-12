@@ -1,14 +1,14 @@
 
-##SanJi Boot Shiro:
+## SanJi Boot Shiro:
 整合 Shiro 提供用户权限管理认证 提供权限日志功能及菜单管理
 
 TODO : 用户管理页面 后期会抽空补上
 
-###页面效果：
+### 页面效果：
 
 ![sanji_boot_shiro](../resources/sanji-boot-shiro.png)
 
-###技术栈：
+### 技术栈：
 **后端：**
 
 核心框架 ：Spring Boot 1.5.2.RELEASE
