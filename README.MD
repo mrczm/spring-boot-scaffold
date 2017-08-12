@@ -25,7 +25,9 @@
 [查看详情](sanji-boot-shiro)
 
 ## SanJi Boot Security:
-整合 Security 
+
+**整合 Security 提供一下功能：**
+
 * [x] 前后端分离
 
 * [x] 权限认证 

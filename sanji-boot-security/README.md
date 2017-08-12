@@ -1,5 +1,7 @@
 ## SanJi Boot Security:
-整合 Security 
+
+**整合 Security 提供一下功能：**
+
 * [x] 前后端分离
 
 * [x] 权限认证 
@@ -53,6 +55,8 @@
 弹窗框架： jquery-confirm
 
 页面主体框架 ：zhengAdmin
+
+### 扩展
 
 [了解更多](https://github.com/shuzheng/zhengAdmin/blob/master/README.md)
 
