@@ -6,7 +6,9 @@ TODO : 用户管理页面 后期会抽空补上
 
 ### 页面效果：
 
-![sanji_boot_shiro](../resources/sanji-boot-shiro.png)
+![菜单管理](../resources/sanji-boot-shiro-menu.png)
+
+![日志管理](../resources/sanji-boot-shiro-log.png)
 
 ### 技术栈：
 **后端：**
