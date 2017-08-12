@@ -1,37 +1,65 @@
-#SanJi Boot
+# SanJi Boot
 
 基于Spring Boot 集成一些常用的功能，你只需要基于它做些简单的修改即可，下面是一个功能列表：
 
 [MENU]
 
-##SanJi Boot Shiro:
-整合 Shiro 提供用户权限管理认证 提供权限日志功能及菜单管理
+## SanJi Boot Shiro
 
-###技术栈：
-**后端：**
+**整合 Shiro 提供一下功能：**
 
-核心框架 ：Spring Boot 1.5.2.RELEASE
+* [x] 权限认证 
 
-安全框架：Apache Shiro 1.2.5
+* [x] 权限管理
 
-视图框架：Spring MVC
+* [x] 日志管理
 
-持久层框架：JPA
+* [ ] 用户管理 
 
-数据库连接池：Alibaba Druid 1.0.20
+### 页面效果：
 
-日志管理：LogBack
+![菜单管理](resources/sanji-boot-shiro-menu.png)
 
-工具类：easypoi 2.3.1 fastjson 1.2.23
+![日志管理](resources/sanji-boot-shiro-log.png)
 
-**前端:**
+[查看详情](sanji-boot-shiro)
 
-主要使用的技术，许多的组件框架就不在列举：
+## SanJi Boot Security:
 
-CSS框架：Twitter Bootstrap 3
+**整合 Security 提供一下功能：**
 
-渐进式JavaScript 框架：VUE 2.2.0
+* [x] 前后端分离
 
-弹窗框架： layUI 1.0.9_rls
+* [x] 权限认证 
+ 
+* [x] 权限管理
+ 
+* [x] 用户管理 
 
-页面样式框架 ：adminLTE 2.3.8
+* [x] 角色管理 
+
+* [x] 日志管理
+
+### 页面效果：
+
+![用户管理](resources/sanji-boot-security-user.png)
+
+![角色管理](resources/sanji-boot-security-role.png)
+
+![权限管理](resources/sanji-boot-security-sec.png)
+
+![权限编辑](resources/sanji-boot-security-sec-add.png)
+
+![日志管理](resources/sanji-boot-security-log.png)
+
+[查看详情](sanji-boot-security)
+
+## utils
+
+一些小工具 后期会逐渐壮大
+
+## share
+
+分享一些优秀的类库,及上手demo
+
+正在规划中......
