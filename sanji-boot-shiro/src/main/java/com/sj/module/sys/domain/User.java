@@ -12,7 +12,7 @@ import java.util.Set;
  * Created by sunxyz on 2017/3/13.
  * v0.1.1 移除 角色组
  */
-@JsonIgnoreProperties({"hibernateLazyInitializer", "password", "news", "roleSet"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "password", "news"})
 @DynamicUpdate
 @Entity
 @Table(name = "sys_user")
