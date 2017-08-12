@@ -5,7 +5,7 @@
 [MENU]
 
 ## SanJi Boot Shiro:
-[查看详情](sanji-boot-shiro)
+
 **整合 Shiro 提供一下功能：**
 
 * [x] 权限认证 
@@ -22,10 +22,24 @@
 
 ![日志管理](resources/sanji-boot-shiro-log.png)
 
+[查看详情](sanji-boot-shiro)
+
 ## SanJi Boot Security: 
-整合 Security 提供用户权限管理认证 提供权限认证及权限管理 前后端分离
+整合 Security 
+* [x] 前后端分离
+
+* [x] 权限认证 
+ 
+* [x] 权限管理
+ 
+* [x] 日志管理
+ 
+* [x] 用户管理 
+
 ### 页面效果：
 
 ![菜单管理](resources/sanji-boot-shiro-menu.png)
 
 ![日志管理](resources/sanji-boot-shiro-log.png)
+
+[查看详情](sanji-boot-security)
