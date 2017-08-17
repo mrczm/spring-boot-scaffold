@@ -63,4 +63,4 @@
 
 [使用Vue](https://cn.vuejs.org/v2/guide/)
 
-**[Spring Boot 学习资料收集](https://segmentfault.com/a/1190000008539153)**
+**[Spring Boot 学习资料](https://segmentfault.com/a/1190000008539153)**
