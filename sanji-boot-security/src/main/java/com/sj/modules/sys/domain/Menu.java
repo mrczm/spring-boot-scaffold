@@ -14,7 +14,7 @@ import java.util.List;
 @JsonIgnoreProperties({"new"})
 @Entity
 @Table(name = "sys_menu")
-public class Menu extends BaseEntity<Long> {
+public class Menu extends BaseEntity<Menu> {
 
     private String name;
 

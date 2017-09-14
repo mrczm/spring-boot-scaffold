@@ -2,7 +2,6 @@ package com.sj.modules.sys.web;
 
 import com.sj.common.Result;
 import com.sj.modules.sys.domain.Menu;
-import com.sj.modules.sys.domain.UserDetails;
 import com.sj.modules.sys.repository.MenuRepository;
 import com.sj.modules.sys.service.MenuTreeService;
 import com.sj.modules.sys.view.MenuTreeVO;
@@ -17,7 +16,6 @@ import static com.sj.common.ResultGenerator.error;
 import static com.sj.common.ResultGenerator.ok;
 
 /**
- * TODO 更新删除未实现
  * Created by yangrd on 2017/7/18.
  */
 @RestController

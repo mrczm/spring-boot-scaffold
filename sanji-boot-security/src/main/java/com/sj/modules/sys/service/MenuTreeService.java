@@ -48,7 +48,7 @@ public class MenuTreeService {
         Map<Long, MenuTreeVO> menuTreeMap = menuCollection.stream().collect(Collectors.toMap(Menu::getId, o -> BeanMapper.map(o, MenuTreeVO.class)));
         menuTreeMap.forEach((k, v) -> {
             Long parentId = v.getParentId();
-            if (parentId != 0) {
+            if (parentId != -1) {
                 menuTreeMap.get(parentId).addChildren(v);
             }
         });

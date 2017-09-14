@@ -14,7 +14,7 @@ import java.util.Set;
 @DynamicUpdate
 @Entity
 @Table(name = "sys_role")
-public class Role extends BaseEntity<Long> {
+public class Role extends BaseEntity<Role> {
 
     private String name;//给用户看
 

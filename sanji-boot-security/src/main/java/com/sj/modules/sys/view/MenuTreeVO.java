@@ -148,7 +148,7 @@ public class MenuTreeVO implements Comparable<MenuTreeVO> {
     }
 
     public Long getParentId() {
-        return Objects.nonNull(parent) ? parent.getId() : 0L;
+        return Objects.nonNull(parent) ? parent.getId() : -1L;
     }
 
     @Override

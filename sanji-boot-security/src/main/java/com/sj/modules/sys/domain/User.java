@@ -17,7 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name = "sys_user")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User extends BaseEntity<Long> {
+public class User extends BaseEntity<User> {
 
     @NotEmpty(message = "用户名不能为空")
     @Column(unique = true, updatable = false)
@@ -74,7 +74,7 @@ public class User extends BaseEntity<Long> {
         return this;
     }
 
-    public static enum UserStatus {
+    public enum UserStatus {
         NORMAL,//正常
         ABNORMAL,//异常
         FROZEN//冻结
