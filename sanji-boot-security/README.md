@@ -30,6 +30,8 @@
 
 运行项目之前先将 [sanji-boot-security.sql](sanji-boot-security.sql)导入
 
+ **权限注解需要自己进行配置** 
+
 
 ### 技术栈：
 
