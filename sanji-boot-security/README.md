@@ -143,6 +143,7 @@ sanji-boot-security
 
 
 ### 页面效果：
+**电脑端：**
 
 ![用户管理](../resources/sanji-boot-security-user.png)
 
@@ -153,6 +154,14 @@ sanji-boot-security
 ![权限编辑](../resources/sanji-boot-security-sec-add.png)
 
 ![日志管理](../resources/sanji-boot-security-log.png)
+
+**移动端：**
+
+![权限管理1](../resources/sanji-boot-security-sec-phone-skin-blue.png)
+
+![权限管理2](../resources/sanji-boot-security-sec-phone.png)
+
+![权限管理3](../resources/sanji-boot-security-sec-phone-skin-green.png)
 
 ### 扩展
 
