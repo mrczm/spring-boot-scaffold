@@ -86,6 +86,7 @@ Hello Vue!
  **权限注解需要自己进行配置** 
 
 ### 项目结构
+```
 sanji-boot-security
 ├─java
 │  ├─common 公共模块
@@ -106,7 +107,7 @@ sanji-boot-security
    │ └─plugins 第三方库、插件等静态资源
    │ 
    └─application.yml  项目配置文件
-
+```
 
 ### 技术栈(技术选型)：
 
