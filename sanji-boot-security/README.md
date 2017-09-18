@@ -58,7 +58,9 @@ public class MenuController {
     }
 }
 ```
-相比于以往的操作是否更加优雅，而这一切Spring Data JPA 都已为我们做好了,而使用Spring Boot 之后我们可以将配置减到最低,5分钟写一个简单的CRUD的Demo不在是空中楼阁(有没有心动?后面扩展给出了学习资料)。安利了Spring Boot ,再安利一下VUE js
+相比于以往的操作是否更加优雅，而这一切Spring Data JPA 都已为我们做好了,使用Spring Boot 之后我们可以将配置减到最低,
+5分钟即可写一个简单的CRUD的Demo不在是空中楼阁(有没有心动?后面扩展给出了学习资料)。
+安利了Spring Boot ,再安利一下VUE js
 
 这里以官网的demo为例：
 
