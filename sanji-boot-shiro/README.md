@@ -1,6 +1,6 @@
 
 ## SanJi Boot Shiro:
-**整合 Shiro 提供一下功能：**
+**整合 Apache Shiro 提供一下功能：**
 
 * [x] 权限认证 
 
