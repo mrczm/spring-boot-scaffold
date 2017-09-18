@@ -1,12 +1,10 @@
 ## SanJi Boot Security:
 
-**项目说明：**
+###项目说明：
 
-项目基于Spring Boot，以Spring Boot 为起点，使用Spring MVC Spring Data JPA  Spring Security等框架。
+项目基于Spring Boot，以Spring Boot 为起点，使用Spring MVC, Spring Data JPA,  Spring Security等框架。
 
-提供一下功能：
-
-* [x] 前后端分离
+**提供一下功能：**
 
 * [x] 权限认证 
  
@@ -17,6 +15,10 @@
 * [x] 角色管理 
 
 * [x] 日志管理
+
+* [x] 前后端分离
+
+**为什么使用Spring Boot?**
 
 关于为什么使用Spring Boot ,这里以一段代码进行演示：
 ```
@@ -58,11 +60,13 @@ public class MenuController {
     }
 }
 ```
-相比于以往的操作是否更加优雅，而这一切Spring Data JPA 都已为我们做好了,使用Spring Boot 之后我们可以将配置减到最低,
-5分钟即可写一个简单的CRUD的Demo不在是空中楼阁(有没有心动?后面扩展给出了学习资料)。
-安利了Spring Boot ,再安利一下VUE js
+相比于以往的操作是否更加优雅，而这一切Spring Data JPA 都已为我们做好了。
 
-这里以官网的demo为例：
+使用Spring Boot 之后我们可以将配置减到最低,5分钟即可写一个简单的CRUD的Demo不在是空中楼阁(有没有心动?后面扩展给出了学习资料)。
+
+安利了Spring Boot ,再安利一下Vue js
+
+这里以Vue官网的demo为例：
 
 ```
 <div id="app">
