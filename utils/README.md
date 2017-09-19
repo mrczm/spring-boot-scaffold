@@ -1,4 +1,8 @@
-常用工具集:
+##常用工具集:
+
+### 注意事项：
+
+由于使用了一个自定义的常用功能包需要手动将 [bloom-common.zip](../resources/lib/bloom-common.zip)解压后放在本地maven仓库的cn/sunxyz目录下
 
 **JsonMapper**
 
