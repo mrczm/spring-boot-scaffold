@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Created by yangrd on 2017/7/4.
@@ -22,8 +23,9 @@ public class AuthenticationLogoutSuccessHandler extends SimpleUrlLogoutSuccessHa
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication auth) throws IOException, ServletException {
         if (RequestUtils.isAjax(request)) {
-            ResponseUtils.utf8AndJson(response).getWriter().print(LOGIN_ERROR_RESULT);
-            response.getWriter().flush();
+            PrintWriter writer = ResponseUtils.utf8AndJson(response).getWriter();
+            writer.print(LOGIN_ERROR_RESULT);
+            writer.flush();
         } else {
             super.onLogoutSuccess(request, response, auth);
         }
