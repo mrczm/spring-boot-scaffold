@@ -74,6 +74,10 @@ public class User extends BaseEntity<User> {
         return this;
     }
 
+    public boolean isEnabled() {
+        return !this.status.equals(UserStatus.FROZEN);
+    }
+
     public enum UserStatus {
         NORMAL,//正常
         ABNORMAL,//异常

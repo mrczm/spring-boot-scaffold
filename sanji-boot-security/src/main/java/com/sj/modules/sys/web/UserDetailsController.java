@@ -47,7 +47,6 @@ public class UserDetailsController {
         Date now = new Date();
         userDetails.setCreatedTime(now);
         userDetails.setModifiedTime(now);
-        userDetails.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
         repository.save(userDetails);
         return ok();
     }

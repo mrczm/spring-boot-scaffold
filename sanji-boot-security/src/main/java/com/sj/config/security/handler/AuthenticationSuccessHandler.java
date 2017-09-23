@@ -23,9 +23,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication auth) throws IOException, ServletException {
         if (RequestUtils.isAjax(request)) {
-            PrintWriter writer = ResponseUtils.utf8AndJson(response).getWriter();
-            writer.print(LOGIN_SUCCESS_RESULT);
-            writer.flush();
+            ResponseUtils.print(response, LOGIN_SUCCESS_RESULT);
         } else {
             super.onAuthenticationSuccess(request, response, auth);
         }
