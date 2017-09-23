@@ -30,13 +30,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String loginName) throws UsernameNotFoundException {
         User user = userRepository.findByLoginName(loginName);
-        boolean enabled = true;
         if (user == null) {
             throw new UsernameNotFoundException("not found");
-        } else {
-            if (user.getStatus().equals(User.UserStatus.FROZEN)) {//凍結用戶
-                enabled = false;
-            }
         }
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         Set<Role> roles = user.getRoleSet();
@@ -44,7 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(role.getRoleType()));
             logger.debug("loginName is {} role: {}", loginName, role.getRoleType());
         }
-        return new org.springframework.security.core.userdetails.User(loginName, user.getPassword(), enabled, true, true, true, authorities);
+        return new org.springframework.security.core.userdetails.User(loginName, user.getPassword(), user.isEnabled(), true, true, true, authorities);
     }
 
 }

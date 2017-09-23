@@ -31,13 +31,8 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
         if (RequestUtils.isAjax(request)) {
-            String result = LOGIN_ERROR_RESULT;
-            if (e instanceof DisabledException) {
-                result = LOGIN_FROZEN_RESULT;
-            }
-            PrintWriter writer = ResponseUtils.utf8AndJson(response).getWriter();
-            writer.print(result);
-            writer.flush();
+            String result = e instanceof DisabledException ? LOGIN_FROZEN_RESULT : LOGIN_ERROR_RESULT;
+            ResponseUtils.print(response, result);
         } else {
             super.onAuthenticationFailure(request, response, e);
         }

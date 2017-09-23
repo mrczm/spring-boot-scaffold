@@ -4,6 +4,8 @@
 
 项目基于Spring Boot，以Spring Boot 为起点，使用Spring MVC, Spring Data JPA,  Spring Security等框架。
 
+前端页面基于 [zhengAdmin](https://github.com/shuzheng/zhengAdmin)
+
 **提供一下功能：**
 
 * [x] 权限认证 

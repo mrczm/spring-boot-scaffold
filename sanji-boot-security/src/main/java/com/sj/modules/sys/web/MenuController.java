@@ -3,6 +3,7 @@ package com.sj.modules.sys.web;
 import com.sj.common.Result;
 import com.sj.modules.sys.domain.Menu;
 import com.sj.modules.sys.repository.MenuRepository;
+import com.sj.modules.sys.repository.RoleRepository;
 import com.sj.modules.sys.service.MenuTreeService;
 import com.sj.modules.sys.view.MenuTreeVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class MenuController {
     @Autowired
     private MenuTreeService menuTreeService;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     @PostMapping
     public Result<Menu> add(@RequestBody Menu menu) {
         Long pid = menu.getParent().getId();
@@ -45,8 +49,19 @@ public class MenuController {
     @Transactional
     @DeleteMapping
     public Result<String> delete(@RequestBody Long[] ids) {
-        Arrays.asList(ids).forEach(repository::delete);
-        return ok();
+        List<Long> idList = Arrays.asList(ids);
+        boolean isDelete = !idList.stream().anyMatch(id -> roleRepository.countByMenuSet_id(id) > 0);
+        if (isDelete) {
+            isDelete = !idList.stream().anyMatch(id -> repository.countByParent_Id(id) > 0);
+            if (isDelete) {
+                idList.forEach(repository::delete);
+                return ok();
+            } else {
+                return error("先删除子資源");
+            }
+        } else {
+            return error("有权限正在使用该资源");
+        }
     }
 
     @Transactional

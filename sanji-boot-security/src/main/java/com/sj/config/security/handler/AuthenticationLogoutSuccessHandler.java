@@ -23,9 +23,7 @@ public class AuthenticationLogoutSuccessHandler extends SimpleUrlLogoutSuccessHa
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication auth) throws IOException, ServletException {
         if (RequestUtils.isAjax(request)) {
-            PrintWriter writer = ResponseUtils.utf8AndJson(response).getWriter();
-            writer.print(LOGIN_ERROR_RESULT);
-            writer.flush();
+            ResponseUtils.print(response,LOGIN_ERROR_RESULT);
         } else {
             super.onLogoutSuccess(request, response, auth);
         }

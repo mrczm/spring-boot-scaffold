@@ -9,4 +9,5 @@ import org.springframework.data.repository.CrudRepository;
  * Created by yangrd on 2017/7/15.
  */
 public interface UserDetailsRepository extends JpaRepository<UserDetails, Long>, JpaSpecificationExecutor<UserDetails> {
+
 }
