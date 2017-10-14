@@ -20,6 +20,10 @@
 
 * [x] 前后端分离
 
+**后期改造升级：**
+
+* [ ] 前端使用 Webpack+Vue cli + Vue + iviewui + axios
+
 **为什么使用Spring Boot?**
 
 关于为什么使用Spring Boot ,这里以一段代码进行演示：
