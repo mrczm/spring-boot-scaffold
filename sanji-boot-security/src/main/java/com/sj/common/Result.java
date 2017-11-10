@@ -65,8 +65,18 @@ public class Result<T> {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "Result{" +
+                "status=" + status +
+                ", msg='" + msg + '\'' +
+                ", content=" + content +
+                '}';
+    }
+
     enum Status {
         SUCCESS, ERROR
     }
+
 
 }
