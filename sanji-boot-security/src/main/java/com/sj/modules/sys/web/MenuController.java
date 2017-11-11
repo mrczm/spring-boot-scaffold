@@ -101,6 +101,7 @@ public class MenuController {
         old.setSort(val(old::getSort, self::getSort));
         old.setDepth(val(old::getDepth, self::getDepth));
         old.setSkin(val(old::getSkin, self::getSkin));
+        old.setUrl(val(old::getUrl, self::getUrl));
         old.setPermission(val(old::getPermission, self::getPermission));
     }
 
