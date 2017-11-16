@@ -165,11 +165,10 @@ var util = {
         var _this = this;
         this.getSystemList(function (data) {
             that.system_list = data;
-
-            var system_id = $.cookie('bloom-system-id');
+            var system_id = $.cookie('bloom-system-id')||that.system_list[0].id;;
             if(_this.verifyResources(that.system_list)){
-                that.system_skin = $.cookie('bloom-skin-name');
-                that.system_title = $.cookie('bloom-system-title');
+                that.system_skin = $.cookie('bloom-skin-name')||that.system_list[0].skin;
+                that.system_title = $.cookie('bloom-system-title')||that.system_list[0].skin;;
             }else{
                 that.system_skin = that.system_list[0].skin;
                 that.system_title = that.system_list[0].title;
