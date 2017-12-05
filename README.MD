@@ -6,6 +6,8 @@
 
 ## SanJi Boot Security:
 
+前端重构中 采用技术：webpack + vue cli + vue + iviewui+ vue router + axios
+
 **整合 Spring Security 提供一下功能：**
 
 * [x] 前后端分离
