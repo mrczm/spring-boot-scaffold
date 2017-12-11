@@ -28,7 +28,7 @@ import static com.sj.common.ResultGenerator.ok;
  * Created by yangrd on 2017/7/14.
  */
 @RestController
-@RequestMapping(value = "api/user", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "api/user")
 public class UserDetailsController {
 
     @Autowired
@@ -127,6 +127,7 @@ public class UserDetailsController {
         old.setRoleSet(val(old::getRoleSet, userDetails::getRoleSet));
         old.setStatus(val(old::getStatus, userDetails::getStatus));
         old.setRoleSet(userDetails.getRoleSet());
+        old.setRemark(userDetails.getRemark());
     }
 
     public <T> T val(Supplier<T> oldVal, Supplier<T> newVal) {

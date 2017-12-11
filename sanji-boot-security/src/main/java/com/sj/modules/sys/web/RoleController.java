@@ -23,7 +23,7 @@ import static com.sj.common.ResultGenerator.ok;
  * Created by yangrd on 2017/7/17.
  */
 @RestController
-@RequestMapping(value = "/api/role", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/api/role")
 public class RoleController {
 
     @Autowired
