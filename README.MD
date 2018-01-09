@@ -2,7 +2,7 @@
 
 基于Spring Boot 集成一些常用的功能，你只需要基于它做些简单的修改即可，下面是一个功能列表：
 
-[MENU]
+[前端項目](https://gitee.com/sunxyz/sanji-boot-admin)以完成 80%
 
 ## SanJi Boot Security:
 
@@ -12,13 +12,13 @@
 
 * [x] 权限认证 
  
-* [x] 权限管理
+* [ ] 权限管理
  
 * [x] 用户管理 
 
 * [x] 角色管理 
 
-* [x] 日志管理
+* [ ] 日志管理
 
 ### 页面效果：
 **电脑端：**
@@ -43,27 +43,6 @@
 
 
 [查看详情](sanji-boot-security)
-
-
-## SanJi Boot Shiro
-
-**整合 Apache Shiro 提供一下功能：**
-
-* [x] 权限认证 
-
-* [x] 权限管理
-
-* [x] 日志管理
-
-* [ ] 用户管理 
-
-### 页面效果：
-
-![菜单管理](resources/sanji-boot-shiro-menu.png)
-
-![日志管理](resources/sanji-boot-shiro-log.png)
-
-[查看详情](sanji-boot-shiro)
 
 
 ## utils
