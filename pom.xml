@@ -19,7 +19,6 @@
 	</parent>
 
 	<modules>
-		<module>sanji-boot-shiro</module>
 		<module>sanji-boot-security</module>
         <module>utils</module>
     </modules>

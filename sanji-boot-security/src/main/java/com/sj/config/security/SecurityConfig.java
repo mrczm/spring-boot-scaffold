@@ -40,32 +40,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/reg", "/login", "/app/**", "/plugins/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers("/", "/static/**","/**/excel").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // We filter the api/login requests
-                .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
+                .addFilterBefore(new JWTLoginFilter("/api/login", authenticationManager()),
                         UsernamePasswordAuthenticationFilter.class)
                 // And filter other requests to check the presence of JWT in header
                 .addFilterBefore(new JWTAuthenticationFilter(),
                         UsernamePasswordAuthenticationFilter.class)
-
-            .csrf()
-                .ignoringAntMatchers("/druid/**").disable()
-            .formLogin()
+                .formLogin()
                 .successHandler(authenticationSuccessHandler()).failureHandler(authenticationFailureHandler())
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/api/login")
                 .loginPage("/login").permitAll()
                 .and()
-            .logout()
+                .logout()
                 .logoutSuccessHandler(authenticationLogoutSuccessHandler())
                 .permitAll()
-                .and()
-            .rememberMe()
-                .rememberMeCookieName("rememberMe")
-                .tokenValiditySeconds(24 * 60 * 60 * 30) // expired time = 30 day
-                .tokenRepository(persistentTokenRepository())
                 .and()
 //      默认情况下，CSRF保护已启用。你必须配置包含_csrf令牌的所有的网页来工作。
 //      你可以随时禁用CSRF保护。如果在代码中配置： 解决post请无法提交
@@ -76,13 +68,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
         auth.userDetailsService(customUserDetailsService()).passwordEncoder(passwordEncoder());
-    }
-
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
-        tokenRepository.setDataSource(dataSource);
-        return tokenRepository;
     }
 
     @Bean
