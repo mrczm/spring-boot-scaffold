@@ -20,7 +20,10 @@
 
 * [ ] 日志管理
 
+使用 JWT token 认证
+
 前后端分离 前端基于 webpack+vue+iview  Material Design风格页面
+
 [前端項目](https://gitee.com/sunxyz/sanji-boot-admin)以完成 80%
 
 ### 页面效果：
