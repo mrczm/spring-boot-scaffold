@@ -6,6 +6,62 @@
 
 ## SanJi Boot Security:
 
+使用 JWT token 认证
+
+前后端分离 前端基于 webpack+vue+iview  Material Design风格页面
+
+[前端項目](https://gitee.com/sunxyz/sanji-boot-admin)以完成 80%
+
+ **使用说明**  
+
+前端需要安装 nodejs npm webpack
+
+快速上手指南：
+
+
+[vue-cli github](https://github.com/vuejs/vue-cli)
+
+[vue-cli](https://vuxjs.gitbooks.io/vux/content/install/vue.html)
+
+[less](http://www.css88.com/doc/less/features/#features-overview-feature)
+
+**准备工作**
+
+```
+1.node npm
+2.webpack
+```
+
+**study**
+
+```
+html
+css(less)
+js
+vue
+webpack
+```
+**start**
+
+安装vue-cli
+```
+npm install -g vue-cli
+```
+创建vue-cli项目
+[指南](https://github.com/vuejs/vue-cli)
+```
+vue init <template-name> <project-name>
+```
+coding
+```
+cd <project-name>
+npm install
+npm run dev
+```
+
+
+
+
 **整合 Spring Security 提供一下功能：**
 
 * [x] 前后端分离
@@ -20,11 +76,8 @@
 
 * [ ] 日志管理
 
-使用 JWT token 认证
 
-前后端分离 前端基于 webpack+vue+iview  Material Design风格页面
 
-[前端項目](https://gitee.com/sunxyz/sanji-boot-admin)以完成 80%
 
 ### 页面效果：
 **电脑端：**
