@@ -2,7 +2,7 @@
 
 基于Spring Boot 集成一些常用的功能，你只需要基于它做些简单的修改即可，下面是一个功能列表：
 
-[前端項目](https://gitee.com/sunxyz/sanji-boot-admin)以完成 80%
+
 
 ## SanJi Boot Security:
 
@@ -19,6 +19,9 @@
 * [x] 角色管理 
 
 * [ ] 日志管理
+
+前后端分离 前端基于 webpack+vue+iview  Material Design风格页面
+[前端項目](https://gitee.com/sunxyz/sanji-boot-admin)以完成 80%
 
 ### 页面效果：
 **电脑端：**
