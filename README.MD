@@ -6,13 +6,32 @@
 
 ## SanJi Boot Security:
 
+### 介绍 
+
+ **前端基于 webpack + vue** 
+
 使用 JWT token 认证
 
 前后端分离 前端基于 webpack+vue+iview  Material Design风格页面
 
 [前端項目](https://gitee.com/sunxyz/sanji-boot-admin)以完成 80%
 
- **使用说明**  
+**整合 Spring Security 提供一下功能：**
+
+* [x] 前后端分离
+
+* [x] 权限认证 
+ 
+* [ ] 权限管理
+ 
+* [x] 用户管理 
+
+* [x] 角色管理 
+
+* [ ] 日志管理
+
+
+### 使用说明 
 
 前端需要安装 nodejs npm webpack
 
@@ -58,23 +77,6 @@ cd <project-name>
 npm install
 npm run dev
 ```
-
-
-
-
-**整合 Spring Security 提供一下功能：**
-
-* [x] 前后端分离
-
-* [x] 权限认证 
- 
-* [ ] 权限管理
- 
-* [x] 用户管理 
-
-* [x] 角色管理 
-
-* [ ] 日志管理
 
 
 
