@@ -2,9 +2,19 @@
 
 基于Spring Boot 集成一些常用的功能，你只需要基于它做些简单的修改即可，下面是一个功能列表：
 
-[MENU]
+
 
 ## SanJi Boot Security:
+
+### 介绍 
+
+ **前端基于 webpack + vue** 
+
+使用 JWT token 认证
+
+前后端分离 前端基于 webpack+vue+iview  Material Design风格页面
+
+[前端項目](https://gitee.com/sunxyz/sanji-boot-admin)以完成 80%
 
 **整合 Spring Security 提供一下功能：**
 
@@ -12,13 +22,64 @@
 
 * [x] 权限认证 
  
-* [x] 权限管理
+* [ ] 权限管理
  
 * [x] 用户管理 
 
 * [x] 角色管理 
 
-* [x] 日志管理
+* [ ] 日志管理
+
+
+### 使用说明 
+
+前端需要安装 nodejs npm webpack
+
+快速上手指南：
+
+
+[vue-cli github](https://github.com/vuejs/vue-cli)
+
+[vue-cli](https://vuxjs.gitbooks.io/vux/content/install/vue.html)
+
+[less](http://www.css88.com/doc/less/features/#features-overview-feature)
+
+**准备工作**
+
+```
+1.node npm
+2.webpack
+```
+
+**study**
+
+```
+html
+css(less)
+js
+vue
+webpack
+```
+**start**
+
+安装vue-cli
+```
+npm install -g vue-cli
+```
+创建vue-cli项目
+[指南](https://github.com/vuejs/vue-cli)
+```
+vue init <template-name> <project-name>
+```
+coding
+```
+cd <project-name>
+npm install
+npm run dev
+```
+
+
+
 
 ### 页面效果：
 **电脑端：**
@@ -43,27 +104,6 @@
 
 
 [查看详情](sanji-boot-security)
-
-
-## SanJi Boot Shiro
-
-**整合 Apache Shiro 提供一下功能：**
-
-* [x] 权限认证 
-
-* [x] 权限管理
-
-* [x] 日志管理
-
-* [ ] 用户管理 
-
-### 页面效果：
-
-![菜单管理](resources/sanji-boot-shiro-menu.png)
-
-![日志管理](resources/sanji-boot-shiro-log.png)
-
-[查看详情](sanji-boot-shiro)
 
 
 ## utils
