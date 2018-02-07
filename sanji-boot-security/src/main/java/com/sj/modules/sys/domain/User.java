@@ -2,6 +2,8 @@ package com.sj.modules.sys.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sj.common.base.domain.BaseEntity;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -12,6 +14,8 @@ import java.util.Set;
  * Created by sunxyz on 2017/3/13.
  * 只提供登录功能
  */
+@Setter
+@Getter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "password", "news", "roleSet"})
 @DynamicUpdate
 @Entity
@@ -36,42 +40,6 @@ public class User extends BaseEntity<User> {
 
     {
         status = UserStatus.NORMAL;
-    }
-
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public User setLoginName(String loginName) {
-        this.loginName = loginName;
-        return this;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public User setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    public UserStatus getStatus() {
-        return status;
-    }
-
-    public User setStatus(UserStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    public Set<Role> getRoleSet() {
-        return roleSet;
-    }
-
-    public User setRoleSet(Set<Role> roleSet) {
-        this.roleSet = roleSet;
-        return this;
     }
 
     public boolean isEnabled() {

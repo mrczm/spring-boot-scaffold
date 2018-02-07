@@ -34,13 +34,10 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private DataSource dataSource;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/", "/static/**","/**/excel").permitAll()
+                .antMatchers("/", "/static/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -53,7 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .successHandler(authenticationSuccessHandler()).failureHandler(authenticationFailureHandler())
                 .loginProcessingUrl("/api/login")
-                .loginPage("/login").permitAll()
                 .and()
                 .logout()
                 .logoutSuccessHandler(authenticationLogoutSuccessHandler())
@@ -61,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 //      默认情况下，CSRF保护已启用。你必须配置包含_csrf令牌的所有的网页来工作。
 //      你可以随时禁用CSRF保护。如果在代码中配置： 解决post请无法提交
-        .csrf().disable();
+                .csrf().disable();
     }
 
     @Override

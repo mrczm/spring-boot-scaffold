@@ -1,20 +1,17 @@
 package com.sj.config.security.filter;
 
 
-import com.sj.common.SpringContextHolder;
+import com.sj.common.utils.SpringContextHolder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-
-import static java.util.Collections.emptyList;
 
 /**
  * Created by yangrd on 2017/12/9

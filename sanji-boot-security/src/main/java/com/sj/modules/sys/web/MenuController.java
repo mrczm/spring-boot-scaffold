@@ -1,5 +1,6 @@
 package com.sj.modules.sys.web;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.sj.common.Result;
 import com.sj.modules.sys.domain.Menu;
 import com.sj.modules.sys.repository.MenuRepository;
@@ -39,9 +40,6 @@ public class MenuController {
         if (Objects.isNull(parent)) {
             return error("pid 不存在");
         }
-        Date now = new Date();
-        menu.setModifiedTime(now);
-        menu.setCreatedTime(now);
         menu.setParent(parent);
         return ok(repository.save(menu));
     }
@@ -75,6 +73,7 @@ public class MenuController {
     }
 
     @GetMapping
+    @JsonView(MenuTreeVO.View.ShowChildren.class)
     public Result<Collection<MenuTreeVO>> listSystem() {
         return ok(menuTreeService.listSystem());
     }
@@ -93,8 +92,6 @@ public class MenuController {
     }
 
     private void updateVal(Menu old, Menu self) {
-        Date now = new Date();
-        old.setModifiedTime(now);
         old.setName(val(old::getName, self::getName));
         old.setIcon(val(old::getIcon, self::getIcon));
         old.setParent(val(old::getParent, self::getParent));

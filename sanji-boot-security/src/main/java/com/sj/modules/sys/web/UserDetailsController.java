@@ -45,9 +45,6 @@ public class UserDetailsController {
     public Result<String> add(@RequestBody UserDetails userDetails) {
         userDetails.setNickname(userDetails.getLoginName());
         userDetails.setPassword(bCryptPasswordEncoder.encode("123456"));
-        Date now = new Date();
-        userDetails.setCreatedTime(now);
-        userDetails.setModifiedTime(now);
         Set<Role> roleSet = userDetails.getRoleSet();
         userDetails.setRoleSet(null);
         userDetails = repository.save(userDetails);
@@ -115,8 +112,6 @@ public class UserDetailsController {
     }
 
     public void updateVal(UserDetails old, UserDetails userDetails) {
-        Date now = new Date();
-        old.setModifiedTime(now);
         old.setDescription(val(old::getDescription, userDetails::getDescription));
         old.setNickname(val(old::getNickname, userDetails::getNickname));
         old.setAvatar(val(old::getAvatar, userDetails::getAvatar));

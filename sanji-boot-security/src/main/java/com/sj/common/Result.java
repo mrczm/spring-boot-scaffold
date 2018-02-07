@@ -5,21 +5,27 @@ package com.sj.common;
  */
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.io.Serializable;
 
 /**
  * Created by sunxyz on 2017/3/14.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Result<T> {
+public class Result<T> implements Serializable {
+    private static final long serialVersionUID = 3863559687276427567L;
 
+    @JsonView(GeneralViews.ErrorView.class)
     @Enumerated(EnumType.STRING)
     private Status status;//状态：=> SUCCESS or ERROR
 
+    @JsonView(GeneralViews.ErrorView.class)
     private String msg;//提示信息
 
+    @JsonView(GeneralViews.NormalView.class)
     private T content;//SUCCESS状态返回内容部分
 
     {

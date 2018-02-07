@@ -1,8 +1,8 @@
 package com.sj.modules.sys.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sj.common.base.domain.BaseEntity;
-import org.hibernate.annotations.DynamicUpdate;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -10,8 +10,9 @@ import java.util.Set;
 /**
  * Created by sunxyz on 2017/3/13.
  */
-@JsonIgnoreProperties({"news"})
-@DynamicUpdate
+
+@Setter
+@Getter
 @Entity
 @Table(name = "sys_role")
 public class Role extends BaseEntity<Role> {
@@ -28,41 +29,5 @@ public class Role extends BaseEntity<Role> {
 
     {
         roleType = "";
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Role setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Role setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    public String getRoleType() {
-        return roleType;
-    }
-
-    public Role setRoleType(String roleType) {
-        this.roleType = roleType;
-        return this;
-    }
-
-    public Set<Menu> getMenuSet() {
-        return menuSet;
-    }
-
-    public Role setMenuSet(Set<Menu> menuSet) {
-        this.menuSet = menuSet;
-        return this;
     }
 }

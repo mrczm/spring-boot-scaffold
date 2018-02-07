@@ -35,9 +35,6 @@ public class RoleController {
     @Transactional
     @PostMapping
     public Result<String> add(@RequestBody Role role) {
-        Date now = new Date();
-        role.setCreatedTime(now);
-        role.setModifiedTime(now);
         repository.save(role);
         return ok();
     }
@@ -61,8 +58,6 @@ public class RoleController {
         if (Objects.isNull(old)) {
             return error();
         }
-        Date now = new Date();
-        old.setModifiedTime(now);
         old.setName(role.getName());
         old.setRoleType(role.getRoleType());
         old.setDescription(role.getDescription());

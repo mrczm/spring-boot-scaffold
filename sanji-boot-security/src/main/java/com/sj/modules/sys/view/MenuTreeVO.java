@@ -2,139 +2,64 @@ package com.sj.modules.sys.view;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.sj.common.GeneralViews;
 import com.sj.modules.sys.domain.Menu;
+import lombok.Data;
 
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 /**
  * Created by yangrd on 2017/8/3.
  */
+@JsonInclude(NON_NULL)
+@Data
 public class MenuTreeVO implements Comparable<MenuTreeVO> {
 
+    public interface View{
+         interface Base extends GeneralViews.NormalView{ }
+         interface ShowChildren extends Base{ }
+         interface ShowParent extends Base{ }
+    }
+
+    @JsonView(View.Base.class)
     private Long id;
 
+    @JsonView(View.Base.class)
     private String name;
 
+    @JsonView(View.Base.class)
     private String icon;
 
+    @JsonView(View.Base.class)
     private String description;
 
+    @JsonView(View.Base.class)
     private String url;
 
+    @JsonView(View.Base.class)
     private Long sort;
 
+    @JsonView(View.Base.class)
     @JsonFormat(shape = JsonFormat.Shape.NUMBER_INT)
     private Menu.Type depth;//菜单类别对应的深度
 
+    @JsonView(View.Base.class)
     private String permission;//许可用于认证标识
 
+    @JsonView(View.Base.class)
     private String skin;//皮肤 查看skins.css对应的样式
 
+    @JsonView(View.ShowChildren.class)
     private Set<MenuTreeVO> children;
 
-    @JsonIgnore
+    @JsonView(View.ShowParent.class)
     private MenuTreeVO parent;
-
-    public Long getId() {
-        return id;
-    }
-
-    public MenuTreeVO setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public MenuTreeVO setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public MenuTreeVO setIcon(String icon) {
-        this.icon = icon;
-        return this;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public MenuTreeVO setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public MenuTreeVO setUrl(String url) {
-        this.url = url;
-        return this;
-    }
-
-    public Long getSort() {
-        return sort;
-    }
-
-    public MenuTreeVO setSort(Long sort) {
-        this.sort = sort;
-        return this;
-    }
-
-    public Menu.Type getDepth() {
-        return depth;
-    }
-
-    public MenuTreeVO setDepth(Menu.Type depth) {
-        this.depth = depth;
-        return this;
-    }
-
-    public String getPermission() {
-        return permission;
-    }
-
-    public MenuTreeVO setPermission(String permission) {
-        this.permission = permission;
-        return this;
-    }
-
-    public String getSkin() {
-        return skin;
-    }
-
-    public MenuTreeVO setSkin(String skin) {
-        this.skin = skin;
-        return this;
-    }
-
-    public Set<MenuTreeVO> getChildren() {
-        return children;
-    }
-
-    public MenuTreeVO setChildren(Set<MenuTreeVO> children) {
-        this.children = children;
-        return this;
-    }
-
-    public MenuTreeVO getParent() {
-        return parent;
-    }
-
-    public MenuTreeVO setParent(MenuTreeVO parent) {
-        this.parent = parent;
-        return this;
-    }
 
     public void addChildren(MenuTreeVO menuTreeVO) {
         if (Objects.isNull(this.children)) {
