@@ -7,6 +7,8 @@ import com.sj.modules.sys.repository.MenuRepository;
 import com.sj.modules.sys.repository.RoleRepository;
 import com.sj.modules.sys.service.MenuTreeService;
 import com.sj.modules.sys.view.MenuTreeVO;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -22,15 +24,13 @@ import static com.sj.common.ResultGenerator.ok;
  */
 @RestController
 @RequestMapping("/api/menu")
+@AllArgsConstructor
 public class MenuController {
 
-    @Autowired
     private MenuRepository repository;
 
-    @Autowired
     private MenuTreeService menuTreeService;
 
-    @Autowired
     private RoleRepository roleRepository;
 
     @PostMapping
@@ -48,17 +48,17 @@ public class MenuController {
     @DeleteMapping
     public Result<String> delete(@RequestBody Long[] ids) {
         List<Long> idList = Arrays.asList(ids);
-        boolean isDelete = !idList.stream().anyMatch(id -> roleRepository.countByMenuSet_id(id) > 0);
-        if (isDelete) {
-            isDelete = !idList.stream().anyMatch(id -> repository.countByParent_Id(id) > 0);
-            if (isDelete) {
+        boolean nonDelete = idList.stream().noneMatch(id -> roleRepository.countByMenuSet_id(id) > 0);
+        if (nonDelete) {
+            return error("有权限正在使用该资源");
+        } else {
+            nonDelete = idList.stream().anyMatch(id -> repository.countByParent_Id(id) > 0);
+            if (nonDelete) {
+                return error("先删除子資源");
+            } else {
                 idList.forEach(repository::delete);
                 return ok();
-            } else {
-                return error("先删除子資源");
             }
-        } else {
-            return error("有权限正在使用该资源");
         }
     }
 
@@ -92,19 +92,7 @@ public class MenuController {
     }
 
     private void updateVal(Menu old, Menu self) {
-        old.setName(val(old::getName, self::getName));
-        old.setIcon(val(old::getIcon, self::getIcon));
-        old.setParent(val(old::getParent, self::getParent));
-        old.setSort(val(old::getSort, self::getSort));
-        old.setDepth(val(old::getDepth, self::getDepth));
-        old.setSkin(val(old::getSkin, self::getSkin));
-        old.setUrl(val(old::getUrl, self::getUrl));
-        old.setPermission(val(old::getPermission, self::getPermission));
+        BeanUtils.copyProperties(self, old, "parent");
     }
 
-    private <T> T val(Supplier<T> oldVal, Supplier<T> newVal) {
-        T oldV = oldVal.get();
-        T newV = newVal.get();
-        return Objects.nonNull(newV) ? newV : oldV;
-    }
 }

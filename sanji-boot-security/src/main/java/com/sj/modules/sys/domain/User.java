@@ -2,8 +2,10 @@ package com.sj.modules.sys.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sj.common.base.domain.BaseEntity;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -16,8 +18,8 @@ import java.util.Set;
  */
 @Setter
 @Getter
+@Accessors(chain = true)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "password", "news", "roleSet"})
-@DynamicUpdate
 @Entity
 @Table(name = "sys_user")
 @Inheritance(strategy = InheritanceType.JOINED)

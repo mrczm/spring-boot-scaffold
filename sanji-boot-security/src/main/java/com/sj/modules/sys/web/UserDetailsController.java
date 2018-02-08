@@ -2,11 +2,14 @@ package com.sj.modules.sys.web;
 
 import com.sj.common.Result;
 import com.sj.modules.sys.domain.Role;
+import com.sj.modules.sys.domain.User;
 import com.sj.modules.sys.domain.UserDetails;
 import com.sj.modules.sys.repository.UserDetailsRepository;
 import com.sj.modules.sys.service.MenuTreeService;
 import com.sj.modules.sys.view.MenuTreeVO;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.criteria.Predicate;
 import java.security.Principal;
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.sj.common.ResultGenerator.error;
@@ -29,15 +33,13 @@ import static com.sj.common.ResultGenerator.ok;
  */
 @RestController
 @RequestMapping(value = "api/user")
+@AllArgsConstructor
 public class UserDetailsController {
 
-    @Autowired
     private UserDetailsRepository repository;
 
-    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
     private MenuTreeService menuTreeService;
 
     @Transactional
@@ -111,23 +113,7 @@ public class UserDetailsController {
         };
     }
 
-    public void updateVal(UserDetails old, UserDetails userDetails) {
-        old.setDescription(val(old::getDescription, userDetails::getDescription));
-        old.setNickname(val(old::getNickname, userDetails::getNickname));
-        old.setAvatar(val(old::getAvatar, userDetails::getAvatar));
-        old.setSex(val(old::getSex, userDetails::getSex));
-        old.setBirthday(val(old::getBirthday, userDetails::getBirthday));
-        old.setPhone(val(old::getPhone, userDetails::getPhone));
-        old.setEmail(val(old::getEmail, userDetails::getEmail));
-        old.setRoleSet(val(old::getRoleSet, userDetails::getRoleSet));
-        old.setStatus(val(old::getStatus, userDetails::getStatus));
-        old.setRoleSet(userDetails.getRoleSet());
-        old.setRemark(userDetails.getRemark());
-    }
-
-    public <T> T val(Supplier<T> oldVal, Supplier<T> newVal) {
-        T oldV = oldVal.get();
-        T newV = newVal.get();
-        return Objects.nonNull(newV) ? newV : oldV;
+    private void updateVal(UserDetails old, UserDetails userDetails) {
+        BeanUtils.copyProperties(userDetails, old, "loginName", "password");
     }
 }

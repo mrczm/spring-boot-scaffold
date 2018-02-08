@@ -4,6 +4,7 @@ import com.sj.common.Result;
 import com.sj.modules.sys.domain.Role;
 import com.sj.modules.sys.repository.RoleRepository;
 import com.sj.modules.sys.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,12 +25,11 @@ import static com.sj.common.ResultGenerator.ok;
  */
 @RestController
 @RequestMapping(value = "/api/role")
+@AllArgsConstructor
 public class RoleController {
 
-    @Autowired
     private RoleRepository repository;
 
-    @Autowired
     private UserRepository userRepository;
 
     @Transactional
@@ -43,12 +43,12 @@ public class RoleController {
     @DeleteMapping
     public Result<String> delete(@RequestBody Long[] ids) {
         List<Long> idList = Arrays.asList(ids);
-        boolean isDelete = !idList.stream().anyMatch(id -> userRepository.countByRoleSet_Id(id) > 0);
-        if (isDelete) {
+        boolean nonDelete = idList.stream().anyMatch(id -> userRepository.countByRoleSet_Id(id) > 0);
+        if (nonDelete) {
+            return error("有用户在使用该权限");
+        }else{
             idList.forEach(repository::delete);
             return ok();
-        }else{
-            return error("有用户在使用该权限");
         }
     }
 
@@ -75,6 +75,5 @@ public class RoleController {
     public Result<Page<Role>> getAll(@RequestParam(defaultValue = "") String name, Pageable pageable) {
         return ok(repository.findByNameLike("%" + name + "%", pageable));
     }
-
 
 }

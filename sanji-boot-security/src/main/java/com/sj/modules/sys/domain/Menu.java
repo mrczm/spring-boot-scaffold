@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sj.common.base.domain.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -16,6 +18,7 @@ import javax.persistence.Table;
  */
 @Setter
 @Getter
+@Accessors(chain = true)
 @Entity
 @Table(name = "sys_menu")
 public class Menu extends BaseEntity<Menu> {

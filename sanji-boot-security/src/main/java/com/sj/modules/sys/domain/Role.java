@@ -3,6 +3,8 @@ package com.sj.modules.sys.domain;
 import com.sj.common.base.domain.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -13,6 +15,7 @@ import java.util.Set;
 
 @Setter
 @Getter
+@Accessors(chain = true)
 @Entity
 @Table(name = "sys_role")
 public class Role extends BaseEntity<Role> {
