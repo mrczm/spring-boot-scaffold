@@ -9,12 +9,13 @@ import com.sj.modules.sys.service.MenuTreeService;
 import com.sj.modules.sys.view.MenuTreeVO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
-import java.util.function.Supplier;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 import static com.sj.common.ResultGenerator.error;
 import static com.sj.common.ResultGenerator.ok;

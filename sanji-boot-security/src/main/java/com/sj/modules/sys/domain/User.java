@@ -2,15 +2,16 @@ package com.sj.modules.sys.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sj.common.base.domain.BaseEntity;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by sunxyz on 2017/3/13.
@@ -45,7 +46,11 @@ public class User extends BaseEntity<User> {
     }
 
     public boolean isEnabled() {
-        return !this.status.equals(UserStatus.FROZEN);
+        return !status.equals(UserStatus.FROZEN);
+    }
+
+    public List<SimpleGrantedAuthority> listAuthorities(){
+        return getRoleSet().stream().map(Role::getRoleType).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     public enum UserStatus {

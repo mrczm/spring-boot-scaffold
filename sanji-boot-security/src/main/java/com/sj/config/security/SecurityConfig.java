@@ -52,12 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/api/login")
                 .and()
                 .logout()
-                .logoutSuccessHandler(authenticationLogoutSuccessHandler())
-                .permitAll()
-                .and()
-//      默认情况下，CSRF保护已启用。你必须配置包含_csrf令牌的所有的网页来工作。
-//      你可以随时禁用CSRF保护。如果在代码中配置： 解决post请无法提交
-                .csrf().disable();
+                .logoutSuccessHandler(authenticationLogoutSuccessHandler());
     }
 
     @Override

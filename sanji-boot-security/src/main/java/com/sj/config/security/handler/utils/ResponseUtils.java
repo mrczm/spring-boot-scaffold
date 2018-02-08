@@ -13,23 +13,18 @@ public class ResponseUtils {
 
     /**
      * @param response
-     * @param object   需要打印的對象
+     * @param objects   需要打印的對象
      * @throws IOException
      * @throws ServletException
      */
-    public static void print(HttpServletResponse response, Object... object) throws IOException, ServletException {
-        PrintWriter writer = utf8AndJson(response).getWriter();
-        for (Object o : object) {
+    public static void print(HttpServletResponse response, Object... objects) throws IOException, ServletException {
+        response.setContentType("text/json;charset=utf-8");
+        PrintWriter writer = response.getWriter();
+        for (Object o : objects) {
             writer.print(o);
         }
         writer.flush();
         writer.close();
     }
-
-    public static HttpServletResponse utf8AndJson(HttpServletResponse response) {
-        response.setContentType("text/json;charset=utf-8");
-        return response;
-    }
-
 
 }
