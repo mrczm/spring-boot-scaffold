@@ -103,6 +103,18 @@ var data = {
 }
 //后期此处需要与用户关联上
 var util = {
+    verifyResources: function (systemList) {
+        var system_id = $.cookie('bloom-system-id');
+        if (!system_id) {
+            return false;
+        }
+        for (var i = 0; i < systemList.length; i++) {
+            if (system_id == systemList[i].id) {
+                return true;
+            }
+        }
+        return false;
+    },
     //获取菜单列表
     getMenus: function (id, fc) {
         iGet('/api/user/current/menu', function (data) {
@@ -152,16 +164,26 @@ var util = {
         })
     },
     initData: function (that) {
-        that.system_skin = $.cookie('bloom-skin-name') || that.system_list[0].skin;
-        that.system_title = $.cookie('bloom-system-title') || that.system_list[0].title;
-        $('title').text(that.system_title);
+        var _this = this;
         this.getSystemList(function (data) {
             that.system_list = data;
+            var system_id = undefined;
+            if (_this.verifyResources(that.system_list)) {
+                that.system_skin = $.cookie('bloom-skin-name');
+                that.system_title = $.cookie('bloom-system-title');
+                system_id = $.cookie('bloom-system-id');
+            } else {
+                that.system_skin = that.system_list[0].skin;
+                that.system_title = that.system_list[0].title;
+                system_id = that.system_list[0].id;
+            }
+            $('title').text(that.system_title);
+
+            _this.getMenus(system_id, function (data) {
+                that.menus = data;
+            })
         })
-        var system_id = $.cookie('bloom-system-id') || that.system_list[0].id;
-        this.getMenus(system_id, function (data) {
-            that.menus = data;
-        })
+
         this.getCurrentUser(function (userName) {
             that.user.name = userName;
         })

@@ -12,4 +12,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 
     List<Menu> findByParentOrderBySortAsc(Menu parent);
 
+    Long countByParent_Id(Long pid);
+
 }

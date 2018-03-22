@@ -3,6 +3,7 @@ package com.sj.modules.sys.web;
 import com.sj.common.Result;
 import com.sj.modules.sys.domain.Role;
 import com.sj.modules.sys.repository.RoleRepository;
+import com.sj.modules.sys.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import static com.sj.common.ResultGenerator.error;
@@ -27,6 +29,9 @@ public class RoleController {
     @Autowired
     private RoleRepository repository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Transactional
     @PostMapping
     public Result<String> add(@RequestBody Role role) {
@@ -40,8 +45,14 @@ public class RoleController {
     @Transactional
     @DeleteMapping
     public Result<String> delete(@RequestBody Long[] ids) {
-        Arrays.asList(ids).forEach(repository::delete);
-        return ok();
+        List<Long> idList = Arrays.asList(ids);
+        boolean isDelete = !idList.stream().anyMatch(id -> userRepository.countByRoleSet_Id(id) > 0);
+        if (isDelete) {
+            idList.forEach(repository::delete);
+            return ok();
+        }else{
+            return error("有用户在使用该权限");
+        }
     }
 
     @Transactional

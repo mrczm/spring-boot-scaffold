@@ -6,6 +6,8 @@ import com.sj.modules.sys.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,7 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(role.getRoleType()));
             logger.debug("loginName is {} role: {}", loginName, role.getRoleType());
         }
-        return new org.springframework.security.core.userdetails.User(loginName, user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(loginName, user.getPassword(), user.isEnabled(), true, true, true, authorities);
     }
 
 }

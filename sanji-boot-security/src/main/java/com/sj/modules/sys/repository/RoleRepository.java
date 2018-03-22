@@ -12,4 +12,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
     Page<Role> findByNameLike(String name, Pageable pageable);
+
+    Long countByMenuSet_id(Long menuId);
 }

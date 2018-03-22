@@ -1,6 +1,7 @@
 package com.sj.modules.sys.web;
 
 import com.sj.common.Result;
+import com.sj.modules.sys.domain.Role;
 import com.sj.modules.sys.domain.UserDetails;
 import com.sj.modules.sys.repository.UserDetailsRepository;
 import com.sj.modules.sys.service.MenuTreeService;
@@ -47,7 +48,11 @@ public class UserDetailsController {
         Date now = new Date();
         userDetails.setCreatedTime(now);
         userDetails.setModifiedTime(now);
-        userDetails.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
+        Set<Role> roleSet = userDetails.getRoleSet();
+        userDetails.setRoleSet(null);
+        userDetails = repository.save(userDetails);
+        //分为两次保存(第一次保存用户得到user.id,第二次 将 role.id与user.id保存)
+        userDetails.setRoleSet(roleSet);
         repository.save(userDetails);
         return ok();
     }
@@ -65,7 +70,6 @@ public class UserDetailsController {
         if (Objects.isNull(old)) {
             return error();
         }
-        old.setRoleSet(userDetails.getRoleSet());
         updateVal(old, userDetails);
         repository.save(old);
         return ok();
@@ -122,6 +126,7 @@ public class UserDetailsController {
         old.setEmail(val(old::getEmail, userDetails::getEmail));
         old.setRoleSet(val(old::getRoleSet, userDetails::getRoleSet));
         old.setStatus(val(old::getStatus, userDetails::getStatus));
+        old.setRoleSet(userDetails.getRoleSet());
     }
 
     public <T> T val(Supplier<T> oldVal, Supplier<T> newVal) {
