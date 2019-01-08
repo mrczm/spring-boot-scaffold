@@ -2,6 +2,12 @@
 
 基于Spring Boot 集成一些常用的功能，你只需要基于它做些简单的修改即可，下面是一个功能列表：
 
+## 演示环境
+
+http://47.98.125.142:8086/
+
+admin/admin
+
 [MENU]
 
 ## SanJi Boot Security:
