@@ -14,9 +14,9 @@ var iAjax = function (url, data, methodType, beforeSend, cb, ecb) {
         }).done(function (data) {
             cb(data)
         }).fail(function (jqXHR, textStatus) {
-            if(jqXHR.status>=200&&jqXHR.status<300){
-                cb({});
-            }else{
+            if (jqXHR.status >= 200 && jqXHR.status < 300) {
+                cb(jqXHR.responseText);
+            } else {
                 ecb(jqXHR, textStatus);
             }
         })
@@ -32,9 +32,9 @@ var iAjax = function (url, data, methodType, beforeSend, cb, ecb) {
         }).done(function (data) {
             cb(data)
         }).fail(function (jqXHR, textStatus) {
-            if(jqXHR.status>=200&&jqXHR.status<300){
-                cb({});
-            }else{
+            if (jqXHR.status >= 200 && jqXHR.status < 300) {
+                cb(jqXHR.responseText);
+            } else {
                 ecb(jqXHR, textStatus);
             }
         })

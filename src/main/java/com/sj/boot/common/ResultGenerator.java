@@ -31,4 +31,8 @@ public class ResultGenerator {
     public static <T> Result<T> fail() {
         return (Result<T>)FAIL;
     }
+
+    public static <T> Result<T> fail(String msg) {
+        return Result.of(Result.Status.OTHER_FAILURE,msg,null,null);
+    }
 }

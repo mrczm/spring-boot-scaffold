@@ -117,8 +117,8 @@ var util = {
     },
     //获取菜单列表
     getMenus: function (id, fc) {
-        iGet('/api/user/current/menu', function (data) {
-            var datas = data.content;
+        iGet('/api/users/current/menu', function (data) {
+            var datas = data;
             var result = [];
             datas.forEach(function (obj) {
                 if (obj.id == id) {
@@ -149,7 +149,7 @@ var util = {
     //获取系统列表
     getSystemList: function (fc) {
         iGet('/api/users/current/menu', function (data) {
-            var datas = data.content;
+            var datas = data;
             datas.forEach(function (obj) {
                 obj.title = obj.name;
                 obj.name = obj.skin;
@@ -158,8 +158,8 @@ var util = {
         })
     },
     getCurrentUser: function (fc) {
-        iGet('/api/users/current', function (data) {
-            var userName = data.content;
+        iGet('/api/users/current', function (userName) {
+            console.log('userName',userName);
             fc(userName);
         })
     },

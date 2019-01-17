@@ -23,11 +23,10 @@ public class SanJiBootApplication {
         return menu;
     }
 
-    @GetMapping("/void")
-    @ResponseBody
-    public void avoid() {
-
-    }
+/*    @GetMapping("/test")
+    public Menu avoid(@RequestParam("id") Menu menu) {
+        return menu;
+    }*/
 
     @GetMapping("/ok")
     @ResponseBody

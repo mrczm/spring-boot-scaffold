@@ -1,5 +1,7 @@
 package com.sj.boot.modules.sys.config;
 
+import com.sj.boot.modules.sys.config.security.AuthenticationFailureHandler;
+import com.sj.boot.modules.sys.config.security.AuthenticationSuccessHandler;
 import com.sj.boot.modules.sys.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +30,13 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/app/**", "/plugins/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .successHandler(new AuthenticationSuccessHandler()).failureHandler(new AuthenticationFailureHandler())
+                .loginProcessingUrl("/login")
+                .loginPage("/login").permitAll()
                 .and()
                 .headers()
                 .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
@@ -44,6 +52,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     /**
      * 默认使用 bcrypt 加密
+     *
      * @return PasswordEncoder
      */
     @Bean

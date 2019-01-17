@@ -9,6 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,7 @@ import java.util.List;
 
 /**
  * 用户控制器
+ *
  * @author yangrd
  * @date 2019/1/9
  **/
@@ -32,14 +35,16 @@ public class UserController {
 
     private MenuTreeService menuTreeService;
 
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping
     public User add(@RequestBody User user) {
-        user.setPassword("123456");
+        user.setPassword(passwordEncoder.encode("123456"));
         return repository.save(user);
     }
 
     @DeleteMapping
-    @Transactional(rollbackFor=Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public void delete(@RequestBody List<Long> ids) {
         repository.deleteInBatch(repository.findAllById(ids));
     }
@@ -53,28 +58,28 @@ public class UserController {
     }
 
     @PutMapping("/{id}/password")
-    public void changePw(@PathVariable("id") User user,@RequestBody String password){
-        user.setPassword(password);
+    public void changePw(@PathVariable("id") User user, @RequestBody String password) {
+        user.setPassword(passwordEncoder.encode(password));
         repository.saveAndFlush(user);
     }
 
     @GetMapping("{id}")
-    public User get(@PathVariable("id") User user){
+    public User get(@PathVariable("id") User user) {
         return user;
     }
 
     @GetMapping
-    public Page<User> findAll(User user, Pageable pageable){
-        return repository.findAll(specification(user),pageable);
+    public Page<User> findAll(User user, Pageable pageable) {
+        return repository.findAll(specification(user), pageable);
     }
 
     @GetMapping("/current")
-    public String getCurrentUsername(Principal principal){
-        return principal.getName();
+    public String getCurrentUsername(Principal principal) {
+        return  ((User)((UsernamePasswordAuthenticationToken)principal).getPrincipal()).getUsername();
     }
 
     @GetMapping("/current/menu")
-    public Collection<MenuTreeVO> listCurrentUserMenu(){
+    public Collection<MenuTreeVO> listCurrentUserMenu() {
         return menuTreeService.listCurrentUserSystem();
     }
 

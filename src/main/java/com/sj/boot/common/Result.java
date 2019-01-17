@@ -27,7 +27,11 @@ public class Result<T> extends ResponseEntity<Result.ResultBody> {
     }
 
     static <T> Result<T> of(Status status, T content, MultiValueMap<String, String> headers) {
-        ResultBody body = new ResultBody(status.getCode(), status.getMsg(), content);
+        return of(status,status.getMsg(),content,headers);
+    }
+
+    static <T> Result<T> of(Status status,String msg, T content, MultiValueMap<String, String> headers) {
+        ResultBody body = new ResultBody(status.getCode(), msg, content);
         log.debug("[HttpStatus={}] resultBody :=> {}", status.getHttpStatus(), JSON.toJSONString(body));
         return new Result<>(body, headers, status.getHttpStatus());
     }

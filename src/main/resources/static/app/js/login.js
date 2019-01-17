@@ -21,6 +21,7 @@ $(function () {
         }
     });
 });
+
 // 登录
 function login() {
     $.ajax({
@@ -43,7 +44,7 @@ function login() {
         },
         success: function (json) {
             console.log(json);
-            if (json.status == 'SUCCESS') {
+            if (json.status > -1) {
                 location.href = 'http://' + location.host;
             } else {
                 alert(json.msg);

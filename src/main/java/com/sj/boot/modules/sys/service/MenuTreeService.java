@@ -4,6 +4,7 @@ import com.sj.boot.common.utils.mapper.BeanMapper;
 import com.sj.boot.modules.sys.model.Menu;
 import com.sj.boot.modules.sys.model.User;
 import com.sj.boot.modules.sys.repository.MenuRepository;
+import com.sj.boot.modules.sys.repository.UserRepository;
 import com.sj.boot.modules.sys.views.MenuTreeVO;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,8 @@ public class MenuTreeService {
 
     private MenuRepository menuRepository;
 
+    private UserRepository userRepository;
+
     /**
      * 获取菜单
      */
@@ -37,7 +40,7 @@ public class MenuTreeService {
      */
     public Collection<MenuTreeVO> listCurrentUserSystem() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Set<Menu> menuSet = user.getRoleSet().stream().flatMap(role -> role.getMenuSet().stream()).collect(Collectors.toSet());
+        Set<Menu> menuSet = userRepository.findByUsername(user.getUsername()).map(user1->user1.getRoleSet().stream().flatMap(role -> role.getMenuSet().stream()).collect(Collectors.toSet())).orElseThrow(RuntimeException::new);
         return getMenuTree(menuSet).getChildren();
     }
 
