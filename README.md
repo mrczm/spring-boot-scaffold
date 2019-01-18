@@ -22,8 +22,6 @@
 
 * [x] 日志管理
 
-* [x] 前后端分离
-
 ### 项目结构
 ```
 sanji-boot
@@ -75,6 +73,18 @@ JSON序列号框架: fastjson
 弹窗框架： jquery-confirm
 
 页面主体框架 ：zhengAdmin
+
+### 效果图
+
+![用户管理](resources/20190118155259.png)
+
+![菜单管理](resources/20190118154424.png)
+
+![角色管理](resources/20190118154502.png)
+
+![日志查看](resources/20190118154530.png)
+
+![嵌入外部网址](resources/20190118154651.png)
 
 ### 扩展
 
