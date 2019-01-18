@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50721
 File Encoding         : 65001
 
-Date: 2019-01-18 16:24:14
+Date: 2019-01-18 18:00:55
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -165,7 +165,7 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '2019-01-18 06:47:05', '2019-01-18 06:55:27', 'admin', 'test@qq.com', '0', 'admin', '(188) 5419-2893', '{bcrypt}$2a$10$cLHpRvK5nvnXkcfojJMT0OVI9XfeD1w5IIhpiiX81IVauUoVu2wBW', '0', 'admin');
+INSERT INTO `sys_user` VALUES ('1', '2019-01-18 06:47:05', '2019-01-18 09:59:42', 'admin', 'test@qq.com', '0', 'admin', '(188) 5419-2893', '{bcrypt}$2a$10$IwmSbGWXuXWN9BTYSRiIBO5ZqLtigXTlkc0eRXNn7RvJZUyz0mZLe', '0', 'admin');
 
 -- ----------------------------
 -- Table structure for sys_user_role_set
