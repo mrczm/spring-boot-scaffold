@@ -22,7 +22,7 @@
 
 * [x] 日志管理
 
-### 项目结构
+### 项目结构：
 ```
 sanji-boot
 ├─java
@@ -43,6 +43,10 @@ sanji-boot
    │ 
    └─application.yml  项目配置文件
 ```
+
+### 注意事项：
+
+运行项目前导入[sanji-boot.sql](sanji-boot.sql)
 
 ### 技术栈(技术选型)：
 
@@ -74,7 +78,7 @@ JSON序列号框架: fastjson
 
 页面主体框架 ：zhengAdmin
 
-### 效果图
+### 效果图：
 
 ![用户管理](resources/20190118155259.png)
 
@@ -86,7 +90,7 @@ JSON序列号框架: fastjson
 
 ![嵌入外部网址](resources/20190118154651.png)
 
-### 扩展
+### 扩展：
 
 [zhengAdmin](https://github.com/shuzheng/zhengAdmin/blob/master/README.md)
 
