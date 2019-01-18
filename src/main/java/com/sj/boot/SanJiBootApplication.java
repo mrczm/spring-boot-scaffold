@@ -14,31 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @SpringBootApplication
 @EnableJpaAuditing
 public class SanJiBootApplication {
-
-    @GetMapping("test")
-    @ResponseBody
-    public Menu test() {
-        Menu menu = new Menu();
-        menu.setAuthority("test");
-        return menu;
-    }
-
-/*    @GetMapping("/test")
-    public Menu avoid(@RequestParam("id") Menu menu) {
-        return menu;
-    }*/
-
-    @GetMapping("/ok")
-    @ResponseBody
-    public String ok() {
-        return "ok";
-    }
-
-    @PutMapping("/test")
-    public void t(@RequestBody Object object){
-
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(SanJiBootApplication.class, args);
     }
