@@ -28,7 +28,7 @@ public class SanJiBootApplicationTests {
     @Test
     public void initUser(){
         User user = new User();
-        user.setUsername("user");
+        user.setUsername("admin");
         user.setPassword(passwordEncoder.encode("123456"));
 //        user.setNickname("hello");
 //        user.setPhone("1885");

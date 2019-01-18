@@ -1,6 +1,5 @@
 package com.sj.boot.modules.sys.model;
 
-import com.sj.boot.common.ResultView;
 import com.sj.boot.common.spring.data.AbstractEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.Optional;
 import java.util.Set;
 
@@ -18,8 +18,8 @@ import java.util.Set;
  * @author yangrd
  * @date 2019/1/9
  **/
-@ResultView("角色")
 @Entity
+@Table(name = "sys_role")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
@@ -29,6 +29,8 @@ public class Role extends AbstractEntity<Role> implements GrantedAuthority {
     private final static String ROLE_PREFIX = "ROLE_";
 
     private String name;
+
+    private String description;
 
     private String authority;
 

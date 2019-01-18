@@ -1,7 +1,6 @@
 package com.sj.boot.modules.sys.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sj.boot.common.ResultView;
 import com.sj.boot.common.spring.data.AbstractEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,8 +14,8 @@ import javax.persistence.*;
  * @author yangrd
  * @date 2019/1/9
  **/
-@ResultView("菜单")
 @Entity
+@Table(name = "sys_menu")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter

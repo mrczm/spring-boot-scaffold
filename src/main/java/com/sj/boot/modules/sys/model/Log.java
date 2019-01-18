@@ -1,6 +1,5 @@
 package com.sj.boot.modules.sys.model;
 
-import com.sj.boot.common.ResultView;
 import com.sj.boot.common.spring.data.AbstractEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -9,13 +8,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.Table;
 
 /**
  * @author yangrd
  * @date 2019/1/9
  **/
-@ResultView("日志")
 @Entity
+@Table(name = "sys_log")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter

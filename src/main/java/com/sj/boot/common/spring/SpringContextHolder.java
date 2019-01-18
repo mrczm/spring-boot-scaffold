@@ -1,4 +1,4 @@
-package com.sj.boot.common.spring.data;
+package com.sj.boot.common.spring;
 
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;

@@ -1,11 +1,9 @@
 package com.sj.boot.modules.sys.model;
 
-import com.sj.boot.common.ResultView;
 import com.sj.boot.common.spring.data.AbstractEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.Delegate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,8 +19,8 @@ import java.util.stream.Collectors;
  * @author yangrd
  * @date 2019/1/9
  **/
-@ResultView("用户")
 @Entity
+@Table(name = "sys_user")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
