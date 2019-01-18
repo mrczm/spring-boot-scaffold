@@ -23,7 +23,7 @@ var iAjax = function (url, data, methodType, beforeSend, cb, ecb) {
     } else {
         return $.ajax({
             url: url,
-            data: JSON.stringify(data),
+            data: typeof data == "string" ? data : JSON.stringify(data),
             type: methodType,
             async: false,
             dataType: "json",
