@@ -1,6 +1,8 @@
 package com.sj.boot.modules.sys.web;
 
+import com.sj.boot.modules.sys.model.Role;
 import com.sj.boot.modules.sys.model.User;
+import com.sj.boot.modules.sys.repository.RoleRepository;
 import com.sj.boot.modules.sys.repository.UserRepository;
 import com.sj.boot.modules.sys.service.MenuTreeService;
 import com.sj.boot.modules.sys.views.MenuTreeVO;
@@ -18,7 +20,9 @@ import javax.persistence.criteria.Predicate;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户控制器
@@ -33,6 +37,8 @@ public class UserController {
 
     private UserRepository repository;
 
+    private RoleRepository roleRepository;
+
     private MenuTreeService menuTreeService;
 
     private PasswordEncoder passwordEncoder;
@@ -40,6 +46,9 @@ public class UserController {
     @PostMapping
     public User add(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode("123456"));
+        user.getDetails().setNickname(user.getUsername());
+        List<Role> roles = roleRepository.findAllById(user.getRoleSet().stream().map(Role::getId).collect(Collectors.toList()));
+        user.setRoleSet(new HashSet<>(roles));
         return repository.save(user);
     }
 
@@ -75,7 +84,7 @@ public class UserController {
 
     @GetMapping("/current")
     public String getCurrentUsername(Principal principal) {
-        return  ((User)((UsernamePasswordAuthenticationToken)principal).getPrincipal()).getUsername();
+        return ((User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal()).getUsername();
     }
 
     @GetMapping("/current/menu")
