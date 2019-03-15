@@ -4,11 +4,14 @@ import com.sj.boot.common.spring.data.AbstractEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -96,5 +99,16 @@ public class User extends AbstractEntity<User> implements UserDetails {
     @Override
     public boolean isEnabled() {
         return !UserStatus.FROZEN.equals(this.status);
+    }
+
+    public static Specification<User> specification(final User user) {
+        return (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (StringUtils.isNotEmpty(user.getUsername())) {
+                //根据登录名称模糊查询
+                predicates.add(cb.like(root.get("username"), "%" + user.getUsername() + "%"));
+            }
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
     }
 }
